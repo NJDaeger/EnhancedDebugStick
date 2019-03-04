@@ -1,0 +1,27 @@
+# When looking at a block within a specified distance,
+# should the block properties be displayed to the player?
+display-data-on-look: true
+
+# If display-data-on-look is enabled, this will limit how far away block data can be seen.
+# If this number is set to 0, the data will not show (equivalent to setting the
+# display-data-on-look to false). If it is set to -1, the limit will default to 20 blocks.
+display-data-distance: 7
+
+# Enable this if you want CoreProtect to log the edited block.
+# If CoreProtect is not installed, this will do nothing.
+coreprotect-logging: false
+
+# Sound settings
+sound:
+
+  # When the debug stick is selected or deselected in the players hotbar, a light sound will be
+  # played to the player indicating the debug stick is being held or not.
+  on-select: true
+
+  # When the next property is selected (left click) a click will be played to the player
+  # indicating the next property has been chosen.
+  on-next-property: true
+
+  # When the next value is slected (right click) a click will be played to the player
+  # indicating the next value for the selected property has been chosen.
+  on-next-value: true
