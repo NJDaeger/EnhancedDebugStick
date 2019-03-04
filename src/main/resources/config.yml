@@ -11,6 +11,10 @@ display-data-distance: 7
 # If CoreProtect is not installed, this will do nothing.
 coreprotect-logging: false
 
+# Enable this if you want EnhancedDebugStick to send basic information to bstats.org.
+# Data is viewable here: https://bstats.org/plugin/bukkit/EnhancedDebugStick
+bstats-integration: true
+
 # Sound settings
 sound:
 
@@ -22,6 +26,6 @@ sound:
   # indicating the next property has been chosen.
   on-next-property: true
 
-  # When the next value is slected (right click) a click will be played to the player
+  # When the next value is selected (right click) a click will be played to the player
   # indicating the next value for the selected property has been chosen.
   on-next-value: true

@@ -11,6 +11,7 @@ public final class Configuration extends YmlConfig {
     private final boolean soundOnProperty;
     private final boolean soundOnValue;
     private final boolean coreprotectLogging;
+    private final boolean bstatsIntegration;
 
     Configuration(Plugin plugin) {
         super(plugin, "config");
@@ -21,6 +22,7 @@ public final class Configuration extends YmlConfig {
         addEntry("sound.on-next-property", true);
         addEntry("sound.on-next-value", true);
         addEntry("coreprotect-logging", false);
+        addEntry("bstats-integration", true);
 
         this.displayOnLook = getBoolean("display-data-on-look");
         this.displayDistance = getInt("display-data-distance");
@@ -28,6 +30,7 @@ public final class Configuration extends YmlConfig {
         this.soundOnProperty = getBoolean("sound.on-next-property");
         this.soundOnValue = getBoolean("sound.on-next-value");
         this.coreprotectLogging = getBoolean("coreprotect-logging");
+        this.bstatsIntegration = getBoolean("bstats-integration");
     }
 
     /**
@@ -70,6 +73,13 @@ public final class Configuration extends YmlConfig {
      */
     public boolean coreprotectLogging() {
         return coreprotectLogging;
+    }
+
+    /**
+     * Whether the user allows the sending of basic data to bstats.org
+     */
+    public boolean bstatsIntegration() {
+        return bstatsIntegration;
     }
 
 }

@@ -36,6 +36,9 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
             if (coreProtectAPI == null) getLogger().warning("CoreProtectAPI was unable to be hooked. (Is CoreProtect installed?)");
             else getLogger().info("CoreProtectAPI was successfully hooked.");
         }
+        if (configuration.bstatsIntegration()) {
+            new Metrics(this);
+        }
     }
 
     @Override
