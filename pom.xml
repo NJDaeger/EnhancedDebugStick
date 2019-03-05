@@ -47,19 +47,19 @@
                     <relocations>
                         <relocation>
                             <pattern>com.njdaeger.bci</pattern>
-                            <shadedPattern>com.njdaeger.greenfieldcore.libs.bci</shadedPattern>
+                            <shadedPattern>com.njdaeger.enhanceddebugstick.libs.bci</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.njdaeger.btu</pattern>
-                            <shadedPattern>com.njdaeger.greenfieldcore.libs.btu</shadedPattern>
+                            <shadedPattern>com.njdaeger.enhanceddebugstick.libs.btu</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.njdaeger.bcm</pattern>
-                            <shadedPattern>com.njdaeger.greenfieldcore.libs.bcm</shadedPattern>
+                            <shadedPattern>com.njdaeger.enhanceddebugstick.libs.bcm</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.njdaeger.butil</pattern>
-                            <shadedPattern>com.njdaeger.greenfieldcore.libs.butil</shadedPattern>
+                            <shadedPattern>com.njdaeger.enhanceddebugstick.libs.butil</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

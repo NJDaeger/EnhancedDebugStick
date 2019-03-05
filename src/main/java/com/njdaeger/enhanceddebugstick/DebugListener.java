@@ -133,7 +133,7 @@ public final class DebugListener implements Listener {
         if (config.displayDataOnLook()) {
             Player player = event.getPlayer();
             DebugSession session = plugin.getDebugSession(player.getUniqueId());
-            if (hasDebugStick(player) && DEBUG_STICK.equals(player.getInventory().getItemInMainHand()) && player.hasPermission("greenfieldcore.debugstick.use")) {
+            if (hasDebugStick(player) && DEBUG_STICK.equals(player.getInventory().getItemInMainHand()) && player.hasPermission("enhanceddebugstick.debugstick.use")) {
                 RayTraceResult hit = player.rayTraceBlocks(config.displayDataDistance());
                 if (hit != null && hit.getHitBlock() != null) {
                     session.sendPropertiesOf(hit.getHitBlock());
