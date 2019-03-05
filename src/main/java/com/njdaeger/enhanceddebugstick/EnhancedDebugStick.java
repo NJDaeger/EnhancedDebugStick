@@ -43,6 +43,8 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
 
     @Override
     public void onDisable() {
+        this.configuration = null;
+        this.coreProtectAPI = null;
     }
 
     private CoreProtectAPI initializeCoreprotect() {

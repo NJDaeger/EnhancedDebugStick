@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.RayTraceResult;
@@ -155,6 +156,15 @@ public final class DebugListener implements Listener {
             }
             if (DEBUG_STICK.equals(newSlot)) {
                 player.playSound(player.getLocation(), Sound.UI_TOAST_IN, 1, 1);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onReload(ServerLoadEvent event) {
+        if (event.getType() == ServerLoadEvent.LoadType.RELOAD) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                plugin.addDebugSession(player.getUniqueId());
             }
         }
     }

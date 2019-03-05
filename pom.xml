@@ -6,7 +6,7 @@
 
     <groupId>com.njdaeger</groupId>
     <artifactId>EnhancedDebugStick</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <repositories>
         <repository>
