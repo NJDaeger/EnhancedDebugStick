@@ -57,10 +57,6 @@
                             <pattern>com.njdaeger.bcm</pattern>
                             <shadedPattern>com.njdaeger.enhanceddebugstick.libs.bcm</shadedPattern>
                         </relocation>
-                        <relocation>
-                            <pattern>com.njdaeger.butil</pattern>
-                            <shadedPattern>com.njdaeger.enhanceddebugstick.libs.butil</shadedPattern>
-                        </relocation>
                     </relocations>
                 </configuration>
             </plugin>
