@@ -24,6 +24,21 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
     private final CommandStore commandStore = new CommandStore(this);
     private final Map<UUID, DebugSession> debugSessions = new HashMap<>();
 
+
+    /*
+    IDEAS
+    property locker
+        right click to lock propertys so blcoks can be placed beside them and they wont change
+        left click unlocks
+
+    property merge
+        directional flag so properties which are directional change direction withthe player
+        normal mode which just puts the exact propertys on the block
+
+    dynmap updating
+    no worldedit tools allowed on dbs
+     */
+
     @Override
     public void onEnable() {
         if (!new File(getDataFolder() + File.separator + "config.yml").exists()) saveResource("config.yml", false);
