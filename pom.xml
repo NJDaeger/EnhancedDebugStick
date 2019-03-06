@@ -100,13 +100,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.njdaeger</groupId>
-            <artifactId>BukkitUtilities</artifactId>
-            <version>0.0.1</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.13.2-R0.1-SNAPSHOT</version>
