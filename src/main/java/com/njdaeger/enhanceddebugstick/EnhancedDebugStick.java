@@ -37,6 +37,7 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
 
     dynmap updating
     no worldedit tools allowed on dbs
+    make configuration update without removing comments
      */
 
     @Override
