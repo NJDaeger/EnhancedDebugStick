@@ -1,7 +1,12 @@
 package com.njdaeger.enhanceddebugstick;
 
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
+import com.njdaeger.enhanceddebugstick.api.DebugStickAPI;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
+import org.bukkit.block.data.type.BubbleColumn;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -11,8 +16,8 @@ public final class DebugSession {
     private final UUID uuid;
 
     DebugSession(UUID uuid) {
-        setDebugMode(DebugModeType.CLASSIC);
         this.uuid = uuid;
+        setDebugMode(DebugModeType.CLASSIC);
     }
 
     /**
@@ -43,6 +48,16 @@ public final class DebugSession {
         Validate.notNull(type, "New DebugModeType cannot be null");
         this.debugMode = type;
         type.addSession(this);
+    }
+
+    /**
+     * Quick check to see if this session is currently holding a debug stick. This will always return false if the player is offline.
+     * @return The debug stick.
+     */
+    public boolean isHoldingDebugStick() {
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) return false;
+        else return player.getInventory().contains(DebugStickAPI.DEBUG_STICK) && DebugStickAPI.DEBUG_STICK.equals(player.getInventory().getItemInMainHand());
     }
 
     /**

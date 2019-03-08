@@ -10,6 +10,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.MagmaCube;
+import org.bukkit.entity.Shulker;
+import org.bukkit.potion.PotionEffectType;
+import sun.security.provider.SHA5;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +27,7 @@ import static org.bukkit.ChatColor.GRAY;
 
 public final class ClassicDebugContext implements DebugContext {
 
+    private MagmaCube selection;
     private final Map<Material, Integer> currentProperty;
     private final EnhancedDebugStick plugin;
     private final UUID uuid;
@@ -154,22 +159,40 @@ public final class ClassicDebugContext implements DebugContext {
 
     /**
      * Sends the player information about the properties of a specific block via ActionBar. If this block has no
-     * properties, the message sent will be empty.
+     * properties, or if the block is null, the message sent will be empty.
      *
      * @param block The block to get and send the properties of.
      */
     public void sendPropertiesOf(Block block) {
+        SHA5.SHA512
         StringBuilder builder = new StringBuilder();
-        for (Property<?, ?> property : getProperties(block)) {
-            if (getCurrentProperty(block) == property) {
-                builder.append(DARK_GREEN).append(BOLD).append(UNDERLINE).append(property.getNiceName()).append(": ");
-                builder.append(GRAY).append(BOLD).append(UNDERLINE).append(format(property.getNiceCurrentValue(block))).append(RESET).append("    ");
-            } else {
-                builder.append(DARK_GREEN).append(property.getNiceName()).append(": ");
-                builder.append(GRAY).append(format(property.getNiceCurrentValue(block))).append("    ");
+        if (block != null) {
+            for (Property<?, ?> property : getProperties(block)) {
+                if (getCurrentProperty(block) == property) {
+                    builder.append(DARK_GREEN).append(BOLD).append(UNDERLINE).append(property.getNiceName()).append(": ");
+                    builder.append(GRAY).append(BOLD).append(UNDERLINE).append(format(property.getNiceCurrentValue(block))).append(RESET).append("    ");
+                } else {
+                    builder.append(DARK_GREEN).append(property.getNiceName()).append(": ");
+                    builder.append(GRAY).append(format(property.getNiceCurrentValue(block))).append("    ");
+                }
             }
         }
         ActionBar.of(builder.toString().trim()).sendTo(Bukkit.getPlayer(uuid));
+    }
+
+    public void changeSelection(Block block) {
+        if (selection != null) selection.remove();
+        if (block == null) return;
+        this.selection = block.getWorld().spawn(block.getLocation(), MagmaCube.class);
+        block.getWorld().
+        selection.setAI(false);
+        selection.setGlowing(true);
+        selection.setSilent(true);
+        selection.setInvulnerable(true);
+        selection.setRemoveWhenFarAway(true);
+        selection.setSize(1);
+        selection.addPotionEffect(PotionEffectType.INVISIBILITY.createEffect(Integer.MAX_VALUE, 1), true);
+        //selection.addPotionEffect(PotionEffectType.GLOWING.createEffect(Integer.MAX_VALUE, 1), true);
     }
 
     private static String format(String string) {
