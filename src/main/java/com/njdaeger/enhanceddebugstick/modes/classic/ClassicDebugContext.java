@@ -5,15 +5,12 @@ import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import com.njdaeger.enhanceddebugstick.Property;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
+import com.njdaeger.enhanceddebugstick.util.BlockHighlighter;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.MagmaCube;
-import org.bukkit.entity.Shulker;
-import org.bukkit.potion.PotionEffectType;
-import sun.security.provider.SHA5;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,12 +19,10 @@ import java.util.UUID;
 import static com.njdaeger.enhanceddebugstick.Property.getProperties;
 import static com.njdaeger.enhanceddebugstick.Property.hasProperties;
 import static org.bukkit.ChatColor.*;
-import static org.bukkit.ChatColor.DARK_GREEN;
-import static org.bukkit.ChatColor.GRAY;
 
 public final class ClassicDebugContext implements DebugContext {
 
-    private MagmaCube selection;
+    private Block current;
     private final Map<Material, Integer> currentProperty;
     private final EnhancedDebugStick plugin;
     private final UUID uuid;
@@ -164,7 +159,6 @@ public final class ClassicDebugContext implements DebugContext {
      * @param block The block to get and send the properties of.
      */
     public void sendPropertiesOf(Block block) {
-        SHA5.SHA512
         StringBuilder builder = new StringBuilder();
         if (block != null) {
             for (Property<?, ?> property : getProperties(block)) {
@@ -181,19 +175,116 @@ public final class ClassicDebugContext implements DebugContext {
     }
 
     public void changeSelection(Block block) {
-        if (selection != null) selection.remove();
-        if (block == null) return;
-        this.selection = block.getWorld().spawn(block.getLocation(), MagmaCube.class);
-        block.getWorld().
-        selection.setAI(false);
-        selection.setGlowing(true);
-        selection.setSilent(true);
-        selection.setInvulnerable(true);
-        selection.setRemoveWhenFarAway(true);
-        selection.setSize(1);
-        selection.addPotionEffect(PotionEffectType.INVISIBILITY.createEffect(Integer.MAX_VALUE, 1), true);
-        //selection.addPotionEffect(PotionEffectType.GLOWING.createEffect(Integer.MAX_VALUE, 1), true);
+        if (block == null) {
+            if (current != null) {
+                BlockHighlighter.unLightBlock(current, Bukkit.getPlayer(uuid));
+                current = null;
+            }
+        }
+        if (block != current) {
+            BlockHighlighter.lightBlock(plugin, block, Bukkit.getPlayer(uuid));
+            this.current = block;
+        }
     }
+
+/*
+    public void changeSelection(Block block, Player player) {
+
+        Field connection = null;
+        Object entityPlayer = null;
+        Method sendPacket = null;
+
+        try {
+            //Class<?> entityPlayer = Util.getNMSClass("EntityPlayer");
+            entityPlayer = player.getClass().getDeclaredMethod("getHandle").invoke(player);
+            connection = entityPlayer.getClass().getDeclaredField("playerConnection");
+            sendPacket = connection.getType().getDeclaredMethod("sendPacket", Util.getNMSClass("Packet"));
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (connection == null || entityPlayer == null || sendPacket == null) return;
+
+        //PlayerConnection connection = ((CraftPlayer)player).getHandle().playerConnection;
+        if (selection != null) {
+            PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(selection.getEntityId());
+            try {
+                sendPacket.invoke(connection.get(entityPlayer), destroy);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            this.selection = null;
+            return;
+        }
+        if (block != null && block != current) {
+
+            try {
+                Class<?> magmaCubeClass = Util.getNMSClass("EntityMagmaCube");
+                Class<?> insentientClass = Util.getNMSClass("EntityInsentient");
+                Class<?> entityClass = Util.getNMSClass("Entity");
+                Method size = magmaCubeClass.getDeclaredMethod("setSize", int.class, boolean.class);
+                Method invisible = entityClass.getDeclaredMethod("setInvisible", boolean.class);
+                Method invulnerable = entityClass.getDeclaredMethod("setInvulnerable", boolean.class);
+                Method noAi = insentientClass.getDeclaredMethod("setNoAI", boolean.class);
+                Method location = entityClass.getDeclaredMethod("setLocation", double.class, double.class, double.class, float.class, float.class);
+                Method flag = entityClass.getDeclaredMethod("setFlag", int.class, boolean.class);
+                Method bukkitEntity = entityClass.getDeclaredMethod("getBukkitEntity");
+                Method id = entityClass.getDeclaredMethod("getId");
+                Method watcher = entityClass.getDeclaredMethod("getDataWatcher");
+                Method rotation = entityClass.getDeclaredMethod("setPositionRotation", double.class, double.class, double.class, float.class, float.class);
+                Constructor<?> magmaCubeConstructor = magmaCubeClass.getConstructor(Util.getNMSClass("World"));
+                Object magmaCube = magmaCubeConstructor.newInstance(block.getWorld().getClass().getDeclaredMethod("getHandle").invoke(block.getWorld()));
+
+                size.invoke(magmaCube, 2, true);
+                invisible.invoke(magmaCube, true);
+                invulnerable.invoke(magmaCube, true);
+                noAi.invoke(magmaCube, true);
+                location.invoke(magmaCube, block.getX() + .5, block.getY(), block.getZ() + .5, 0, 0);
+                flag.invoke(magmaCube, 6, true);
+                rotation.invoke(magmaCube, block.getX() + .5, block.getY(), block.getZ() + .5,0,0);
+                this.selection = (MagmaCube) bukkitEntity.invoke(magmaCube);
+                this.current = block;
+                PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving) magmaCube);
+                PacketPlayOutEntityMetadata eff = new PacketPlayOutEntityMetadata((int)id.invoke(magmaCube), (DataWatcher) watcher.invoke(magmaCube), true);
+                sendPacket.invoke(connection.get(entityPlayer), spawn);
+                sendPacket.invoke(connection.get(entityPlayer), eff);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                e.printStackTrace();
+            }
+
+
+            EntityMagmaCube magmaCube = new EntityMagmaCube(((CraftWorld)block.getWorld()).getHandle());
+            magmaCube.setSize(1, true);
+            magmaCube.setInvisible(true);
+            magmaCube.setInvulnerable(true);
+            magmaCube.setNoAI(true);
+            magmaCube.setLocation(block.getX() + .5, block.getY(), block.getZ() + .5, 0, 0);
+            magmaCube.setHeadRotation(0);
+            magmaCube.setFlag(6, true);
+            magmaCube.setPositionRotation();
+            this.selection = (MagmaCube) magmaCube.getBukkitEntity();
+            this.current = block;*/
+            /*PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving(magmaCube);
+            PacketPlayOutEntityMetadata eff = new PacketPlayOutEntityMetadata(magmaCube.getId(), magmaCube.getDataWatcher(), true);
+            connection.sendPacket(spawn);
+            connection.sendPacket(eff);*/
+
+            /*EntityShulker shulker = new EntityShulker(((CraftWorld)block.getWorld()).getHandle());
+            shulker.setLocation(block.getX() + .5, block.getY(), block.getZ() + .5, 0, 0);
+            shulker.setInvisible(true);
+            shulker.setInvulnerable(true);
+            shulker.setHeadRotation(0);
+            shulker.setPositionRotation(block.getX() + .5, block.getY(), block.getZ() + .5, 0, 0);
+            shulker.setNoAI(true);
+            shulker.setFlag(6, true);
+            this.selection = (Shulker) shulker.getBukkitEntity();
+            this.current = block;
+            PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving(shulker);
+            PacketPlayOutEntityMetadata eff = new PacketPlayOutEntityMetadata(shulker.getId(), shulker.getDataWatcher(), true);
+            connection.sendPacket(spawn);
+            connection.sendPacket(eff);
+        }
+    }*/
 
     private static String format(String string) {
         String[] split = string.split("_");

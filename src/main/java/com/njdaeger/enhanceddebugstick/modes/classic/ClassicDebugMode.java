@@ -5,19 +5,11 @@ import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.Property;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.PropertyChangeEvent;
-import com.njdaeger.enhanceddebugstick.api.Result;
 import com.njdaeger.enhanceddebugstick.api.ValueChangeEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.block.ShulkerBox;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Shulker;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -25,9 +17,7 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.RayTraceResult;
-import org.bukkit.util.Vector;
 
 import static com.njdaeger.enhanceddebugstick.api.DebugStickAPI.DEBUG_STICK;
 import static com.njdaeger.enhanceddebugstick.api.DebugStickAPI.hasDebugStick;
@@ -161,21 +151,6 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
                 } else context.changeSelection(null);
             }
         }
-    }
-
-    private void fallingSand(Block block) {
-        Shulker e = block.getWorld().spawn(block.getLocation().add(0, 1, 0), Shulker.class);
-        System.out.println(e);
-        e.setInvulnerable(true);
-        e.setGlowing(true);
-        System.out.println("test");
-        //e.setSilent(true);
-        //e.addPotionEffect(PotionEffectType.INVISIBILITY.createEffect(100000000, 1), true);
-        /*FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation().add(.5, .5, .5), block.getBlockData());
-        falling.setGlowing(true);
-        falling.setGravity(false);
-        falling.setDropItem(false);
-        falling.setInvulnerable(true);*/
     }
 
     @Override
