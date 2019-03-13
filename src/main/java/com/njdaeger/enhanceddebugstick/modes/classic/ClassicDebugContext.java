@@ -182,6 +182,7 @@ public final class ClassicDebugContext implements DebugContext {
             }
         }
         if (block != current) {
+            BlockHighlighter.unLightBlock(current, Bukkit.getPlayer(uuid));
             BlockHighlighter.lightBlock(plugin, block, Bukkit.getPlayer(uuid));
             this.current = block;
         }

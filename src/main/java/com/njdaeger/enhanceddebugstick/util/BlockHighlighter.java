@@ -161,7 +161,7 @@ public class BlockHighlighter {
             Object magmaCube = magmaCubeMap.remove(block);
             if (magmaCube != null) {
                 try {
-                    Object destroy = packetEntityDestroyConstructor.newInstance((int)id.invoke(magmaCube));
+                    Object destroy = packetEntityDestroyConstructor.newInstance(new int[]{(int)id.invoke(magmaCube)});
                     sendPacket.invoke(connection.get(entityPlayer), destroy);
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
