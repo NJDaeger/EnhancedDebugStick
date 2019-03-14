@@ -7,6 +7,8 @@ import com.njdaeger.enhanceddebugstick.Property;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
 import com.njdaeger.enhanceddebugstick.util.BlockHighlighter;
 import net.coreprotect.CoreProtectAPI;
+import net.minecraft.server.v1_13_R2.EntityMagmaCube;
+import net.minecraft.server.v1_13_R2.EntityShulker;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -183,7 +185,7 @@ public final class ClassicDebugContext implements DebugContext {
         }
         if (block != current) {
             BlockHighlighter.unLightBlock(current, Bukkit.getPlayer(uuid));
-            BlockHighlighter.lightBlock(plugin, block, Bukkit.getPlayer(uuid));
+            BlockHighlighter.lightBlock(block, Bukkit.getPlayer(uuid));
             this.current = block;
         }
     }
@@ -255,6 +257,8 @@ public final class ClassicDebugContext implements DebugContext {
 
 
             EntityMagmaCube magmaCube = new EntityMagmaCube(((CraftWorld)block.getWorld()).getHandle());
+            EntityShulker selection;
+            //selection.
             magmaCube.setSize(1, true);
             magmaCube.setInvisible(true);
             magmaCube.setInvulnerable(true);

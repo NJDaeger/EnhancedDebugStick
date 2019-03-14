@@ -1,10 +1,10 @@
 package com.njdaeger.enhanceddebugstick.util;
 
 import com.njdaeger.btu.Util;
+import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.lang.reflect.Constructor;
@@ -20,7 +20,8 @@ import java.util.UUID;
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class BlockHighlighter {
 
-    private static final Map<UUID, HighlightTask> tasks = new HashMap<>();
+    private static final BukkitTask highlightTask;
+    private static final Map<UUID, Highlighter> tasks = new HashMap<>();
 
     private static Field connection;
     private static Method sendPacket;
@@ -74,48 +75,66 @@ public class BlockHighlighter {
             e.printStackTrace();
         }
 
+        highlightTask = Bukkit.getScheduler().runTaskTimer(EnhancedDebugStick.getPlugin(EnhancedDebugStick.class), () -> tasks.forEach((id, light) -> light.lightBlocks()), 0, 1);
+
     }
 
     private BlockHighlighter() {}
 
+    /**
+     * This unlights all the blocks for a specific player and removes their Highlighter instance
+     * @param player The player to unlight all blocks from and remove the Highlighter instance of
+     */
     public static void removeTask(Player player) {
-        if (tasks.containsKey(player.getUniqueId())) {
-            HighlightTask task = tasks.get(player.getUniqueId());
-            Bukkit.getScheduler().cancelTask(task.getId());
-        }
+        unLightAllBlocks(player);
+        tasks.remove(player.getUniqueId());
     }
 
+    /**
+     * This unlights all the blocks for a specific player without removing their Highlighter instance.
+     * @param player The player to unlight all blocks from
+     */
     public static void unLightAllBlocks(Player player) {
         if (tasks.containsKey(player.getUniqueId())) {
-            HighlightTask task = tasks.get(player.getUniqueId());
+            Highlighter task = tasks.get(player.getUniqueId());
             task.removeAllBlocks();
         }
     }
 
+    /**
+     * Unlights a single block for a player
+     * @param block The block to unlight
+     * @param player The player to unlight the block for
+     */
     public static void unLightBlock(Block block, Player player) {
         if (tasks.containsKey(player.getUniqueId())) {
-            HighlightTask task = tasks.get(player.getUniqueId());
+            Highlighter task = tasks.get(player.getUniqueId());
             task.removeBlock(block);
         }
     }
 
-    public static void lightBlock(Plugin plugin, Block block, Player player) {
+    /**
+     * Lights a single block for a player
+     * @param block The block to light
+     * @param player The player to light the block for
+     */
+    public static void lightBlock(Block block, Player player) {
         if (!tasks.containsKey(player.getUniqueId())) {
-            HighlightTask task = new HighlightTask(player);
+            Highlighter task = new Highlighter(player);
             tasks.put(player.getUniqueId(), task);
-            BukkitTask bukkitTask = Bukkit.getScheduler().runTaskTimer(plugin, task, 0, 2);
-            task.taskId = bukkitTask.getTaskId();
         }
         tasks.get(player.getUniqueId()).addBlock(block);
     }
 
-    public static class HighlightTask implements Runnable {
+    /**
+     * Highlights the players current blocks
+     */
+    public static class Highlighter {
 
         private final Map<Block, Object> magmaCubeMap;
         private Object entityPlayer;
-        private int taskId;
 
-        private HighlightTask(Player player) {
+        private Highlighter(Player player) {
             this.magmaCubeMap = new HashMap<>();
             try {
                 this.entityPlayer = Util.getOBCClass("entity.CraftPlayer").getDeclaredMethod("getHandle").invoke(player);
@@ -124,8 +143,10 @@ public class BlockHighlighter {
             }
         }
 
-        @Override
-        public void run() {
+        /**
+         * Updates all the players currently lit blocks with new lit blocks
+         */
+        public void lightBlocks() {
             for (Object magmaCube : magmaCubeMap.values()) {
                 try {
                     Object spawn = packetEntityLivingConstructor.newInstance(entityLivingClass.cast(magmaCube));
@@ -138,6 +159,10 @@ public class BlockHighlighter {
             }
         }
 
+        /**
+         * Adds a block to this highlighter
+         * @param block The block to add
+         */
         public void addBlock(Block block) {
             try {
 
@@ -157,6 +182,10 @@ public class BlockHighlighter {
             }
         }
 
+        /**
+         * Removes a block from this highlighter
+         * @param block The block to remove
+         */
         public void removeBlock(Block block) {
             Object magmaCube = magmaCubeMap.remove(block);
             if (magmaCube != null) {
@@ -170,6 +199,9 @@ public class BlockHighlighter {
 
         }
 
+        /**
+         * Removes all blocks from this highlighter
+         */
         public void removeAllBlocks() {
             Collection<Block> blocks = Collections.unmodifiableSet(magmaCubeMap.keySet());
             for (Block block : blocks) {
@@ -177,12 +209,12 @@ public class BlockHighlighter {
             }
         }
 
+        /**
+         * Checks if this highlighter is empty
+         * @return True if no blocks are set to be highlighted, false otherwise
+         */
         public boolean isEmpty() {
             return magmaCubeMap.isEmpty();
-        }
-
-        public int getId() {
-            return taskId;
         }
 
     }
