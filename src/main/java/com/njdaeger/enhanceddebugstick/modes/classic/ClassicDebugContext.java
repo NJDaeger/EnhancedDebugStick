@@ -8,13 +8,9 @@ import com.njdaeger.enhanceddebugstick.api.IProperty;
 import com.njdaeger.enhanceddebugstick.util.BlockHighlighter;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.util.BoundingBox;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -187,7 +183,7 @@ public final class ClassicDebugContext implements DebugContext {
 
     /**
      * Puts a selection block around the current selection if it is a full block
-     * @param block
+     * @param block The block to select
      */
     public void changeSelection(Block block) {
         if (block != null && block.isPassable()) block = null;
@@ -198,7 +194,7 @@ public final class ClassicDebugContext implements DebugContext {
             }
             return;
         }
-        drawParticles(block);
+        //drawParticles(block);
         if (current == null || !block.getLocation().equals(current.getLocation())) {
             if (current != null) BlockHighlighter.unLightBlock(current, Bukkit.getPlayer(uuid));
             BlockHighlighter.lightBlock(block, Bukkit.getPlayer(uuid));
@@ -206,7 +202,11 @@ public final class ClassicDebugContext implements DebugContext {
         }
     }
 
-    private void drawParticles(Block block) {
+    public Block getCurrentBlock() {
+        return current;
+    }
+
+    /*private void drawParticles(Block block) {
         BoundingBox box = block.getBoundingBox();
         box.expand(1);
         World world = block.getWorld();
@@ -221,7 +221,7 @@ public final class ClassicDebugContext implements DebugContext {
             }
         }
 
-    }
+    }*/
 
     private static String format(String string) {
         String[] split = string.split("_");

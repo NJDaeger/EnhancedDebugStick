@@ -2,8 +2,8 @@ package com.njdaeger.enhanceddebugstick.modes.classic;
 
 import com.njdaeger.enhanceddebugstick.Configuration;
 import com.njdaeger.enhanceddebugstick.DebugSession;
-import com.njdaeger.enhanceddebugstick.api.IProperty;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
+import com.njdaeger.enhanceddebugstick.api.IProperty;
 import com.njdaeger.enhanceddebugstick.api.modes.classic.PropertyChangeEvent;
 import com.njdaeger.enhanceddebugstick.api.modes.classic.Result;
 import com.njdaeger.enhanceddebugstick.api.modes.classic.ValueChangeEvent;
@@ -14,6 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -28,8 +29,8 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
 
     private final Configuration config;
 
-    public ClassicDebugMode(String niceName, Class<ClassicDebugMode> type) {
-        super(niceName, type);
+    public ClassicDebugMode() {
+        super("Classic", ClassicDebugMode.class);
         this.config = plugin.getDebugConfig();
     }
 
@@ -170,6 +171,11 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
                 player.playSound(player.getLocation(), Sound.UI_TOAST_IN, 1, 1);
             }
         }
+    }
+
+    @Override
+    public void onEntityInteract(PlayerInteractEntityEvent event) {
+        //Handle a player clicking on the shulker entity so the corresponding action goes to the block the entity is on
     }
 
 }

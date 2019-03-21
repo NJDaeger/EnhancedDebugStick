@@ -67,8 +67,6 @@ public final class BlockHighlighter {
             e.printStackTrace();
         }
 
-        //highlightTask = Bukkit.getScheduler().runTaskTimer(EnhancedDebugStick.getPlugin(EnhancedDebugStick.class), () -> tasks.forEach((id, light) -> light.lightBlocks()), 0, 1);
-
     }
 
     private BlockHighlighter() {}
