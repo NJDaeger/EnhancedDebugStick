@@ -31,8 +31,6 @@ public abstract class DebugModeType<T extends DebugModeType<T, C>, C extends Deb
         return niceName;
     }
 
-    public abstract boolean addSession(DebugSession session);
-
     public boolean hasSession(UUID uuid) {
         return contextTrack.containsKey(uuid);
     }
@@ -52,6 +50,8 @@ public abstract class DebugModeType<T extends DebugModeType<T, C>, C extends Deb
     public abstract String getPermission();
 
     public abstract DebugModeType getModeType();
+
+    public abstract boolean addSession(DebugSession session);
 
     public abstract void onInteract(PlayerInteractEvent event);
 

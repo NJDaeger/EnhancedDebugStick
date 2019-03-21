@@ -1,11 +1,8 @@
 package com.njdaeger.enhanceddebugstick.util;
 
 import com.njdaeger.btu.Util;
-import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -18,15 +15,13 @@ import java.util.Map;
 import java.util.UUID;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class BlockHighlighter {
+public final class BlockHighlighter {
 
-    private static final BukkitTask highlightTask;
     private static final Map<UUID, Highlighter> tasks = new HashMap<>();
 
     private static Field connection;
     private static Method sendPacket;
 
-    private static Method size;
     private static Method invisible;
     private static Method invulnerable;
     private static Method noAi;
@@ -34,10 +29,9 @@ public class BlockHighlighter {
     private static Method flag;
     private static Method id;
     private static Method dataWatcher;
-    private static Method rotation;
     private static Method world;
 
-    private static Constructor<?> magmaCubeConstructor;
+    private static Constructor<?> shulkerConstructor;
     private static Constructor<?> packetEntityLivingConstructor;
     private static Constructor<?> packetEntityMetadataConstructor;
     private static Constructor<?> packetEntityDestroyConstructor;
@@ -50,11 +44,10 @@ public class BlockHighlighter {
             connection = Util.getNMSClass("EntityPlayer").getDeclaredField("playerConnection");
             sendPacket = connection.getType().getDeclaredMethod("sendPacket", Util.getNMSClass("Packet"));
 
-            Class<?> magmaCubeClass = Util.getNMSClass("EntityMagmaCube");
+            Class<?> shulkerClass = Util.getNMSClass("EntityShulker");
             Class<?> insentientClass = Util.getNMSClass("EntityInsentient");
             Class<?> entityClass = Util.getNMSClass("Entity");
 
-            size = magmaCubeClass.getDeclaredMethod("setSize", int.class, boolean.class);
             invisible = entityClass.getDeclaredMethod("setInvisible", boolean.class);
             invulnerable = entityClass.getDeclaredMethod("setInvulnerable", boolean.class);
             noAi = insentientClass.getDeclaredMethod("setNoAI", boolean.class);
@@ -62,11 +55,10 @@ public class BlockHighlighter {
             flag = entityClass.getDeclaredMethod("setFlag", int.class, boolean.class);
             id = entityClass.getDeclaredMethod("getId");
             dataWatcher = entityClass.getDeclaredMethod("getDataWatcher");
-            rotation = entityClass.getDeclaredMethod("setPositionRotation", double.class, double.class, double.class, float.class, float.class);
 
             entityLivingClass = Util.getNMSClass("EntityLiving");
             world = Util.getOBCClass("CraftWorld").getDeclaredMethod("getHandle");
-            magmaCubeConstructor = magmaCubeClass.getConstructor(Util.getNMSClass("World"));
+            shulkerConstructor = shulkerClass.getConstructor(Util.getNMSClass("World"));
             packetEntityLivingConstructor = Util.getNMSClass("PacketPlayOutSpawnEntityLiving").getDeclaredConstructor(Util.getNMSClass("EntityLiving"));
             packetEntityMetadataConstructor = Util.getNMSClass("PacketPlayOutEntityMetadata").getDeclaredConstructor(int.class, Util.getNMSClass("DataWatcher"), boolean.class);
             packetEntityDestroyConstructor = Util.getNMSClass("PacketPlayOutEntityDestroy").getDeclaredConstructor(int[].class);
@@ -75,7 +67,7 @@ public class BlockHighlighter {
             e.printStackTrace();
         }
 
-        highlightTask = Bukkit.getScheduler().runTaskTimer(EnhancedDebugStick.getPlugin(EnhancedDebugStick.class), () -> tasks.forEach((id, light) -> light.lightBlocks()), 0, 1);
+        //highlightTask = Bukkit.getScheduler().runTaskTimer(EnhancedDebugStick.getPlugin(EnhancedDebugStick.class), () -> tasks.forEach((id, light) -> light.lightBlocks()), 0, 1);
 
     }
 
@@ -131,11 +123,11 @@ public class BlockHighlighter {
      */
     public static class Highlighter {
 
-        private final Map<Block, Object> magmaCubeMap;
+        private final Map<Block, Object> shulkerMap;
         private Object entityPlayer;
 
         private Highlighter(Player player) {
-            this.magmaCubeMap = new HashMap<>();
+            this.shulkerMap = new HashMap<>();
             try {
                 this.entityPlayer = Util.getOBCClass("entity.CraftPlayer").getDeclaredMethod("getHandle").invoke(player);
             } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
@@ -147,10 +139,10 @@ public class BlockHighlighter {
          * Updates all the players currently lit blocks with new lit blocks
          */
         public void lightBlocks() {
-            for (Object magmaCube : magmaCubeMap.values()) {
+            for (Object shulker : shulkerMap.values()) {
                 try {
-                    Object spawn = packetEntityLivingConstructor.newInstance(entityLivingClass.cast(magmaCube));
-                    Object effect = packetEntityMetadataConstructor.newInstance(id.invoke(magmaCube), dataWatcher.invoke(magmaCube), true);
+                    Object spawn = packetEntityLivingConstructor.newInstance(entityLivingClass.cast(shulker));
+                    Object effect = packetEntityMetadataConstructor.newInstance(id.invoke(shulker), dataWatcher.invoke(shulker), true);
                     sendPacket.invoke(connection.get(entityPlayer), spawn);
                     sendPacket.invoke(connection.get(entityPlayer), effect);
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -166,17 +158,20 @@ public class BlockHighlighter {
         public void addBlock(Block block) {
             try {
 
-                Object magmaCube = magmaCubeConstructor.newInstance(world.invoke(block.getWorld()));
+                Object shulker = shulkerConstructor.newInstance(world.invoke(block.getWorld()));
 
-                size.invoke(magmaCube, 2, true);
-                invisible.invoke(magmaCube, true);
-                invulnerable.invoke(magmaCube, true);
-                noAi.invoke(magmaCube, true);
-                location.invoke(magmaCube, block.getX() + .5, block.getY(), block.getZ() + .5, 0, 0);
-                flag.invoke(magmaCube, 6, true);
-                rotation.invoke(magmaCube, block.getX() + .5, block.getY(), block.getZ() + .5,0,0);
+                invisible.invoke(shulker, true);
+                invulnerable.invoke(shulker, true);
+                noAi.invoke(shulker, true);
+                location.invoke(shulker, block.getX() + .5, block.getY(), block.getZ() + .5, 0, 0);
+                flag.invoke(shulker, 6, true);
 
-                magmaCubeMap.put(block, magmaCube);
+                shulkerMap.put(block, shulker);
+
+                Object spawn = packetEntityLivingConstructor.newInstance(entityLivingClass.cast(shulker));
+                Object effect = packetEntityMetadataConstructor.newInstance(id.invoke(shulker), dataWatcher.invoke(shulker), true);
+                sendPacket.invoke(connection.get(entityPlayer), spawn);
+                sendPacket.invoke(connection.get(entityPlayer), effect);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
@@ -187,10 +182,10 @@ public class BlockHighlighter {
          * @param block The block to remove
          */
         public void removeBlock(Block block) {
-            Object magmaCube = magmaCubeMap.remove(block);
-            if (magmaCube != null) {
+            Object shulker = shulkerMap.remove(block);
+            if (shulker != null) {
                 try {
-                    Object destroy = packetEntityDestroyConstructor.newInstance(new int[]{(int)id.invoke(magmaCube)});
+                    Object destroy = packetEntityDestroyConstructor.newInstance(new int[]{(int)id.invoke(shulker)});
                     sendPacket.invoke(connection.get(entityPlayer), destroy);
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
@@ -203,7 +198,7 @@ public class BlockHighlighter {
          * Removes all blocks from this highlighter
          */
         public void removeAllBlocks() {
-            Collection<Block> blocks = Collections.unmodifiableSet(magmaCubeMap.keySet());
+            Collection<Block> blocks = Collections.unmodifiableSet(shulkerMap.keySet());
             for (Block block : blocks) {
                 removeBlock(block);
             }
@@ -214,7 +209,7 @@ public class BlockHighlighter {
          * @return True if no blocks are set to be highlighted, false otherwise
          */
         public boolean isEmpty() {
-            return magmaCubeMap.isEmpty();
+            return shulkerMap.isEmpty();
         }
 
     }

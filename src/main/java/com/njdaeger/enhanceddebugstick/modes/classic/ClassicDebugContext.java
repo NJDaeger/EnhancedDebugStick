@@ -3,23 +3,25 @@ package com.njdaeger.enhanceddebugstick.modes.classic;
 import com.njdaeger.btu.ActionBar;
 import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
-import com.njdaeger.enhanceddebugstick.Property;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
+import com.njdaeger.enhanceddebugstick.api.IProperty;
 import com.njdaeger.enhanceddebugstick.util.BlockHighlighter;
 import net.coreprotect.CoreProtectAPI;
-import net.minecraft.server.v1_13_R2.EntityMagmaCube;
-import net.minecraft.server.v1_13_R2.EntityShulker;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.util.BoundingBox;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.njdaeger.enhanceddebugstick.Property.getProperties;
-import static com.njdaeger.enhanceddebugstick.Property.hasProperties;
+import static com.njdaeger.enhanceddebugstick.api.IProperty.getProperties;
+import static com.njdaeger.enhanceddebugstick.api.IProperty.hasProperties;
 import static org.bukkit.ChatColor.*;
 
 public final class ClassicDebugContext implements DebugContext {
@@ -28,13 +30,15 @@ public final class ClassicDebugContext implements DebugContext {
     private final Map<Material, Integer> currentProperty;
     private final EnhancedDebugStick plugin;
     private final UUID uuid;
+    private final DebugSession session;
 
     ClassicDebugContext(DebugSession session) {
         this.plugin = EnhancedDebugStick.getPlugin(EnhancedDebugStick.class);
         this.currentProperty = new HashMap<>();
         this.uuid = session.getSessionId();
+        this.session = session;
 
-        for (Material mat : Property.getMaterialProperties().keySet()) {
+        for (Material mat : IProperty.getMaterialProperties().keySet()) {
             currentProperty.put(mat, 0);
         }
     }
@@ -44,13 +48,18 @@ public final class ClassicDebugContext implements DebugContext {
         return uuid;
     }
 
+    @Override
+    public DebugSession getDebugSession() {
+        return session;
+    }
+
     /**
      * Gets the current property selected for the specific block.
      *
      * @param block The block to get the current property of.
      * @return The property selected for the block, or null if the block has no properties.
      */
-    public Property<?, ?> getCurrentProperty(Block block) {
+    public IProperty<?, ?> getCurrentProperty(Block block) {
         return getCurrentProperty(block.getType());
     }
 
@@ -60,7 +69,7 @@ public final class ClassicDebugContext implements DebugContext {
      * @param material The material to get the current property of
      * @return The property selected for the material, or null if the material has no properties.
      */
-    public Property<?, ?> getCurrentProperty(Material material) {
+    public IProperty<?, ?> getCurrentProperty(Material material) {
         if (!hasProperties(material)) return null;
         else return getProperties(material).get(currentProperty.get(material));
     }
@@ -73,7 +82,7 @@ public final class ClassicDebugContext implements DebugContext {
      * @param block The block to get the next property of
      * @return The next property to be selected for the block, or null if the block has no properties.
      */
-    public Property<?, ?> getNextProperty(Block block) {
+    public IProperty<?, ?> getNextProperty(Block block) {
         return getNextProperty(block.getType());
     }
 
@@ -85,7 +94,7 @@ public final class ClassicDebugContext implements DebugContext {
      * @param material The material to get the next property of
      * @return The next property to be selected for the material, or null if the material has no properties.
      */
-    public Property<?, ?> getNextProperty(Material material) {
+    public IProperty<?, ?> getNextProperty(Material material) {
         if (!hasProperties(material)) return null;
         int current = currentProperty.get(material);
         if (current == getProperties(material).size() - 1) current = 0;
@@ -100,7 +109,7 @@ public final class ClassicDebugContext implements DebugContext {
      * @param property The property to change the block's selection to.
      * @throws RuntimeException if the property given is not applicable to the specified block.
      */
-    public void setCurrent(Block block, Property<?, ?> property) {
+    public void setCurrent(Block block, IProperty<?, ?> property) {
         setCurrent(block.getType(), property);
     }
 
@@ -111,7 +120,7 @@ public final class ClassicDebugContext implements DebugContext {
      * @param property The property to change the material's selection to.
      * @throws RuntimeException if the property given is not applicable to the specified material.
      */
-    public void setCurrent(Material material, Property<?, ?> property) {
+    public void setCurrent(Material material, IProperty<?, ?> property) {
         if (!property.isApplicableTo(material))
             throw new RuntimeException("Property \"" + property.getNiceName() + "\" is not applicable for material " + material.name());
         currentProperty.replace(material, getProperties(material).indexOf(property));
@@ -163,7 +172,7 @@ public final class ClassicDebugContext implements DebugContext {
     public void sendPropertiesOf(Block block) {
         StringBuilder builder = new StringBuilder();
         if (block != null) {
-            for (Property<?, ?> property : getProperties(block)) {
+            for (IProperty<?, ?> property : getProperties(block)) {
                 if (getCurrentProperty(block) == property) {
                     builder.append(DARK_GREEN).append(BOLD).append(UNDERLINE).append(property.getNiceName()).append(": ");
                     builder.append(GRAY).append(BOLD).append(UNDERLINE).append(format(property.getNiceCurrentValue(block))).append(RESET).append("    ");
@@ -176,120 +185,43 @@ public final class ClassicDebugContext implements DebugContext {
         ActionBar.of(builder.toString().trim()).sendTo(Bukkit.getPlayer(uuid));
     }
 
+    /**
+     * Puts a selection block around the current selection if it is a full block
+     * @param block
+     */
     public void changeSelection(Block block) {
+        if (block != null && block.isPassable()) block = null;
         if (block == null) {
             if (current != null) {
                 BlockHighlighter.unLightBlock(current, Bukkit.getPlayer(uuid));
                 current = null;
             }
+            return;
         }
-        if (block != current) {
-            BlockHighlighter.unLightBlock(current, Bukkit.getPlayer(uuid));
+        drawParticles(block);
+        if (current == null || !block.getLocation().equals(current.getLocation())) {
+            if (current != null) BlockHighlighter.unLightBlock(current, Bukkit.getPlayer(uuid));
             BlockHighlighter.lightBlock(block, Bukkit.getPlayer(uuid));
             this.current = block;
         }
     }
 
-/*
-    public void changeSelection(Block block, Player player) {
+    private void drawParticles(Block block) {
+        BoundingBox box = block.getBoundingBox();
+        box.expand(1);
+        World world = block.getWorld();
+        final double ACCURACY = .01;
+        System.out.println(box.getMinY());
 
-        Field connection = null;
-        Object entityPlayer = null;
-        Method sendPacket = null;
-
-        try {
-            //Class<?> entityPlayer = Util.getNMSClass("EntityPlayer");
-            entityPlayer = player.getClass().getDeclaredMethod("getHandle").invoke(player);
-            connection = entityPlayer.getClass().getDeclaredField("playerConnection");
-            sendPacket = connection.getType().getDeclaredMethod("sendPacket", Util.getNMSClass("Packet"));
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        if (connection == null || entityPlayer == null || sendPacket == null) return;
-
-        //PlayerConnection connection = ((CraftPlayer)player).getHandle().playerConnection;
-        if (selection != null) {
-            PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(selection.getEntityId());
-            try {
-                sendPacket.invoke(connection.get(entityPlayer), destroy);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
+        for (double x = box.getMinX(); x < box.getMaxX(); x+=ACCURACY) {
+            for (double y = box.getMinY(); y < box.getMaxY(); y+=ACCURACY) {
+                for (double z = box.getMinZ(); z < box.getMaxZ(); z+=ACCURACY) {
+                    world.spawnParticle(Particle.REDSTONE, x, y, z, 1, new Particle.DustOptions(Color.WHITE, 0f));
+                }
             }
-            this.selection = null;
-            return;
         }
-        if (block != null && block != current) {
 
-            try {
-                Class<?> magmaCubeClass = Util.getNMSClass("EntityMagmaCube");
-                Class<?> insentientClass = Util.getNMSClass("EntityInsentient");
-                Class<?> entityClass = Util.getNMSClass("Entity");
-                Method size = magmaCubeClass.getDeclaredMethod("setSize", int.class, boolean.class);
-                Method invisible = entityClass.getDeclaredMethod("setInvisible", boolean.class);
-                Method invulnerable = entityClass.getDeclaredMethod("setInvulnerable", boolean.class);
-                Method noAi = insentientClass.getDeclaredMethod("setNoAI", boolean.class);
-                Method location = entityClass.getDeclaredMethod("setLocation", double.class, double.class, double.class, float.class, float.class);
-                Method flag = entityClass.getDeclaredMethod("setFlag", int.class, boolean.class);
-                Method bukkitEntity = entityClass.getDeclaredMethod("getBukkitEntity");
-                Method id = entityClass.getDeclaredMethod("getId");
-                Method watcher = entityClass.getDeclaredMethod("getDataWatcher");
-                Method rotation = entityClass.getDeclaredMethod("setPositionRotation", double.class, double.class, double.class, float.class, float.class);
-                Constructor<?> magmaCubeConstructor = magmaCubeClass.getConstructor(Util.getNMSClass("World"));
-                Object magmaCube = magmaCubeConstructor.newInstance(block.getWorld().getClass().getDeclaredMethod("getHandle").invoke(block.getWorld()));
-
-                size.invoke(magmaCube, 2, true);
-                invisible.invoke(magmaCube, true);
-                invulnerable.invoke(magmaCube, true);
-                noAi.invoke(magmaCube, true);
-                location.invoke(magmaCube, block.getX() + .5, block.getY(), block.getZ() + .5, 0, 0);
-                flag.invoke(magmaCube, 6, true);
-                rotation.invoke(magmaCube, block.getX() + .5, block.getY(), block.getZ() + .5,0,0);
-                this.selection = (MagmaCube) bukkitEntity.invoke(magmaCube);
-                this.current = block;
-                PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving) magmaCube);
-                PacketPlayOutEntityMetadata eff = new PacketPlayOutEntityMetadata((int)id.invoke(magmaCube), (DataWatcher) watcher.invoke(magmaCube), true);
-                sendPacket.invoke(connection.get(entityPlayer), spawn);
-                sendPacket.invoke(connection.get(entityPlayer), eff);
-            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                e.printStackTrace();
-            }
-
-
-            EntityMagmaCube magmaCube = new EntityMagmaCube(((CraftWorld)block.getWorld()).getHandle());
-            EntityShulker selection;
-            //selection.
-            magmaCube.setSize(1, true);
-            magmaCube.setInvisible(true);
-            magmaCube.setInvulnerable(true);
-            magmaCube.setNoAI(true);
-            magmaCube.setLocation(block.getX() + .5, block.getY(), block.getZ() + .5, 0, 0);
-            magmaCube.setHeadRotation(0);
-            magmaCube.setFlag(6, true);
-            magmaCube.setPositionRotation();
-            this.selection = (MagmaCube) magmaCube.getBukkitEntity();
-            this.current = block;*/
-            /*PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving(magmaCube);
-            PacketPlayOutEntityMetadata eff = new PacketPlayOutEntityMetadata(magmaCube.getId(), magmaCube.getDataWatcher(), true);
-            connection.sendPacket(spawn);
-            connection.sendPacket(eff);*/
-
-            /*EntityShulker shulker = new EntityShulker(((CraftWorld)block.getWorld()).getHandle());
-            shulker.setLocation(block.getX() + .5, block.getY(), block.getZ() + .5, 0, 0);
-            shulker.setInvisible(true);
-            shulker.setInvulnerable(true);
-            shulker.setHeadRotation(0);
-            shulker.setPositionRotation(block.getX() + .5, block.getY(), block.getZ() + .5, 0, 0);
-            shulker.setNoAI(true);
-            shulker.setFlag(6, true);
-            this.selection = (Shulker) shulker.getBukkitEntity();
-            this.current = block;
-            PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving(shulker);
-            PacketPlayOutEntityMetadata eff = new PacketPlayOutEntityMetadata(shulker.getId(), shulker.getDataWatcher(), true);
-            connection.sendPacket(spawn);
-            connection.sendPacket(eff);
-        }
-    }*/
+    }
 
     private static String format(String string) {
         String[] split = string.split("_");

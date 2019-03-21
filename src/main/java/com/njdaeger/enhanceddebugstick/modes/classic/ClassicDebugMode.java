@@ -2,10 +2,12 @@ package com.njdaeger.enhanceddebugstick.modes.classic;
 
 import com.njdaeger.enhanceddebugstick.Configuration;
 import com.njdaeger.enhanceddebugstick.DebugSession;
-import com.njdaeger.enhanceddebugstick.Property;
+import com.njdaeger.enhanceddebugstick.api.IProperty;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
-import com.njdaeger.enhanceddebugstick.api.PropertyChangeEvent;
-import com.njdaeger.enhanceddebugstick.api.ValueChangeEvent;
+import com.njdaeger.enhanceddebugstick.api.modes.classic.PropertyChangeEvent;
+import com.njdaeger.enhanceddebugstick.api.modes.classic.Result;
+import com.njdaeger.enhanceddebugstick.api.modes.classic.ValueChangeEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -74,44 +76,45 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
                 //
                 //If this block does not have properties to be edited, we dont let the change happen.
                 //
-                if (!Property.hasProperties(event.getClickedBlock())) {
+                if (!IProperty.hasProperties(event.getClickedBlock())) {
                     player.sendMessage(ChatColor.GRAY + "There are no properties for this block.");
-                    /*changeEvent = new PropertyChangeEvent(context, block, null, null, Result.FAILURE);
-                    Bukkit.getPluginManager().callEvent(changeEvent);*/
+                    changeEvent = new PropertyChangeEvent(context.getDebugSession(), block, null, null, Result.FAILURE);
+                    Bukkit.getPluginManager().callEvent(changeEvent);
                     return;
                 }
 
                 //
                 //From this point on, the only way the changing of the value can be stopped is by the PropertyChangeEvent
                 //
-                Property<?, ?> oldProperty = context.getCurrentProperty(block);
-                Property<?, ?> newProperty = context.getNextProperty(block);
-                /*changeEvent = new PropertyChangeEvent(context, block, oldProperty, newProperty, Result.SUCCESS);
-                Bukkit.getPluginManager().callEvent(changeEvent);*/
+                IProperty<?, ?> oldProperty = context.getCurrentProperty(block);
+                IProperty<?, ?> newProperty = context.getNextProperty(block);
+                changeEvent = new PropertyChangeEvent(context.getDebugSession(), block, oldProperty, newProperty, Result.SUCCESS);
+                Bukkit.getPluginManager().callEvent(changeEvent);
 
                 //
                 //If the event hasnt been cancelled, we continue on with changing
                 //
-                //if (!changeEvent.isCancelled()) {
+                if (!changeEvent.isCancelled()) {
                     if (config.soundOnNextProperty()) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                     context.applyNextPropertyFor(block);
                     context.sendPropertiesOf(block);
-                //}
+                    context.changeSelection(block);
+                }
                 return;
             }
 
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
                 ValueChangeEvent changeEvent;
-                Property<?, ?> property = context.getCurrentProperty(event.getClickedBlock());
+                IProperty<?, ?> property = context.getCurrentProperty(event.getClickedBlock());
 
                 //
                 //Block being right clicked has no properties to edit.
                 //
                 if (property == null) {
                     player.sendMessage(ChatColor.GRAY + "There are no properties for this block.");
-                    //changeEvent = new ValueChangeEvent(context, block, null, null, null, Result.FAILURE);
-                    //Bukkit.getPluginManager().callEvent(changeEvent);
+                    changeEvent = new ValueChangeEvent(context.getDebugSession(), block, null, null, null, Result.FAILURE);
+                    Bukkit.getPluginManager().callEvent(changeEvent);
                     return;
                 }
 
@@ -120,17 +123,18 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
                 //
                 Object from = property.getCurrentValue(block);
                 Object to = property.getNextValue(block);
-                //changeEvent = new ValueChangeEvent(context, block, property, from, to, Result.SUCCESS);
-                //Bukkit.getPluginManager().callEvent(changeEvent);
+                changeEvent = new ValueChangeEvent(context.getDebugSession(), block, property, from, to, Result.SUCCESS);
+                Bukkit.getPluginManager().callEvent(changeEvent);
 
                 //
                 //If the event hasnt been cancelled, we continue on with changing
                 //
-                //if (!changeEvent.isCancelled()) {
+                if (!changeEvent.isCancelled()) {
                     if (config.soundOnNextValue()) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                     context.applyNextValueFor(block);
                     context.sendPropertiesOf(block);
-                //}
+                    context.changeSelection(block);
+                }
             }
         }
     }
@@ -147,8 +151,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
                 RayTraceResult hit = player.rayTraceBlocks(config.displayDataDistance());
                 if (hit != null && hit.getHitBlock() != null) {
                     context.sendPropertiesOf(hit.getHitBlock());
-                    context.changeSelection(hit.getHitBlock());
-                } else context.changeSelection(null);
+                } else context.sendPropertiesOf(null);
             }
         }
     }

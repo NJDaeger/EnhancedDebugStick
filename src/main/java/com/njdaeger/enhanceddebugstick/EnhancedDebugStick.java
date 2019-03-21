@@ -5,6 +5,7 @@ import com.njdaeger.bci.defaults.CommandContext;
 import com.njdaeger.bci.defaults.CommandStore;
 import com.njdaeger.bci.defaults.TabContext;
 import com.njdaeger.enhanceddebugstick.api.DebugStickAPI;
+import com.njdaeger.enhanceddebugstick.api.Property;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.Bukkit;
@@ -26,6 +27,7 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
 
     @Override
     public void onEnable() {
+        Property.registerProperties();
         if (!new File(getDataFolder() + File.separator + "config.yml").exists()) saveResource("config.yml", false);
         this.configuration = new Configuration(this);
         new DebugStickCommand(this);

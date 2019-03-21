@@ -73,7 +73,7 @@ public interface DebugStickAPI {
      * @return The current API version
      */
     static int getApiVersion() {
-        return 1;
+        return 2;
     }
 
 }

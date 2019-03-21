@@ -2,10 +2,8 @@ package com.njdaeger.enhanceddebugstick;
 
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.DebugStickAPI;
-import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
-import org.bukkit.block.data.type.BubbleColumn;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
