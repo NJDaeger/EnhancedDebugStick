@@ -146,15 +146,73 @@ public final class Property<D extends BlockData, V> {
      * Rotation property
      */
     public static final Property<Rotatable, BlockFace> ROTATION = new Property<>("Rotation", Rotatable.class, (rotation) -> {
-        BlockFace face = nextEnumOption(rotation.getRotation());
+        BlockFace face = rotation.getRotation();
         int x = 0;
-        while(x < 500) {
-            x++;
+        while (x < BlockFace.values().length) {
             try {
+                switch (face) {
+                    case NORTH:
+                        face = BlockFace.NORTH_NORTH_EAST;
+                        break;
+                    case NORTH_NORTH_EAST:
+                        face = BlockFace.NORTH_EAST;
+                        break;
+                    case NORTH_EAST:
+                        face = BlockFace.EAST_NORTH_EAST;
+                        break;
+                    case EAST_NORTH_EAST:
+                        face = BlockFace.EAST;
+                        break;
+                    case EAST:
+                        face = BlockFace.EAST_SOUTH_EAST;
+                        break;
+                    case EAST_SOUTH_EAST:
+                        face = BlockFace.SOUTH_EAST;
+                        break;
+                    case SOUTH_EAST:
+                        face = BlockFace.SOUTH_SOUTH_EAST;
+                        break;
+                    case SOUTH_SOUTH_EAST:
+                        face = BlockFace.SOUTH;
+                        break;
+                    case SOUTH:
+                        face = BlockFace.SOUTH_SOUTH_WEST;
+                        break;
+                    case SOUTH_SOUTH_WEST:
+                        face = BlockFace.SOUTH_WEST;
+                        break;
+                    case SOUTH_WEST:
+                        face = BlockFace.WEST_SOUTH_WEST;
+                        break;
+                    case WEST_SOUTH_WEST:
+                        face = BlockFace.WEST;
+                        break;
+                    case WEST:
+                        face = BlockFace.WEST_NORTH_WEST;
+                        break;
+                    case WEST_NORTH_WEST:
+                        face = BlockFace.NORTH_WEST;
+                        break;
+                    case NORTH_WEST:
+                        face = BlockFace.NORTH_NORTH_WEST;
+                        break;
+                    case NORTH_NORTH_WEST:
+                        face = BlockFace.UP;
+                        break;
+                    case UP:
+                        face = BlockFace.DOWN;
+                        break;
+                    case DOWN:
+                        face = BlockFace.SELF;
+                        break;
+                    case SELF:
+                        face = BlockFace.NORTH;
+                        break;
+                }
+                x++;
                 rotation.setRotation(face);
                 break;
             } catch (IllegalArgumentException ignored) {
-                face = nextEnumOption(face);
             }
         }
         return rotation;
