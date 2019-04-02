@@ -41,7 +41,7 @@ public final class DebugListener implements Listener {
 
     @EventHandler
     public void onInteractEntity(PlayerInteractEntityEvent event) {
-
+        plugin.getDebugSession(event.getPlayer().getUniqueId()).getDebugMode().onEntityInteract(event);
     }
 
     @EventHandler
@@ -69,7 +69,7 @@ public final class DebugListener implements Listener {
         Player player = event.getPlayer();
         DebugSession session = plugin.getDebugSession(player.getUniqueId());
         if (session.isHoldingDebugStick() && player.isSneaking()) {
-            ActionBar.of("CLASSIC    LOCKED    MERGE CLASSIC    MERGE ENHANCED").sendTo(player);
+            ActionBar.of("CLASSIC    LOCKED    MERGE CLASSIC    MERGE ENHANCED    MULTI").sendTo(player);
             return;
         }
         session.getDebugMode().onMove(event);

@@ -1,8 +1,11 @@
 package com.njdaeger.enhanceddebugstick.util;
 
 import com.njdaeger.btu.Util;
+import net.minecraft.server.v1_13_R2.EntityShulker;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.map.MinecraftFont;
+import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

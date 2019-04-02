@@ -41,7 +41,7 @@ public final class ClassicDebugContext implements DebugContext {
 
     @Override
     public UUID getOwner() {
-        return uuid;
+        return session.getSessionId();
     }
 
     @Override
@@ -194,7 +194,6 @@ public final class ClassicDebugContext implements DebugContext {
             }
             return;
         }
-        //drawParticles(block);
         if (current == null || !block.getLocation().equals(current.getLocation())) {
             if (current != null) BlockHighlighter.unLightBlock(current, Bukkit.getPlayer(uuid));
             BlockHighlighter.lightBlock(block, Bukkit.getPlayer(uuid));
@@ -202,26 +201,13 @@ public final class ClassicDebugContext implements DebugContext {
         }
     }
 
+    /**
+     * Get the block currently being edited
+     * @return The block currently being edited, or null if no block is being edited.
+     */
     public Block getCurrentBlock() {
         return current;
     }
-
-    /*private void drawParticles(Block block) {
-        BoundingBox box = block.getBoundingBox();
-        box.expand(1);
-        World world = block.getWorld();
-        final double ACCURACY = .01;
-        System.out.println(box.getMinY());
-
-        for (double x = box.getMinX(); x < box.getMaxX(); x+=ACCURACY) {
-            for (double y = box.getMinY(); y < box.getMaxY(); y+=ACCURACY) {
-                for (double z = box.getMinZ(); z < box.getMaxZ(); z+=ACCURACY) {
-                    world.spawnParticle(Particle.REDSTONE, x, y, z, 1, new Particle.DustOptions(Color.WHITE, 0f));
-                }
-            }
-        }
-
-    }*/
 
     private static String format(String string) {
         String[] split = string.split("_");

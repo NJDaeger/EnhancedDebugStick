@@ -175,6 +175,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
 
     @Override
     public void onEntityInteract(PlayerInteractEntityEvent event) {
+        System.out.println(event.getRightClicked());
         //Handle a player clicking on the shulker entity so the corresponding action goes to the block the entity is on
     }
 
