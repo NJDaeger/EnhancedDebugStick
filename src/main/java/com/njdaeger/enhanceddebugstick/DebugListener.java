@@ -5,14 +5,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.util.Vector;
 
 public final class DebugListener implements Listener {
 
@@ -37,11 +34,6 @@ public final class DebugListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         if (plugin.getDebugSession(event.getPlayer().getUniqueId()) == null) plugin.addDebugSession(event.getPlayer().getUniqueId());
-    }
-
-    @EventHandler
-    public void onInteractEntity(PlayerInteractEntityEvent event) {
-        plugin.getDebugSession(event.getPlayer().getUniqueId()).getDebugMode().onEntityInteract(event);
     }
 
     @EventHandler
@@ -74,10 +66,4 @@ public final class DebugListener implements Listener {
         }
         session.getDebugMode().onMove(event);
     }
-
-    @EventHandler
-    public void onInventoryChange(PlayerItemHeldEvent event) {
-        plugin.getDebugSession(event.getPlayer().getUniqueId()).getDebugMode().onHeld(event);
-    }
-
 }

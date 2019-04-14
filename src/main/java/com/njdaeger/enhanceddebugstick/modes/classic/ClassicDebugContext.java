@@ -5,7 +5,6 @@ import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
-import com.njdaeger.enhanceddebugstick.util.BlockHighlighter;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -22,7 +21,6 @@ import static org.bukkit.ChatColor.*;
 
 public final class ClassicDebugContext implements DebugContext {
 
-    private Block current;
     private final Map<Material, Integer> currentProperty;
     private final EnhancedDebugStick plugin;
     private final UUID uuid;
@@ -179,34 +177,6 @@ public final class ClassicDebugContext implements DebugContext {
             }
         }
         ActionBar.of(builder.toString().trim()).sendTo(Bukkit.getPlayer(uuid));
-    }
-
-    /**
-     * Puts a selection block around the current selection if it is a full block
-     * @param block The block to select
-     */
-    public void changeSelection(Block block) {
-        if (block != null && block.isPassable()) block = null;
-        if (block == null) {
-            if (current != null) {
-                BlockHighlighter.unLightBlock(current, Bukkit.getPlayer(uuid));
-                current = null;
-            }
-            return;
-        }
-        if (current == null || !block.getLocation().equals(current.getLocation())) {
-            if (current != null) BlockHighlighter.unLightBlock(current, Bukkit.getPlayer(uuid));
-            BlockHighlighter.lightBlock(block, Bukkit.getPlayer(uuid));
-            this.current = block;
-        }
-    }
-
-    /**
-     * Get the block currently being edited
-     * @return The block currently being edited, or null if no block is being edited.
-     */
-    public Block getCurrentBlock() {
-        return current;
     }
 
     private static String format(String string) {

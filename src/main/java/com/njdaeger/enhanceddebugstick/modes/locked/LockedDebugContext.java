@@ -2,7 +2,7 @@ package com.njdaeger.enhanceddebugstick.modes.locked;
 
 import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
-import jdk.nashorn.internal.ir.Block;
+import org.bukkit.block.Block;
 
 import java.util.ArrayList;
 import java.util.List;
