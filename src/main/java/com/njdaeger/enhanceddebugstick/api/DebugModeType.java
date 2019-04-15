@@ -2,7 +2,6 @@ package com.njdaeger.enhanceddebugstick.api;
 
 import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
-import com.njdaeger.enhanceddebugstick.modes.classic.ClassicDebugContext;
 import com.njdaeger.enhanceddebugstick.modes.classic.ClassicDebugMode;
 import com.njdaeger.enhanceddebugstick.modes.locked.LockedDebugMode;
 import org.bukkit.Sound;
@@ -118,13 +117,11 @@ public abstract class DebugModeType<T extends DebugModeType<T, C>, C extends Deb
     /**
      * Fires when a player interacts with something.
      */
-    @EventHandler
     public abstract void onInteract(PlayerInteractEvent event);
 
     /**
      * Fires when a player moves
      */
-    @EventHandler
     public abstract void onMove(PlayerMoveEvent event);
 
     /**

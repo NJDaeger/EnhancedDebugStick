@@ -5,7 +5,9 @@ import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.DebugStickAPI;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.UUID;
 
@@ -16,7 +18,15 @@ public final class DebugSession {
 
     DebugSession(UUID uuid) {
         this.uuid = uuid;
-        setDebugMode(DebugModeType.CLASSIC);
+        setDebugMode(DebugModeType.LOCKED);
+    }
+
+    /**
+     * Checks if this session has an online player attached to it
+     * @return True if the player who owns this session is online, false otherwise.
+     */
+    public boolean isOnline() {
+        return Bukkit.getPlayer(uuid) != null;
     }
 
     /**
@@ -56,10 +66,11 @@ public final class DebugSession {
      * @return The debug stick.
      */
     public boolean isHoldingDebugStick() {
-        Player player = Bukkit.getPlayer(uuid);
-        if (player == null) return false;
-        else
+        if (!isOnline()) return false;
+        else {
+            Player player = Bukkit.getPlayer(uuid);
             return DebugStickAPI.hasDebugStick(player) && DebugStickAPI.DEBUG_STICK.equals(player.getInventory().getItemInMainHand());
+        }
     }
 
     /**
@@ -72,7 +83,10 @@ public final class DebugSession {
      */
     public <C extends DebugContext> C toDebugContext(DebugModeType<?, C> debugMode) {
         if (debugMode.hasSession(uuid)) return debugMode.getDebugContext(uuid);
-        else return null;
+        else {
+            if (isOnline()) Bukkit.getPlayer(uuid).sendMessage(ChatColor.RED + "Cannot bind DebugSession to DebugContext.");
+            throw new RuntimeException("Cannot bind DebugSession to " + debugMode.getNiceName() + "'s DebugContext. Please create a ticket and send your latest.log to https://github.com/NJDaeger/Bug-Reports! Sorry for this issue.");
+        }
     }
 
     /**

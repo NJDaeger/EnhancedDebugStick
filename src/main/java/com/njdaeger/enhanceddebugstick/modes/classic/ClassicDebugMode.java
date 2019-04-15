@@ -49,7 +49,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
         DebugSession session = plugin.getDebugSession(player.getUniqueId());
 
         //We check if this Debug Mode contains the players session, we also check if the player is holding the debug stick
-        if (hasSession(player.getUniqueId()) && session.isHoldingDebugStick() && event.getHand() == EquipmentSlot.HAND) {
+        if (hasSession(player.getUniqueId()) && session.isHoldingDebugStick() && session.isDebugMode(this) && event.getHand() == EquipmentSlot.HAND) {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
             event.setUseItemInHand(Event.Result.DENY);
@@ -62,13 +62,6 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
 
             Block block = event.getClickedBlock();
             ClassicDebugContext context = session.toDebugContext(this);
-
-            //This really should never be ran, in the case that it is though, provide instructions.
-            if (context == null) {
-                player.sendMessage(ChatColor.RED + "Cannot bind DebugSession to ClassicDebugContext.");
-                Bukkit.getLogger().warning("Cannot bind DebugSession to ClassicDebugContext. Please create a ticket and send your latest.log to https://github.com/NJDaeger/Bug-Reports! Sorry for this issue.");
-                return;
-            }
 
             //When the action is a left click on a block
             if (event.getAction() == Action.LEFT_CLICK_BLOCK) {

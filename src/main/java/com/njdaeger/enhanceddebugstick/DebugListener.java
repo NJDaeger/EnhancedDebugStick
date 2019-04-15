@@ -53,7 +53,6 @@ public final class DebugListener implements Listener {
             }
             return;
         }
-        session.getDebugMode().onInteract(event);
     }
 
     @EventHandler
