@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
@@ -33,7 +34,14 @@ public final class DebugListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        if (plugin.getDebugSession(event.getPlayer().getUniqueId()) == null) plugin.addDebugSession(event.getPlayer().getUniqueId());
+        DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
+        if (session == null) plugin.addDebugSession(event.getPlayer().getUniqueId());
+        else session.resume();
+    }
+
+    public void onQuit(PlayerQuitEvent event) {
+        DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
+        if (session != null) session.pause();
     }
 
     @EventHandler

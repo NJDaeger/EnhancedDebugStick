@@ -7,7 +7,6 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.UUID;
 
@@ -80,6 +79,8 @@ public final class DebugSession {
      * @param <C> The type of context the debug mode takes
      * @return The Debug Context of the specified debug mode type, or null if the type specified does not have this
      *         session in it yet.
+     *
+     * @throws RuntimeException if the session could not be bound to a debug mode type.
      */
     public <C extends DebugContext> C toDebugContext(DebugModeType<?, C> debugMode) {
         if (debugMode.hasSession(uuid)) return debugMode.getDebugContext(uuid);
@@ -96,6 +97,20 @@ public final class DebugSession {
      */
     public UUID getSessionId() {
         return uuid;
+    }
+
+    /**
+     * Resumes the previously paused session
+     */
+    public void resume() {
+        debugMode.resumeSession(this);
+    }
+
+    /**
+     * Pauses the currently resumed session
+     */
+    public void pause() {
+        debugMode.pauseSession(this);
     }
 
 }

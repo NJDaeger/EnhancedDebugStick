@@ -115,6 +115,18 @@ public abstract class DebugModeType<T extends DebugModeType<T, C>, C extends Deb
     }
 
     /**
+     * This will be used to cleanup any existing highlighted/selected blocks in the case of a quit event or a mode swap
+     * @param session The session to pause this type for
+     */
+    public abstract void pauseSession(DebugSession session);
+
+    /**
+     * This will be used to re-highlight and reselect any once selected blocks in case the player rejoins the server or switches to this mode
+     * @param session The session to resume
+     */
+    public abstract void resumeSession(DebugSession session);
+
+    /**
      * Fires when a player interacts with something.
      */
     public abstract void onInteract(PlayerInteractEvent event);

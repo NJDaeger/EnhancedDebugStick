@@ -4,7 +4,6 @@ import com.njdaeger.enhanceddebugstick.Configuration;
 import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -36,6 +35,16 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
     @Override
     public ClassicDebugMode getModeType() {
         return DebugModeType.CLASSIC;
+    }
+
+    @Override
+    public void pauseSession(DebugSession session) {
+
+    }
+
+    @Override
+    public void resumeSession(DebugSession session) {
+
     }
 
     @Override
