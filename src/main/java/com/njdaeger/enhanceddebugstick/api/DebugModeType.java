@@ -3,7 +3,7 @@ package com.njdaeger.enhanceddebugstick.api;
 import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import com.njdaeger.enhanceddebugstick.modes.classic.ClassicDebugMode;
-import com.njdaeger.enhanceddebugstick.modes.locked.LockedDebugMode;
+import com.njdaeger.enhanceddebugstick.modes.locked.FreezeDebugMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +22,7 @@ import static com.njdaeger.enhanceddebugstick.api.DebugStickAPI.DEBUG_STICK;
 public abstract class DebugModeType<T extends DebugModeType<T, C>, C extends DebugContext> implements Listener {
 
     public static final ClassicDebugMode CLASSIC = new ClassicDebugMode();
-    public static final LockedDebugMode LOCKED = new LockedDebugMode();
+    public static final FreezeDebugMode FREEZE = new FreezeDebugMode();
 
     protected final EnhancedDebugStick plugin;
     protected final Map<UUID, C> contextTrack;

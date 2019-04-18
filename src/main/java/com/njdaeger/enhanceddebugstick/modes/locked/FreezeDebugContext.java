@@ -14,12 +14,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class LockedDebugContext implements DebugContext {
+public class FreezeDebugContext implements DebugContext {
 
     private final DebugSession session;
     private final Map<Location, BlockData> locked;
 
-    LockedDebugContext(DebugSession session) {
+    FreezeDebugContext(DebugSession session) {
         this.session = session;
         this.locked = new HashMap<>();
     }
@@ -35,10 +35,10 @@ public class LockedDebugContext implements DebugContext {
     }
 
     /**
-     * Locks the specified block for the player, replacing it with a
+     * Freezes the specified block for the player, replacing it with a red wool block and highlighting it if theyre online
      * @param block The block to lock
      */
-    public void lockBlock(Block block) {
+    public void freezeBlock(Block block) {
         locked.put(block.getLocation(), block.getBlockData());
         if (session.isOnline()) {
             BlockHighlighter.lightBlock(block, Bukkit.getPlayer(session.getSessionId()));
@@ -47,10 +47,10 @@ public class LockedDebugContext implements DebugContext {
     }
 
     /**
-     * Unlocks the specified block for the player, putting it  back to its original state.
+     * Unfreezes the specified block for the player, putting it  back to its original state.
      * @param block The block to unlock
      */
-    public void unlockBlock(Block block) {
+    public void unfreezeBlock(Block block) {
         BlockData data = locked.remove(block.getLocation());
         if (session.isOnline()) {
             BlockHighlighter.unLightBlock(block, Bukkit.getPlayer(session.getSessionId()));
@@ -61,7 +61,7 @@ public class LockedDebugContext implements DebugContext {
     /**
      * Unlocks all currently selected blocks.
      */
-    public void unlockAllBlocks() {
+    public void unfreezeAllBlocks() {
         if (session.isOnline()) BlockHighlighter.unLightAllBlocks(Bukkit.getPlayer(session.getSessionId()));
         locked.clear();
     }

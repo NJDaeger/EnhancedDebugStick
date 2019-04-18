@@ -17,7 +17,7 @@ public final class DebugSession {
 
     DebugSession(UUID uuid) {
         this.uuid = uuid;
-        setDebugMode(DebugModeType.LOCKED);
+        setDebugMode(DebugModeType.FREEZE);
     }
 
     /**

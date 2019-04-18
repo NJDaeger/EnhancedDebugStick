@@ -12,20 +12,20 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
-public class LockedDebugMode extends DebugModeType<LockedDebugMode, LockedDebugContext> {
+public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugContext> {
 
-    public LockedDebugMode() {
-        super("Locked", LockedDebugMode.class);
+    public FreezeDebugMode() {
+        super("Freeze", FreezeDebugMode.class);
     }
 
     @Override
     public String getBasePermission() {
-        return "enhanceddebugstick.locked";
+        return "enhanceddebugstick.freeze";
     }
 
     @Override
-    public LockedDebugMode getModeType() {
-        return DebugModeType.LOCKED;
+    public FreezeDebugMode getModeType() {
+        return DebugModeType.FREEZE;
     }
 
     @Override
@@ -39,8 +39,8 @@ public class LockedDebugMode extends DebugModeType<LockedDebugMode, LockedDebugC
     }
 
     @Override
-    public LockedDebugContext createContext(DebugSession session) {
-        return new LockedDebugContext(session);
+    public FreezeDebugContext createContext(DebugSession session) {
+        return new FreezeDebugContext(session);
     }
 
     @Override
@@ -55,22 +55,22 @@ public class LockedDebugMode extends DebugModeType<LockedDebugMode, LockedDebugC
             event.setUseItemInHand(Event.Result.DENY);
 
             if (!player.hasPermission(getBasePermission() + ".use")) {
-                player.sendMessage(ChatColor.RED + "You do not have permission to use the Locked Debug Mode");
+                player.sendMessage(ChatColor.RED + "You do not have permission to use the Freeze Debug Mode");
                 return;
             }
 
             Block block = event.getClickedBlock();
-            LockedDebugContext context = session.toDebugContext(this);
+            FreezeDebugContext context = session.toDebugContext(this);
 
             if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_AIR) {
-                context.unlockAllBlocks();
-                player.sendMessage(ChatColor.GRAY + "Deselected all locked blocks.");
+                context.unfreezeAllBlocks();
+                player.sendMessage(ChatColor.GRAY + "Deselected all frozen blocks.");
                 return;
             }
 
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                if (context.isSelected(block)) context.unlockBlock(block);
-                else context.lockBlock(block);
+                if (context.isSelected(block)) context.unfreezeBlock(block);
+                else context.freezeBlock(block);
             }
 
         }
