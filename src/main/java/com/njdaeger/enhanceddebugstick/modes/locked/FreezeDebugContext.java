@@ -62,16 +62,16 @@ public class FreezeDebugContext implements DebugContext {
      * Unlocks all currently selected blocks.
      */
     public void unfreezeAllBlocks() {
-        if (session.isOnline()) BlockHighlighter.unLightAllBlocks(Bukkit.getPlayer(session.getSessionId()));
+        if (session.isOnline()) unlightFrozen();
         locked.clear();
     }
 
     /**
      * Lights any selected blocks for the player.
      */
-    public void lightSelected() {
+    public void lightFrozen() {
         Player player = Bukkit.getPlayer(session.getSessionId());
-        locked.forEach((location, pair) -> {
+        locked.forEach((location, data) -> {
             BlockHighlighter.lightBlock(location.getBlock(), player);
             location.getBlock().setType(Material.RED_WOOL, false);
         });
@@ -80,9 +80,9 @@ public class FreezeDebugContext implements DebugContext {
     /**
      * Unlights any selected blocks for the player
      */
-    public void unlightSelected() {
+    public void unlightFrozen() {
         Player player = Bukkit.getPlayer(session.getSessionId());
-        BlockHighlighter.unLightAllBlocks(player);
+        BlockHighlighter.removeTask(player);
         locked.forEach((location, data) -> location.getBlock().setBlockData(data));
     }
 

@@ -1,7 +1,6 @@
 package com.njdaeger.enhanceddebugstick.util;
 
 import com.njdaeger.btu.Util;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -156,7 +155,6 @@ public final class BlockHighlighter {
          */
         public void addBlock(Block block) {
             try {
-
                 Object shulker = shulkerConstructor.newInstance(world.invoke(block.getWorld()));
 
                 invisible.invoke(shulker, true);
@@ -174,7 +172,6 @@ public final class BlockHighlighter {
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
-            block.setType(Material.RED_WOOL, false);
         }
 
         /**

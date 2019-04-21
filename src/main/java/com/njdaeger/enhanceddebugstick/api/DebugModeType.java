@@ -14,7 +14,9 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import static com.njdaeger.enhanceddebugstick.api.DebugStickAPI.DEBUG_STICK;
@@ -26,6 +28,7 @@ public abstract class DebugModeType<T extends DebugModeType<T, C>, C extends Deb
 
     protected final EnhancedDebugStick plugin;
     protected final Map<UUID, C> contextTrack;
+    protected final Set<UUID> paused;
     private final String niceName;
     private final Class<T> type;
 
@@ -37,6 +40,7 @@ public abstract class DebugModeType<T extends DebugModeType<T, C>, C extends Deb
     public DebugModeType(String niceName, Class<T> type) {
         this.plugin = EnhancedDebugStick.getPlugin(EnhancedDebugStick.class);
         this.contextTrack = new HashMap<>();
+        this.paused = new HashSet<>();
         this.niceName = niceName;
         this.type = type;
 
@@ -125,6 +129,15 @@ public abstract class DebugModeType<T extends DebugModeType<T, C>, C extends Deb
      * @param session The session to resume
      */
     public abstract void resumeSession(DebugSession session);
+
+    /**
+     * Check whether the given session is paused in this mode
+     * @param session The session to check
+     * @return True if the session is paused in this mode, false otherwise.
+     */
+    public boolean isPaused(DebugSession session) {
+        return paused.contains(session.getSessionId());
+    }
 
     /**
      * Fires when a player interacts with something.

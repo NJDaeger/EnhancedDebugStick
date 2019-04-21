@@ -30,12 +30,14 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
 
     @Override
     public void pauseSession(DebugSession session) {
-        session.toDebugContext(this).unlightSelected();
+        session.toDebugContext(this).unlightFrozen();
+        paused.add(session.getSessionId());
     }
 
     @Override
     public void resumeSession(DebugSession session) {
-        session.toDebugContext(this).lightSelected();
+        session.toDebugContext(this).lightFrozen();
+        paused.add(session.getSessionId());
     }
 
     @Override
@@ -64,7 +66,7 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
 
             if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_AIR) {
                 context.unfreezeAllBlocks();
-                player.sendMessage(ChatColor.GRAY + "Deselected all frozen blocks.");
+                player.sendMessage(ChatColor.GRAY + "Unfroze all frozen blocks.");
                 return;
             }
 

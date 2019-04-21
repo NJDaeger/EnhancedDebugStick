@@ -57,10 +57,6 @@
                             <pattern>com.njdaeger.bcm</pattern>
                             <shadedPattern>com.njdaeger.enhanceddebugstick.libs.bcm</shadedPattern>
                         </relocation>
-                        <relocation>
-                            <pattern>com.njdaeger.butil</pattern>
-                            <shadedPattern>com.njdaeger.enhanceddebugstick.libs.butil</shadedPattern>
-                        </relocation>
                     </relocations>
                 </configuration>
             </plugin>
@@ -99,13 +95,6 @@
         <dependency>
             <groupId>com.njdaeger</groupId>
             <artifactId>BukkitTextUtils</artifactId>
-            <version>0.0.1</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.njdaeger</groupId>
-            <artifactId>BukkitUtilities</artifactId>
             <version>0.0.1</version>
             <scope>compile</scope>
         </dependency>

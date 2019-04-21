@@ -54,8 +54,10 @@ public final class DebugSession {
      */
     public void setDebugMode(DebugModeType type) {
         Validate.notNull(type, "New DebugModeType cannot be null");
+        if (debugMode != null) debugMode.pauseSession(this);
         this.debugMode = type;
-        type.addSession(this);
+        if (!type.hasSession(uuid)) type.addSession(this);
+        else type.resumeSession(this);
     }
 
     /**
@@ -103,14 +105,14 @@ public final class DebugSession {
      * Resumes the previously paused session
      */
     public void resume() {
-        debugMode.resumeSession(this);
+        if (debugMode != null) debugMode.resumeSession(this);
     }
 
     /**
      * Pauses the currently resumed session
      */
     public void pause() {
-        debugMode.pauseSession(this);
+        if (debugMode != null) debugMode.pauseSession(this);
     }
 
 }

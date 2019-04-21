@@ -39,6 +39,7 @@ public final class DebugListener implements Listener {
         else session.resume();
     }
 
+    @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
         if (session != null) session.pause();
