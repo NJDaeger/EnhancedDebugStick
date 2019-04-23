@@ -9,6 +9,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -39,12 +40,12 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
 
     @Override
     public void pauseSession(DebugSession session) {
-
+        paused.add(session.getSessionId());
     }
 
     @Override
     public void resumeSession(DebugSession session) {
-
+        paused.remove(session.getSessionId());
     }
 
     @Override
@@ -53,12 +54,13 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
     }
 
     @Override
+    @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         DebugSession session = plugin.getDebugSession(player.getUniqueId());
 
         //We check if this Debug Mode contains the players session, we also check if the player is holding the debug stick
-        if (hasSession(player.getUniqueId()) && session.isHoldingDebugStick() && session.isDebugMode(this) && event.getHand() == EquipmentSlot.HAND) {
+        if (hasSession(player.getUniqueId()) && !isPaused(session) && session.isHoldingDebugStick() && session.isDebugMode(this) && event.getHand() == EquipmentSlot.HAND) {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
             event.setUseItemInHand(Event.Result.DENY);
@@ -104,15 +106,16 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
     }
 
     @Override
+    @EventHandler
     public void onMove(PlayerMoveEvent event) {
 
         //
         //Check if the configuration allows data viewing
         //
-        if (config.displayDataOnLook()) {
-            Player player = event.getPlayer();
+        Player player = event.getPlayer();
+        if (hasSession(player.getUniqueId()) && config.displayDataOnLook()) {
             ClassicDebugContext context = getDebugContext(player.getUniqueId());
-            if (context.getDebugSession().isHoldingDebugStick() && player.hasPermission(getBasePermission() + ".use")) {
+            if (context.getDebugSession().isHoldingDebugStick() && !isPaused(context.getDebugSession()) && player.hasPermission(getBasePermission() + ".use")) {
                 RayTraceResult hit = player.rayTraceBlocks(config.displayDataDistance());
                 if (hit != null && hit.getHitBlock() != null) {
                     context.sendPropertiesOf(hit.getHitBlock());

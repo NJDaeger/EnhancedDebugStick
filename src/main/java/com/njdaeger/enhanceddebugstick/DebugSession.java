@@ -1,17 +1,22 @@
 package com.njdaeger.enhanceddebugstick;
 
+import com.njdaeger.btu.ActionBar;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.DebugStickAPI;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
+import static org.bukkit.ChatColor.*;
+
 public final class DebugSession {
 
+    private int taskNumber;
+    private boolean selecting;
+    private long sneakStart;
     private DebugModeType debugMode;
     private final UUID uuid;
 
@@ -87,7 +92,7 @@ public final class DebugSession {
     public <C extends DebugContext> C toDebugContext(DebugModeType<?, C> debugMode) {
         if (debugMode.hasSession(uuid)) return debugMode.getDebugContext(uuid);
         else {
-            if (isOnline()) Bukkit.getPlayer(uuid).sendMessage(ChatColor.RED + "Cannot bind DebugSession to DebugContext.");
+            if (isOnline()) Bukkit.getPlayer(uuid).sendMessage(RED + "Cannot bind DebugSession to DebugContext.");
             throw new RuntimeException("Cannot bind DebugSession to " + debugMode.getNiceName() + "'s DebugContext. Please create a ticket and send your latest.log to https://github.com/NJDaeger/Bug-Reports! Sorry for this issue.");
         }
     }
@@ -113,6 +118,42 @@ public final class DebugSession {
      */
     public void pause() {
         if (debugMode != null) debugMode.pauseSession(this);
+    }
+
+    boolean isSelectingMode() {
+        return selecting;
+    }
+
+    void setSelectingMode(boolean enabled) {
+        this.selecting = enabled;
+        if (enabled) {
+            this.taskNumber = Bukkit.getScheduler().scheduleSyncRepeatingTask(EnhancedDebugStick.getPlugin(EnhancedDebugStick.class), getSelectingTask(), 0, 20);
+        } else {
+            Bukkit.getScheduler().cancelTask(taskNumber);
+            taskNumber = 0;
+            ActionBar.of("").sendTo(Bukkit.getPlayer(uuid));
+        }
+    }
+
+    long getSelectingStart() {
+        return sneakStart;
+    }
+
+    void setSelectingStart(long start) {
+        this.sneakStart = start;
+    }
+
+    Runnable getSelectingTask() {
+        return () -> {
+                Player player = Bukkit.getPlayer(uuid);
+                StringBuilder builder = new StringBuilder();
+                DebugModeType.getDebugModes().forEach(type -> {
+                    if (isDebugMode(type)) builder.append(DARK_GREEN).append(BOLD).append(UNDERLINE).append(type.getNiceName()).append(RESET);
+                    else builder.append(DARK_GREEN).append(type.getNiceName()).append(RESET);
+                    builder.append("    ");
+                });
+                ActionBar.of(builder.toString().trim()).sendTo(player);
+            };
     }
 
 }

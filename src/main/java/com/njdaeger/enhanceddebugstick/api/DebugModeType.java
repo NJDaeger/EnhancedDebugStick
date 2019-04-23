@@ -13,8 +13,10 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -23,6 +25,7 @@ import static com.njdaeger.enhanceddebugstick.api.DebugStickAPI.DEBUG_STICK;
 
 public abstract class DebugModeType<T extends DebugModeType<T, C>, C extends DebugContext> implements Listener {
 
+    private static final List<DebugModeType<?, ?>> modeTypes = new ArrayList<>();
     public static final ClassicDebugMode CLASSIC = new ClassicDebugMode();
     public static final FreezeDebugMode FREEZE = new FreezeDebugMode();
 
@@ -45,6 +48,15 @@ public abstract class DebugModeType<T extends DebugModeType<T, C>, C extends Deb
         this.type = type;
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        modeTypes.add(this);
+    }
+
+    /**
+     * Get a list of all the debug modes
+     * @return All the debug modes which exist.
+     */
+    public static List<DebugModeType<?, ?>> getDebugModes() {
+        return modeTypes;
     }
 
     /**

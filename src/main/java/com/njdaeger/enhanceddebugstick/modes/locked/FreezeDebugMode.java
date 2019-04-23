@@ -3,6 +3,7 @@ package com.njdaeger.enhanceddebugstick.modes.locked;
 import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -37,7 +38,7 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
     @Override
     public void resumeSession(DebugSession session) {
         session.toDebugContext(this).lightFrozen();
-        paused.add(session.getSessionId());
+        paused.remove(session.getSessionId());
     }
 
     @Override
@@ -51,7 +52,7 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
         Player player = event.getPlayer();
         DebugSession session = plugin.getDebugSession(player.getUniqueId());
 
-        if (hasSession(player.getUniqueId()) && session.isHoldingDebugStick() && session.isDebugMode(this) && event.getHand() == EquipmentSlot.HAND) {
+        if (hasSession(player.getUniqueId()) && !isPaused(session) && session.isHoldingDebugStick() && session.isDebugMode(this) && event.getHand() == EquipmentSlot.HAND) {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
             event.setUseItemInHand(Event.Result.DENY);
