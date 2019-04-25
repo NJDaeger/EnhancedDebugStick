@@ -1,7 +1,6 @@
 package com.njdaeger.enhanceddebugstick;
 
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
-import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -9,29 +8,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.bukkit.event.server.ServerLoadEvent;
 
 public final class DebugListener implements Listener {
 
     private final EnhancedDebugStick plugin;
-    private final Configuration config;
 
     DebugListener(EnhancedDebugStick plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         this.plugin = plugin;
-        this.config = plugin.getDebugConfig();
-    }
-
-    @EventHandler
-    public void onReload(ServerLoadEvent event) {
-        if (event.getType() == ServerLoadEvent.LoadType.RELOAD) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                plugin.addDebugSession(player.getUniqueId());
-            }
-        }
     }
 
     @EventHandler
@@ -57,6 +43,9 @@ public final class DebugListener implements Listener {
             event.setUseItemInHand(Event.Result.DENY);
             int size = DebugModeType.getDebugModes().size();
             int index = DebugModeType.getDebugModes().indexOf(session.getDebugMode());
+
+            if (ConfigKey.MS_MODE_CHANGE) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+
             switch (event.getAction()) {
                 case LEFT_CLICK_AIR:
                 case LEFT_CLICK_BLOCK:
@@ -81,9 +70,9 @@ public final class DebugListener implements Listener {
         if (session.isHoldingDebugStick() && !session.isSelectingMode() && event.isSneaking()) {
             if (session.getSelectingStart() == 0) session.setSelectingStart(System.currentTimeMillis());
             else {
-                if ((System.currentTimeMillis() - session.getSelectingStart()) > 500) session.setSelectingStart(0);
+                if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.MS_SNEAK_TIMEOUT) session.setSelectingStart(0);
                 else {
-                    event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 10);
+                    if (ConfigKey.MS_START_STOP_SOUND) event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 10);
                     session.setSelectingStart(0);
                     session.setSelectingMode(true);
                     session.pause();
@@ -93,9 +82,9 @@ public final class DebugListener implements Listener {
         if (session.isHoldingDebugStick() && !event.isSneaking() && session.isSelectingMode()) {
             if (session.getSelectingStart() == 0) session.setSelectingStart(System.currentTimeMillis());
             else {
-                if ((System.currentTimeMillis() - session.getSelectingStart()) > 500) session.setSelectingStart(0);
+                if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.MS_SNEAK_TIMEOUT) session.setSelectingStart(0);
                 else {
-                    event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+                    if (ConfigKey.MS_START_STOP_SOUND) event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
                     session.setSelectingStart(0);
                     session.setSelectingMode(false);
                     session.resume();

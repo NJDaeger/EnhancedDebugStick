@@ -1,6 +1,6 @@
 package com.njdaeger.enhanceddebugstick.api;
 
-import com.njdaeger.enhanceddebugstick.Configuration;
+import com.njdaeger.enhanceddebugstick.ConfigurationFile;
 import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.DebugStick;
 import org.bukkit.entity.Player;
@@ -57,7 +57,7 @@ public interface DebugStickAPI {
      * Gets the EnhancedDebugStick configuration.
      * @return The EnhancedDebugStickConfiguration.
      */
-    Configuration getDebugConfig();
+    ConfigurationFile getDebugConfig();
 
     /**
      * Check whether a player has an enhanced debug stick or not in their inventory

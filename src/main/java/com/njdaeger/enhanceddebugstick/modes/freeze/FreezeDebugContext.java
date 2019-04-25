@@ -1,5 +1,6 @@
-package com.njdaeger.enhanceddebugstick.modes.locked;
+package com.njdaeger.enhanceddebugstick.modes.freeze;
 
+import com.njdaeger.enhanceddebugstick.ConfigKey;
 import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
 import com.njdaeger.enhanceddebugstick.util.BlockHighlighter;
@@ -41,7 +42,7 @@ public class FreezeDebugContext implements DebugContext {
     public void freezeBlock(Block block) {
         locked.put(block.getLocation(), block.getBlockData());
         if (session.isOnline()) {
-            BlockHighlighter.lightBlock(block, Bukkit.getPlayer(session.getSessionId()));
+            if (ConfigKey.FDM_OUTLINE) BlockHighlighter.lightBlock(block, Bukkit.getPlayer(session.getSessionId()));
             block.setType(Material.RED_WOOL, false);
         }
     }
@@ -53,7 +54,7 @@ public class FreezeDebugContext implements DebugContext {
     public void unfreezeBlock(Block block) {
         BlockData data = locked.remove(block.getLocation());
         if (session.isOnline()) {
-            BlockHighlighter.unLightBlock(block, Bukkit.getPlayer(session.getSessionId()));
+            if (ConfigKey.FDM_OUTLINE) BlockHighlighter.unLightBlock(block, Bukkit.getPlayer(session.getSessionId()));
             block.setBlockData(data, false);
         }
     }
@@ -72,7 +73,7 @@ public class FreezeDebugContext implements DebugContext {
     public void lightFrozen() {
         Player player = Bukkit.getPlayer(session.getSessionId());
         locked.forEach((location, data) -> {
-            BlockHighlighter.lightBlock(location.getBlock(), player);
+            if (ConfigKey.FDM_OUTLINE) BlockHighlighter.lightBlock(location.getBlock(), player);
             location.getBlock().setType(Material.RED_WOOL, false);
         });
     }
@@ -82,7 +83,7 @@ public class FreezeDebugContext implements DebugContext {
      */
     public void unlightFrozen() {
         Player player = Bukkit.getPlayer(session.getSessionId());
-        BlockHighlighter.removeTask(player);
+        if (ConfigKey.FDM_OUTLINE) BlockHighlighter.removeTask(player);
         locked.forEach((location, data) -> location.getBlock().setBlockData(data));
     }
 

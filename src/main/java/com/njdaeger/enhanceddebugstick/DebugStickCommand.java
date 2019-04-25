@@ -25,7 +25,7 @@ final class DebugStickCommand {
 
     private void debugStick(CommandContext context) {
         Player player = context.asPlayer();
-        context.pluginMessage(ChatColor.GRAY + " You now have the Debug Stick");
+        context.pluginMessage(ChatColor.GRAY + "You now have the Debug Stick");
         player.getInventory().addItem(DEBUG_STICK);
 
     }

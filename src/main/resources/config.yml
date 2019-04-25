@@ -1,31 +1,61 @@
-# When looking at a block within a specified distance,
-# should the block properties be displayed to the player?
-display-data-on-look: true
-
-# If display-data-on-look is enabled, this will limit how far away block data can be seen.
-# If this number is set to 0, the data will not show (equivalent to setting the
-# display-data-on-look to false). If it is set to -1, the limit will default to 20 blocks.
-display-data-distance: 7
-
-# Enable this if you want CoreProtect to log the edited block.
-# If CoreProtect is not installed, this will do nothing.
-coreprotect-logging: false
-
 # Enable this if you want EnhancedDebugStick to send basic information to bstats.org.
 # Data is viewable here: https://bstats.org/plugin/bukkit/EnhancedDebugStick
 bstats-integration: true
 
-# Sound settings
-sound:
+# When the debug stick is selected or deselected in the players hotbar, a light sound will be
+# played to the player indicating the debug stick is being held or not.
+sound-on-select: true
 
-  # When the debug stick is selected or deselected in the players hotbar, a light sound will be
-  # played to the player indicating the debug stick is being held or not.
-  on-select: true
+# Settings for when a player wants to change between debug modes.
+mode-shift:
+
+  # When enabling and disabling the mode selector, should a sound be played?
+  start-stop-sound: true
+
+  # When going to the next mode, should a sound be played?
+  mode-change-sound: true
+
+  # When shifting between modes, how quickly (in milliseconds... 1000 milliseconds = 1 second) must a player double sneak
+  # in order for it to be detected as them wanting to change debug modes? Typically anything lower than 500ms is unusable.
+  double-sneak-timeout: 750
+
+# Settings for the classic debug mode. This mode acts like the standard debug stick
+classic-debug-mode:
+
+  # When looking at a block within a specified distance,
+  # should the block properties be displayed to the player?
+  display-data-on-look: true
+
+  # If display-data-on-look is enabled, this will limit how far away block data can be seen.
+  # If this number is set to 0, the data will not show (equivalent to setting the
+  # display-data-on-look to false). If it is set to -1, the limit will default to 20 blocks.
+  display-data-distance: 7
+
+  # Enable this if you want CoreProtect to log the edited block.
+  # If CoreProtect is not installed, this will do nothing.
+  coreprotect-logging: false
 
   # When the next property is selected (left click) a click will be played to the player
   # indicating the next property has been chosen.
-  on-next-property: true
+  next-property-sound: true
 
   # When the next value is selected (right click) a click will be played to the player
   # indicating the next value for the selected property has been chosen.
-  on-next-value: true
+  next-value-sound: true
+
+# Settings for the frozen debug mode. This mode allows the locking of blocks so their properties wont update when a
+# block is placed nearby
+frozen-debug-mode:
+
+  # Outlines the selected block to furthermore express that the block is frozen. This outline will only be shown to
+  # whoever is locking the specific block
+  outline-selected-block: true
+
+  # When a block is frozen, play a sound to indicate it being frozen
+  freeze-sound: true
+
+  # When a block is unfrozen, play a sound to indicate it being unfrozen.
+  unfreeze-sound: true
+
+  # When all frozen blocks are unfrozen at the same time, play a sound to indicate it.
+  mass-unfreeze-sound: true

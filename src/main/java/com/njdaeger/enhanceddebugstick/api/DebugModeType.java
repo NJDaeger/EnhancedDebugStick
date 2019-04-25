@@ -1,9 +1,10 @@
 package com.njdaeger.enhanceddebugstick.api;
 
+import com.njdaeger.enhanceddebugstick.ConfigKey;
 import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import com.njdaeger.enhanceddebugstick.modes.classic.ClassicDebugMode;
-import com.njdaeger.enhanceddebugstick.modes.locked.FreezeDebugMode;
+import com.njdaeger.enhanceddebugstick.modes.freeze.FreezeDebugMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -166,7 +167,7 @@ public abstract class DebugModeType<T extends DebugModeType<T, C>, C extends Deb
      */
     @EventHandler
     public void onHeld(PlayerItemHeldEvent event) {
-        if (plugin.getDebugConfig().soundOnSelect()) {
+        if (ConfigKey.SOUND_ON_SELECT) {
             Player player = event.getPlayer();
             ItemStack oldSlot = player.getInventory().getItem(event.getPreviousSlot());
             ItemStack newSlot = player.getInventory().getItem(event.getNewSlot());

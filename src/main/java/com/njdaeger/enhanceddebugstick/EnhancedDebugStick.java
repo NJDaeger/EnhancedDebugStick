@@ -9,6 +9,7 @@ import com.njdaeger.enhanceddebugstick.api.Property;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,7 +21,7 @@ import java.util.UUID;
 
 public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAPI {
 
-    private Configuration configuration;
+    private ConfigurationFile configuration;
     private CoreProtectAPI coreProtectAPI;
     private final CommandStore commandStore = new CommandStore(this);
     private final Map<UUID, DebugSession> debugSessions = new HashMap<>();
@@ -29,24 +30,33 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
     public void onEnable() {
         Property.registerProperties();
         if (!new File(getDataFolder() + File.separator + "config.yml").exists()) saveResource("config.yml", false);
-        this.configuration = new Configuration(this);
+        this.configuration = new ConfigurationFile(this);
         new DebugStickCommand(this);
         new DebugListener(this);
 
-        if (configuration.coreprotectLogging()) {
+        if (ConfigKey.CDM_LOGGING) {
             coreProtectAPI = initializeCoreprotect();
             if (coreProtectAPI == null) getLogger().warning("CoreProtectAPI was unable to be hooked. (Is CoreProtect installed?)");
             else getLogger().info("CoreProtectAPI was successfully hooked.");
         }
-        if (configuration.bstatsIntegration()) {
+        if (ConfigKey.BSTATS_INTEGRATION) {
             new Metrics(this);
         }
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            addDebugSession(player.getUniqueId());
+        }
+
     }
 
     @Override
     public void onDisable() {
         this.configuration = null;
         this.coreProtectAPI = null;
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            getDebugSession(player.getUniqueId()).pause();
+        }
     }
 
     private CoreProtectAPI initializeCoreprotect() {
@@ -98,7 +108,7 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
     }
 
     @Override
-    public Configuration getDebugConfig() {
+    public ConfigurationFile getDebugConfig() {
         return configuration;
     }
 }

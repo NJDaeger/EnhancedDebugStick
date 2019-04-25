@@ -1,5 +1,6 @@
-package com.njdaeger.enhanceddebugstick.modes.locked;
+package com.njdaeger.enhanceddebugstick.modes.freeze;
 
+import com.njdaeger.enhanceddebugstick.ConfigKey;
 import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import org.bukkit.ChatColor;
@@ -66,14 +67,21 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
             FreezeDebugContext context = session.toDebugContext(this);
 
             if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_AIR) {
+                if (ConfigKey.FDM_UNFREEZE_ALL) player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_RETURN, 1, 1);
                 context.unfreezeAllBlocks();
                 player.sendMessage(ChatColor.GRAY + "Unfroze all frozen blocks.");
                 return;
             }
 
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                if (context.isSelected(block)) context.unfreezeBlock(block);
-                else context.freezeBlock(block);
+                if (context.isSelected(block)) {
+                    if (ConfigKey.FDM_UNFREEZE) player.playSound(player.getLocation(), Sound.ITEM_AXE_STRIP, 1, 1);
+                    context.unfreezeBlock(block);
+                }
+                else {
+                    if (ConfigKey.FDM_FREEZE) player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1, 1);
+                    context.freezeBlock(block);
+                }
             }
 
         }

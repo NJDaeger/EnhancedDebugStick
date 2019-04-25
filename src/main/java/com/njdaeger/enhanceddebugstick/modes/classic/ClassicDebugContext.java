@@ -1,6 +1,7 @@
 package com.njdaeger.enhanceddebugstick.modes.classic;
 
 import com.njdaeger.btu.ActionBar;
+import com.njdaeger.enhanceddebugstick.ConfigKey;
 import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
@@ -146,7 +147,7 @@ public final class ClassicDebugContext implements DebugContext {
 
         BlockData newData = getCurrentProperty(block).nextBlockData(block);//This wont be null.
 
-        if (plugin.getDebugConfig().coreprotectLogging()) {
+        if (ConfigKey.CDM_LOGGING) {
             CoreProtectAPI api = plugin.getCoreProtectAPI();
             if (api != null) {
                 api.logRemoval(Bukkit.getPlayer(uuid).getName(), block.getLocation(), block.getType(), block.getBlockData());

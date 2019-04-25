@@ -1,6 +1,6 @@
 package com.njdaeger.enhanceddebugstick.modes.classic;
 
-import com.njdaeger.enhanceddebugstick.Configuration;
+import com.njdaeger.enhanceddebugstick.ConfigKey;
 import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
@@ -18,14 +18,11 @@ import org.bukkit.util.RayTraceResult;
 
 public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDebugContext> {
 
-    private final Configuration config;
-
     /**
      * The Classic Debug Mode
      */
     public ClassicDebugMode() {
         super("Classic", ClassicDebugMode.class);
-        this.config = plugin.getDebugConfig();
     }
 
     @Override
@@ -82,7 +79,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
                     return;
                 }
 
-                if (config.soundOnNextProperty()) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+                if (ConfigKey.CDM_PROPERTY) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                 context.applyNextPropertyFor(block);
                 context.sendPropertiesOf(block);
                 return;
@@ -98,7 +95,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
                     return;
                 }
 
-                if (config.soundOnNextValue()) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+                if (ConfigKey.CDM_VALUE) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                 context.applyNextValueFor(block);
                 context.sendPropertiesOf(block);
             }
@@ -113,10 +110,10 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
         //Check if the configuration allows data viewing
         //
         Player player = event.getPlayer();
-        if (hasSession(player.getUniqueId()) && config.displayDataOnLook()) {
+        if (hasSession(player.getUniqueId()) && ConfigKey.CDM_DISPLAY_ON_LOOK) {
             ClassicDebugContext context = getDebugContext(player.getUniqueId());
             if (context.getDebugSession().isHoldingDebugStick() && !isPaused(context.getDebugSession()) && player.hasPermission(getBasePermission() + ".use")) {
-                RayTraceResult hit = player.rayTraceBlocks(config.displayDataDistance());
+                RayTraceResult hit = player.rayTraceBlocks(ConfigKey.CDM_DISPLAY_DISTANCE);
                 if (hit != null && hit.getHitBlock() != null) {
                     context.sendPropertiesOf(hit.getHitBlock());
                 } else context.sendPropertiesOf(null);
