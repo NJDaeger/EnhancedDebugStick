@@ -30,7 +30,13 @@ public final class DebugListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
-        if (session != null) session.pause();
+        if (session != null) {
+            session.pause();
+            if (session.isSelectingMode()) {
+                session.setSelectingStart(0);
+                session.setSelectingMode(false);
+            }
+        }
     }
 
     @EventHandler
