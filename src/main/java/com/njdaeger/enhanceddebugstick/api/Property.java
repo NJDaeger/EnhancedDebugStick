@@ -22,7 +22,7 @@ import java.util.function.Function;
  * @param <D> BlockData type
  * @param <V> Value type
  */
-@SuppressWarnings({"unused", "WeakerAccess"})
+@SuppressWarnings({"unused"})
 public final class Property<D extends BlockData, V> implements IProperty<D, V> {
 
     private static boolean registered;
