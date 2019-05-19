@@ -4,6 +4,7 @@ import com.njdaeger.enhanceddebugstick.ConfigKey;
 import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import com.njdaeger.enhanceddebugstick.modes.classic.ClassicDebugMode;
+import com.njdaeger.enhanceddebugstick.modes.copy.CopyDebugMode;
 import com.njdaeger.enhanceddebugstick.modes.freeze.FreezeDebugMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -29,6 +30,7 @@ public abstract class DebugModeType<T extends DebugModeType<T, C>, C extends Deb
     private static final List<DebugModeType<?, ?>> modeTypes = new ArrayList<>();
     public static final ClassicDebugMode CLASSIC = new ClassicDebugMode();
     public static final FreezeDebugMode FREEZE = new FreezeDebugMode();
+    public static final CopyDebugMode COPY = new CopyDebugMode();
 
     protected final EnhancedDebugStick plugin;
     protected final Map<UUID, C> contextTrack;

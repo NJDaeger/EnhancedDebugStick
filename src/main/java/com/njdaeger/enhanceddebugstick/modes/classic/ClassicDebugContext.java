@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.njdaeger.enhanceddebugstick.Util.format;
 import static com.njdaeger.enhanceddebugstick.api.IProperty.getProperties;
 import static com.njdaeger.enhanceddebugstick.api.IProperty.hasProperties;
 import static org.bukkit.ChatColor.*;
@@ -170,24 +171,16 @@ public final class ClassicDebugContext implements DebugContext {
             for (IProperty<?, ?> property : getProperties(block)) {
                 if (getCurrentProperty(block) == property) {
                     builder.append(DARK_GREEN).append(BOLD).append(UNDERLINE).append(property.getNiceName()).append(": ");
-                    builder.append(GRAY).append(BOLD).append(UNDERLINE).append(format(property.getNiceCurrentValue(block))).append(RESET).append("    ");
+                    builder.append(GRAY).append(BOLD).append(UNDERLINE).append(format(property.getNiceCurrentValue(block)));
+                    builder.append(RESET).append("    ");
                 } else {
                     builder.append(DARK_GREEN).append(property.getNiceName()).append(": ");
-                    builder.append(GRAY).append(format(property.getNiceCurrentValue(block))).append("    ");
+                    builder.append(GRAY).append(format(property.getNiceCurrentValue(block)));
+                    builder.append(RESET).append("    ");
                 }
             }
         }
         ActionBar.of(builder.toString().trim()).sendTo(Bukkit.getPlayer(uuid));
-    }
-
-    private static String format(String string) {
-        String[] split = string.split("_");
-        StringBuilder result = new StringBuilder();
-        for (String str : split) {
-            result.append(Character.toUpperCase(str.charAt(0))).append(str.substring(1));
-            result.append(" ");
-        }
-        return result.toString().trim();
     }
 
 }

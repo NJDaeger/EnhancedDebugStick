@@ -15,10 +15,12 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
  * Implementing class of the IProperty class
+ *
  * @param <D> BlockData type
  * @param <V> Value type
  */
@@ -120,18 +122,20 @@ public final class Property<D extends BlockData, V> implements IProperty<D, V> {
         }
     }
 
+    private final BiFunction<D, V, D> set;
     private final Function<D, V> current;
     private final Function<D, D> next;
     private final Class<D> dataType;
     private final String niceName;
     private final int ordinal;
 
-    Property(String niceName, Class<D> dataType, Function<D, D> next, Function<D, V> current) {
+    Property(String niceName, Class<D> dataType, Function<D, D> next, Function<D, V> current, BiFunction<D, V, D> set) {
         this.ordinal = currentOrdinal++;
         this.niceName = niceName;
         this.dataType = dataType;
         this.current = current;
         this.next = next;
+        this.set = set;
     }
 
     @Override
@@ -155,42 +159,79 @@ public final class Property<D extends BlockData, V> implements IProperty<D, V> {
     }
 
     @Override
-    public D fromBlockData(Block block) {
-        return checkBlockData(block.getBlockData()) ? (D) block.getBlockData() : null;
+    public D mergeBlockData(BlockData original, BlockData data) {
+        if (!isApplicableTo(original) || !isApplicableTo(data)) return null;
+        return set.apply((D) data, getCurrentValue(original));
     }
 
     @Override
-    public D nextBlockData(Block block) {
-        return checkBlockData(block.getBlockData()) ? next.apply((D) block.getBlockData()) : null;
+    public D mergeBlockData(BlockData original, Material material) {
+        return mergeBlockData(original, material.createBlockData());
+    }
+
+    @Override
+    public D mergeBlockData(BlockData original, Block block) {
+        return mergeBlockData(original, block.getBlockData());
+    }
+
+    @Override
+    public String getNiceCurrentValue(BlockData data) {
+        if (!isApplicableTo(data)) throw new RuntimeException("Property \"" + getNiceName() + "\" is not applicable for block " + data.getMaterial().name());
+        String property = niceName.replace(" ", "_").toLowerCase();
+        String split = data.getAsString().split(property + "=")[1];
+        return split.substring(0, !split.contains(",") ? split.length() - 1 : split.indexOf(","));
     }
 
     @Override
     public String getNiceCurrentValue(Block block) {
         if (!isApplicableTo(block))
             throw new RuntimeException("Property \"" + getNiceName() + "\" is not applicable for block " + block.getType().name());
-        BlockData data = fromBlockData(block);
-        if (data == null) return "";
-        String property = niceName.replace(" ", "_").toLowerCase();
-        String split = data.getAsString().split(property + "=")[1];
-        return split.substring(0, !split.contains(",") ? split.length() - 1 : split.indexOf(","));
+        return getNiceCurrentValue(currentBlockData(block));
     }
 
     @Override
-    public String getNiceNextValue(Block block) {
-        if (!isApplicableTo(block))
-            throw new RuntimeException("Property \"" + getNiceName() + "\" is not applicable for block " + block.getType().name());
-        BlockData data = nextBlockData(block);
-        if (data == null) return "";
-        String property = niceName.replace(" ", "_").toLowerCase();
-        String split = data.getAsString().split(property + "=")[1];
-        return split.substring(0, !split.contains(",") ? split.length() - 1 : split.indexOf(","));
+    public V getCurrentValue(BlockData data) {
+        if (!isApplicableTo(data))
+            throw new RuntimeException("Property \"" + getNiceName() + "\" is not applicable for block " + data.getMaterial().name());
+        return current.apply(currentBlockData(data));
     }
 
     @Override
     public V getCurrentValue(Block block) {
         if (!isApplicableTo(block))
             throw new RuntimeException("Property \"" + getNiceName() + "\" is not applicable for block " + block.getType().name());
-        return current.apply(fromBlockData(block));
+        return current.apply(currentBlockData(block));
+    }
+
+    @Override
+    public D currentBlockData(BlockData data) {
+        return checkBlockData(data) ? (D) data : null;
+    }
+
+    @Override
+    public D currentBlockData(Block block) {
+        return currentBlockData(block.getBlockData());
+    }
+
+    @Override
+    public String getNiceNextValue(BlockData data) {
+        if (!isApplicableTo(data))
+            throw new RuntimeException("Property \"" + getNiceName() + "\" is not applicable for block " + data.getMaterial().name());
+        return getNiceCurrentValue(nextBlockData(data));
+    }
+
+    @Override
+    public String getNiceNextValue(Block block) {
+        if (!isApplicableTo(block))
+            throw new RuntimeException("Property \"" + getNiceName() + "\" is not applicable for block " + block.getType().name());
+        return getNiceCurrentValue(nextBlockData(block));
+    }
+
+    @Override
+    public V getNextValue(BlockData data) {
+        if (!isApplicableTo(data))
+            throw new RuntimeException("Property \"" + getNiceName() + "\" is not applicable for block " + data.getMaterial().name());
+        return current.apply(nextBlockData(data));
     }
 
     @Override
@@ -201,8 +242,18 @@ public final class Property<D extends BlockData, V> implements IProperty<D, V> {
     }
 
     @Override
-    public boolean isApplicableTo(Block block) {
-        return isApplicableTo(block.getType());
+    public D nextBlockData(BlockData data) {
+        return checkBlockData(data) ? next.apply((D) data) : null;
+    }
+
+    @Override
+    public D nextBlockData(Block block) {
+        return nextBlockData(block.getBlockData());
+    }
+
+    @Override
+    public boolean isApplicableTo(BlockData data) {
+        return isApplicableTo(data.getMaterial());
     }
 
     @Override
@@ -210,6 +261,11 @@ public final class Property<D extends BlockData, V> implements IProperty<D, V> {
         if (hasProperties(material)) {
             return getProperties(material).contains(this);
         } else return false;
+    }
+
+    @Override
+    public boolean isApplicableTo(Block block) {
+        return isApplicableTo(block.getType());
     }
 
     static IProperty<?, ?>[] values() {
@@ -224,12 +280,20 @@ public final class Property<D extends BlockData, V> implements IProperty<D, V> {
         return PROPERTIES.containsKey(material) && !PROPERTIES.get(material).isEmpty();
     }
 
+    static boolean hasProperties(BlockData data) {
+        return hasProperties(data.getMaterial());
+    }
+
     static List<IProperty<?, ?>> getProperties(Block block) {
         return getProperties(block.getType());
     }
 
     static List<IProperty<?, ?>> getProperties(Material material) {
         return !hasProperties(material) ? new ArrayList<>() : PROPERTIES.get(material);
+    }
+
+    static List<IProperty<?, ?>> getProperties(BlockData data) {
+        return getProperties(data.getMaterial());
     }
 
     static Map<Material, List<IProperty<?, ?>>> getMaterialProperties() {
