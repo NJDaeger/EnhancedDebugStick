@@ -1,6 +1,5 @@
 package com.njdaeger.enhanceddebugstick.api;
 
-import net.minecraft.server.v1_13_R2.BlockDataAbstract;
 import org.bukkit.Axis;
 import org.bukkit.Instrument;
 import org.bukkit.Material;
@@ -59,7 +58,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.njdaeger.enhanceddebugstick.api.Property.nextEnumOption;
-import static com.njdaeger.enhanceddebugstick.api.Property.registerProperties;
 
 /**
  * Represents a property

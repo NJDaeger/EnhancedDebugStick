@@ -1,5 +1,7 @@
 package com.njdaeger.enhanceddebugstick;
 
+import java.util.function.Predicate;
+
 public final class ConfigKey<T> {
 
     /**
@@ -21,7 +23,7 @@ public final class ConfigKey<T> {
     /**
      * How long to wait for a player to double sneak before the timeout is reached.
      */
-    public static final long MS_SNEAK_TIMEOUT = get("mode-shift.double-sneak-timeout", 750L);
+    public static final long MS_SNEAK_TIMEOUT = get("mode-shift.double-sneak-timeout", 750L, t -> t >= 0);
     /**
      * Whether to display the block data when a player looks at the block
      */
@@ -29,7 +31,7 @@ public final class ConfigKey<T> {
     /**
      * How far away to display the data of the block if display on look is enabled.
      */
-    public static final int CDM_DISPLAY_DISTANCE = get("classic-debug-mode.display-data-distance", 10);
+    public static final int CDM_DISPLAY_DISTANCE = get("classic-debug-mode.display-data-distance", 10, d -> d >= 0);
     /**
      * Whether to log all changed blocks with coreprotect
      */
@@ -59,18 +61,44 @@ public final class ConfigKey<T> {
      */
     public static final boolean FDM_UNFREEZE_ALL = get("frozen-debug-mode.mass-unfreeze-sound", true);
 
+    public static final boolean COPY_DISPLAY_ON_LOOK = get("copy-debug-mode.display-data-on-look", true);
+
+    public static final int COPY_DISPLAY_DISTANCE  = get("copy-debug-mode.display-data-distance", 10, d -> d >= 0);
+
+    public static final boolean COPY_DISPLAY_ALL = get("copy-debug-mode.display-all-properties", true);
+
+    public static final boolean COPY_LOGGING = get("copy-debug-mode.coreprotect-logging", false);
+
+    public static final boolean COPY_COPY_SOUND = get("copy-debug-mode.copy-sound", true);
+
+    public static final boolean COPY_PASTE_SOUND = get("copy-debug-mode.paste-sound", true);
+
+    public static final boolean COPY_CLEAR_SOUND = get("copy-debug-mode.clear-sound", true);
+
     private final T current;
 
     private ConfigKey(String key, T defVal) {
-        ConfigurationFile file = EnhancedDebugStick.getPlugin(EnhancedDebugStick.class).getDebugConfig();
+        ConfigurationFile file = EnhancedDebugStick.getInstance().getDebugConfig();
 
         file.addEntry(key, defVal);
 
         this.current = (T) file.getValueAs(key, defVal.getClass());
     }
 
+    private ConfigKey(String key, T defVal, Predicate<T> restrict) {
+        ConfigurationFile file = EnhancedDebugStick.getInstance().getDebugConfig();
+        file.addEntry(key, defVal);
+
+        T saved = (T) file.getValueAs(key, defVal.getClass());
+        this.current = restrict.test(saved) ? saved : defVal;
+    }
+
     private T get() {
         return current;
+    }
+
+    public static <T> T get(String key, T defVal, Predicate<T> restrict) {
+        return new ConfigKey<>(key, defVal, restrict).get();
     }
 
     public static <T> T get(String key, T defVal) {

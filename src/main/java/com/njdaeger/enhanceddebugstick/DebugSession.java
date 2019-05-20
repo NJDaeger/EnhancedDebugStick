@@ -14,6 +14,7 @@ import static org.bukkit.ChatColor.*;
 
 public final class DebugSession {
 
+    private long lastStop;
     private int taskNumber;
     private boolean selecting;
     private long sneakStart;
@@ -125,14 +126,20 @@ public final class DebugSession {
     }
 
     void setSelectingMode(boolean enabled) {
+        this.sneakStart = 0;
         this.selecting = enabled;
         if (enabled) {
             this.taskNumber = Bukkit.getScheduler().scheduleSyncRepeatingTask(EnhancedDebugStick.getPlugin(EnhancedDebugStick.class), getSelectingTask(), 0, 20);
         } else {
+            this.lastStop = System.currentTimeMillis();
             Bukkit.getScheduler().cancelTask(taskNumber);
-            taskNumber = 0;
+            this.taskNumber = 0;
             ActionBar.of("").sendTo(Bukkit.getPlayer(uuid));
         }
+    }
+
+    long getLastStop() {
+        return lastStop;
     }
 
     long getSelectingStart() {

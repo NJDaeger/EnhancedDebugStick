@@ -21,6 +21,7 @@ import java.util.UUID;
 
 public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAPI {
 
+    private static EnhancedDebugStick PLUGIN;
     private ConfigurationFile configuration;
     private CoreProtectAPI coreProtectAPI;
     private final CommandStore commandStore = new CommandStore(this);
@@ -28,6 +29,7 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
 
     @Override
     public void onEnable() {
+        PLUGIN = this;
         Property.registerProperties();
         if (!new File(getDataFolder() + File.separator + "config.yml").exists()) saveResource("config.yml", false);
         this.configuration = new ConfigurationFile(this);
@@ -57,6 +59,10 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
         for (Player player : Bukkit.getOnlinePlayers()) {
             getDebugSession(player.getUniqueId()).pause();
         }
+    }
+
+    public static EnhancedDebugStick getInstance() {
+        return PLUGIN;
     }
 
     private CoreProtectAPI initializeCoreprotect() {

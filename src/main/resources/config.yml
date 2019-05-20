@@ -28,7 +28,7 @@ classic-debug-mode:
 
   # If display-data-on-look is enabled, this will limit how far away block data can be seen.
   # If this number is set to 0, the data will not show (equivalent to setting the
-  # display-data-on-look to false). If it is set to -1, the limit will default to 20 blocks.
+  # display-data-on-look to false). If it is set to -1, the limit will default to 10 blocks.
   display-data-distance: 7
 
   # Enable this if you want CoreProtect to log the edited block.
@@ -59,3 +59,34 @@ frozen-debug-mode:
 
   # When all frozen blocks are unfrozen at the same time, play a sound to indicate it.
   mass-unfreeze-sound: true
+
+copy-debug-mode:
+
+  # When looking at a block within a specified distance,
+  # should the block properties be displayed to the player?
+  display-data-on-look: true
+
+  # If display-data-on-look is enabled, this will limit how far away block data can be seen.
+  # If this number is set to 0, the data will not show (equivalent to setting the
+  # display-data-on-look to false). If it is set to -1, the limit will default to 10 blocks.
+  display-data-distance: 7
+
+  # When looking at a block to paste properties on, should we always display all the properties
+  # of that block or should we only display the applicable properties?
+  display-all-properties: true
+
+  # Enable this if you want CoreProtect to log the edited block.
+  # If CoreProtect is not installed, this will do nothing.
+  coreprotect-logging: false
+
+  # When BlockData is copied (left click) a sound will be played to the player
+  # indicating the data was copied
+  copy-sound: true
+
+  # When BlockData is pasted (right click) a sound will be played to the player
+  # indicating the data was pasted.
+  paste-sound: true
+
+  # When the clipblard is cleared (left click air) a sound will be played to the player
+  # indicating the clipboard was cleared.
+  clear-sound: true

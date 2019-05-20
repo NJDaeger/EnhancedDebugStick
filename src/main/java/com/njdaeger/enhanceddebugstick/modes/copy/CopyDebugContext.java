@@ -45,6 +45,11 @@ public final class CopyDebugContext implements DebugContext {
         return getClipboard() != null;
     }
 
+    //TODO double left click for clipboard clearing
+    //TODO implement good sounds
+    //TODO implement configuration keys
+    //TODO
+
     public void applyClipboardFor(Block block) {
 
         List<IProperty<?, ?>> clipboardProperties = getClipboardProperties();
@@ -85,7 +90,11 @@ public final class CopyDebugContext implements DebugContext {
 
             for (IProperty<?, ?> property : IProperty.getProperties(block)) {
                 if (clipboardProperties.contains(property)) {
-                    builder.append(DARK_GREEN).append(BOLD).append(property.getNiceName()).append(": ");
+                    //If the property value of both match, just set the property color to dark gray.
+                    if (property.getCurrentValue(clipboard).equals(property.getCurrentValue(block))) {
+                        builder.append(DARK_GRAY).append(BOLD).append(property.getNiceName()).append(": ");
+                    } else builder.append(DARK_GREEN).append(BOLD).append(property.getNiceName()).append(": ");
+
                     builder.append(GRAY).append(BOLD).append(ITALIC).append(format(property.getNiceCurrentValue(clipboard)));
                     builder.append(RESET).append("    ");
                 } else {

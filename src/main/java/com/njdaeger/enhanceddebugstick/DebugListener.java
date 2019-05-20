@@ -33,7 +33,6 @@ public final class DebugListener implements Listener {
         if (session != null) {
             session.pause();
             if (session.isSelectingMode()) {
-                session.setSelectingStart(0);
                 session.setSelectingMode(false);
             }
         }
@@ -73,13 +72,12 @@ public final class DebugListener implements Listener {
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
-        if (session.isHoldingDebugStick() && !session.isSelectingMode() && event.isSneaking()) {
+        if (session.isHoldingDebugStick() && !session.isSelectingMode() && event.isSneaking() && ((System.currentTimeMillis() - session.getLastStop()) > 1000)) {
             if (session.getSelectingStart() == 0) session.setSelectingStart(System.currentTimeMillis());
             else {
                 if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.MS_SNEAK_TIMEOUT) session.setSelectingStart(0);
                 else {
                     if (ConfigKey.MS_START_STOP_SOUND) event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 10);
-                    session.setSelectingStart(0);
                     session.setSelectingMode(true);
                     session.pause();
                 }
@@ -91,7 +89,6 @@ public final class DebugListener implements Listener {
                 if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.MS_SNEAK_TIMEOUT) session.setSelectingStart(0);
                 else {
                     if (ConfigKey.MS_START_STOP_SOUND) event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
-                    session.setSelectingStart(0);
                     session.setSelectingMode(false);
                     session.resume();
                 }

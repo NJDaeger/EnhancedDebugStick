@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class FreezeDebugContext implements DebugContext {
+public final class FreezeDebugContext implements DebugContext {
 
     private final DebugSession session;
     private final Map<Location, BlockData> locked;
@@ -84,7 +84,7 @@ public class FreezeDebugContext implements DebugContext {
     public void unlightFrozen() {
         Player player = Bukkit.getPlayer(session.getSessionId());
         if (ConfigKey.FDM_OUTLINE) BlockHighlighter.removeTask(player);
-        locked.forEach((location, data) -> location.getBlock().setBlockData(data));
+        locked.forEach((location, data) -> location.getBlock().setBlockData(data, false));
     }
 
     /**
