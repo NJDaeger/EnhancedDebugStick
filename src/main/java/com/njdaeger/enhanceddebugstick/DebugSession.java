@@ -14,12 +14,15 @@ import static org.bukkit.ChatColor.*;
 
 public final class DebugSession {
 
+    //These are used for the mode changes.
     private long lastStop;
     private int taskNumber;
-    private boolean selecting;
     private long sneakStart;
-    private DebugModeType debugMode;
+    private boolean selecting;
+
+    private long lastForced;
     private final UUID uuid;
+    private DebugModeType debugMode;
 
     DebugSession(UUID uuid) {
         this.uuid = uuid;
@@ -28,6 +31,7 @@ public final class DebugSession {
 
     /**
      * Checks if this session has an online player attached to it
+     *
      * @return True if the player who owns this session is online, false otherwise.
      */
     public boolean isOnline() {
@@ -87,7 +91,6 @@ public final class DebugSession {
      * @param <C> The type of context the debug mode takes
      * @return The Debug Context of the specified debug mode type, or null if the type specified does not have this
      *         session in it yet.
-     *
      * @throws RuntimeException if the session could not be bound to a debug mode type.
      */
     public <C extends DebugContext> C toDebugContext(DebugModeType<?, C> debugMode) {
@@ -121,6 +124,28 @@ public final class DebugSession {
         if (debugMode != null) debugMode.pauseSession(this);
     }
 
+    /**
+     * Sends an action bar to this player.
+     *
+     * @param message The message to send.
+     */
+    public void sendBar(String message) {
+        if (isOnline() && (System.currentTimeMillis() - lastForced) > 3000) ActionBar.of(message).sendTo(Bukkit.getPlayer(uuid));
+    }
+
+    /**
+     * Sends a forced actionbar to this player. A forced action bar is meant to make the action bar stay on the screen
+     * for at least 3 seconds before any other action bar can be sent by this plugin.
+     *
+     * @param message The message to send.
+     */
+    public void sendForcedBar(String message) {
+        if (isOnline() && (System.currentTimeMillis() - lastForced) > 3000) {
+            this.lastForced = System.currentTimeMillis();
+            ActionBar.of(message).sendTo(Bukkit.getPlayer(uuid));
+        }
+    }
+
     boolean isSelectingMode() {
         return selecting;
     }
@@ -152,15 +177,16 @@ public final class DebugSession {
 
     Runnable getSelectingTask() {
         return () -> {
-                Player player = Bukkit.getPlayer(uuid);
-                StringBuilder builder = new StringBuilder();
-                DebugModeType.getDebugModes().forEach(type -> {
-                    if (isDebugMode(type)) builder.append(DARK_GREEN).append(BOLD).append(UNDERLINE).append(type.getNiceName()).append(RESET);
-                    else builder.append(DARK_GREEN).append(type.getNiceName()).append(RESET);
-                    builder.append("    ");
-                });
-                ActionBar.of(builder.toString().trim()).sendTo(player);
-            };
+            Player player = Bukkit.getPlayer(uuid);
+            StringBuilder builder = new StringBuilder();
+            DebugModeType.getDebugModes().forEach(type -> {
+                if (isDebugMode(type))
+                    builder.append(DARK_GREEN).append(BOLD).append(UNDERLINE).append(type.getNiceName()).append(RESET);
+                else builder.append(DARK_GREEN).append(type.getNiceName()).append(RESET);
+                builder.append("    ");
+            });
+            ActionBar.of(builder.toString().trim()).sendTo(player);
+        };
     }
 
 }

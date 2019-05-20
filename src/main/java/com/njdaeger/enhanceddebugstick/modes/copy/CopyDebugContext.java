@@ -104,7 +104,7 @@ public final class CopyDebugContext implements DebugContext {
                 }
             }
         }
-        ActionBar.of(builder.toString().trim()).sendTo(Bukkit.getPlayer(session.getSessionId()));
+        session.sendBar(builder.toString().trim());
     }
 
 }

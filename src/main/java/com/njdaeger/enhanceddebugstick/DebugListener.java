@@ -32,9 +32,7 @@ public final class DebugListener implements Listener {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
         if (session != null) {
             session.pause();
-            if (session.isSelectingMode()) {
-                session.setSelectingMode(false);
-            }
+            if (session.isSelectingMode()) session.setSelectingMode(false);
         }
     }
 

@@ -8,6 +8,7 @@ import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -61,6 +62,7 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
             event.setUseInteractedBlock(Event.Result.DENY);
             event.setUseItemInHand(Event.Result.DENY);
 
+            //Check if the player has the correct permission first
             if (!player.hasPermission(getBasePermission() + "use")) {
                 player.sendMessage(ChatColor.RED + "You do not have permission to use the Copy Debug Mode");
                 return;
@@ -69,44 +71,49 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
             Block block = event.getClickedBlock();
             CopyDebugContext context = session.toDebugContext(this);
 
+            //If we left click air, we're clearing the clipboard.
             if (event.getAction() == Action.LEFT_CLICK_AIR) {
                 context.setClipboard(null);
                 player.sendMessage(ChatColor.GRAY + "Clipboard Cleared");
+                if (ConfigKey.COPY_CLEAR_SOUND) player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_BULLET_HIT, 1, 1);
                 return;
             }
 
             if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
 
                 if (!IProperty.hasProperties(block)) {
-                    ActionBar.of(ChatColor.GRAY.toString() + ChatColor.BOLD + "This block has no properties").sendTo(player);
+                    session.sendForcedBar(ChatColor.GRAY.toString() + ChatColor.BOLD + "This block has no properties");
                     return;
                 }
 
                 context.setClipboard(block.getBlockData());
+                context.sendMeshedPropertiesOf(block);
                 player.sendMessage(ChatColor.GRAY + "Copied all properties.");
+                if (ConfigKey.COPY_COPY_SOUND) player.playSound(player.getLocation(), Sound.ENTITY_SHEEP_SHEAR, 1, 1);
                 return;
             }
 
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
                 if (!context.hasClipboard()) {
-                    ActionBar.of(ChatColor.GRAY.toString() + ChatColor.BOLD + "Your clipboard is empty").sendTo(player);
+                    session.sendForcedBar(ChatColor.GRAY.toString() + ChatColor.BOLD + "Your clipboard is empty");
                     return;
                 }
 
                 if (!IProperty.hasProperties(block)) {
-                    ActionBar.of(ChatColor.GRAY.toString() + ChatColor.BOLD + "This block has no properties").sendTo(player);
+                    session.sendForcedBar(ChatColor.GRAY.toString() + ChatColor.BOLD + "This block has no properties");
                     return;
                 }
 
                 if (IProperty.getProperties(block).stream().noneMatch(pr -> context.getClipboardProperties().contains(pr))) {
-                    ActionBar.of(ChatColor.GRAY.toString() + ChatColor.BOLD + "There are no applicable properties to apply to this block").sendTo(player);
+                    session.sendForcedBar(ChatColor.GRAY.toString() + ChatColor.BOLD + "There are no applicable properties to apply to this block");
                     return;
                 }
 
                 context.applyClipboardFor(block);
+                context.sendMeshedPropertiesOf(block);
                 player.sendMessage(ChatColor.GRAY + "Pasted applicable properties.");
-                if (ConfigKey.COPY_PASTE_SOUND) player.playSound(player.getLocation(), Sound.BLOCK_ENDER_CHEST_OPEN, 1, 1);
+                if (ConfigKey.COPY_PASTE_SOUND) player.playSound(player.getLocation(), Sound.ENTITY_TROPICAL_FISH_FLOP, 1, 1);
             }
         }
     }
@@ -123,7 +130,10 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
             CopyDebugContext context = getDebugContext(player.getUniqueId());
             if (context.getDebugSession().isHoldingDebugStick() && !isPaused(context.getDebugSession()) && player.hasPermission(getBasePermission() + ".use")) {
                 RayTraceResult hit = player.rayTraceBlocks(ConfigKey.COPY_DISPLAY_DISTANCE);
-                if (hit != null && hit.getHitBlock() != null && context.hasClipboard()) context.sendMeshedPropertiesOf(hit.getHitBlock());
+                if (hit != null && hit.getHitBlock() != null) {
+                    if (context.hasClipboard()) context.sendMeshedPropertiesOf(hit.getHitBlock());
+                    else context.sendPropertiesOf(hit.getHitBlock());
+                }
             }
         }
     }
