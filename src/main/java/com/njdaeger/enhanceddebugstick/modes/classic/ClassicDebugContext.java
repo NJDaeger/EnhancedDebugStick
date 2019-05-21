@@ -1,6 +1,5 @@
 package com.njdaeger.enhanceddebugstick.modes.classic;
 
-import com.njdaeger.btu.ActionBar;
 import com.njdaeger.enhanceddebugstick.ConfigKey;
 import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
@@ -29,7 +28,7 @@ public final class ClassicDebugContext implements DebugContext {
     private final DebugSession session;
 
     ClassicDebugContext(DebugSession session) {
-        this.plugin = EnhancedDebugStick.getPlugin(EnhancedDebugStick.class);
+        this.plugin = EnhancedDebugStick.getInstance();
         this.currentProperty = new HashMap<>();
         this.uuid = session.getSessionId();
         this.session = session;
@@ -180,7 +179,7 @@ public final class ClassicDebugContext implements DebugContext {
                 }
             }
         }
-        ActionBar.of(builder.toString().trim()).sendTo(Bukkit.getPlayer(uuid));
+        session.sendBar(builder.toString().trim());
     }
 
 }

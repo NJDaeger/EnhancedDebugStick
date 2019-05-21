@@ -3,16 +3,16 @@ package com.njdaeger.enhanceddebugstick.modes.freeze;
 import com.njdaeger.enhanceddebugstick.ConfigKey;
 import com.njdaeger.enhanceddebugstick.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
+
+import static org.bukkit.ChatColor.*;
 
 public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugContext> {
 
@@ -50,16 +50,15 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
     @Override
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        DebugSession session = plugin.getDebugSession(player.getUniqueId());
+        DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
 
-        if (hasSession(player.getUniqueId()) && !isPaused(session) && session.isHoldingDebugStick() && session.isDebugMode(this) && event.getHand() == EquipmentSlot.HAND) {
+        if (session.isUsing(this) && event.getHand() == EquipmentSlot.HAND) {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
             event.setUseItemInHand(Event.Result.DENY);
 
-            if (!player.hasPermission(getBasePermission() + ".use")) {
-                player.sendMessage(ChatColor.RED + "You do not have permission to use the Freeze Debug Mode");
+            if (!session.hasPermission(this)) {
+                session.sendMessage(RED + "You do not have permission to use the Freeze Debug Mode");
                 return;
             }
 
@@ -67,19 +66,24 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
             FreezeDebugContext context = session.toDebugContext(this);
 
             if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_AIR) {
-                if (ConfigKey.FDM_UNFREEZE_ALL) player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_RETURN, 1, 1);
+                if (!context.hasFrozenBlocks()) {
+                    session.sendForcedBar(RED.toString() + BOLD + "You do not have any frozen blocks");
+                    session.sendSound(Sound.UI_TOAST_IN);
+                    return;
+                }
+                if (ConfigKey.FDM_UNFREEZE_ALL) session.sendSound(Sound.ITEM_TRIDENT_RETURN);
                 context.unfreezeAllBlocks();
-                player.sendMessage(ChatColor.GRAY + "Unfroze all frozen blocks.");
+                session.sendMessage(GRAY + "Unfroze all frozen blocks.");
                 return;
             }
 
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 if (context.isSelected(block)) {
-                    if (ConfigKey.FDM_UNFREEZE) player.playSound(player.getLocation(), Sound.ITEM_AXE_STRIP, 1, 1);
+                    if (ConfigKey.FDM_UNFREEZE) session.sendSound(Sound.ITEM_AXE_STRIP);
                     context.unfreezeBlock(block);
                 }
                 else {
-                    if (ConfigKey.FDM_FREEZE) player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 1, 1);
+                    if (ConfigKey.FDM_FREEZE) session.sendSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP);
                     context.freezeBlock(block);
                 }
             }

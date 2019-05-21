@@ -7,7 +7,6 @@ import com.njdaeger.enhanceddebugstick.api.IProperty;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -53,18 +52,17 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
     @Override
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        DebugSession session = plugin.getDebugSession(player.getUniqueId());
+        DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
 
         //We check if this Debug Mode contains the players session, we also check if the player is holding the debug stick
-        if (hasSession(player.getUniqueId()) && !isPaused(session) && session.isHoldingDebugStick() && session.isDebugMode(this) && event.getHand() == EquipmentSlot.HAND) {
+        if (session.isUsing(this) && event.getHand() == EquipmentSlot.HAND) {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
             event.setUseItemInHand(Event.Result.DENY);
 
             //Check for the use permission
-            if (!player.hasPermission(getBasePermission() + ".use")) {
-                player.sendMessage(ChatColor.RED + "You do not have permission to use the Classic Debug Mode");
+            if (!session.hasPermission(this)) {
+                session.sendMessage(ChatColor.RED + "You do not have permission to use the Classic Debug Mode");
                 return;
             }
 
@@ -75,11 +73,12 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
             if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
 
                 if (!IProperty.hasProperties(block)) {
-                    player.sendMessage(ChatColor.GRAY + "There are no properties for this block.");
+                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "This block has no properties");
+                    session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 
-                if (ConfigKey.CDM_PROPERTY) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+                if (ConfigKey.CDM_PROPERTY) session.sendSound(Sound.UI_BUTTON_CLICK);
                 context.applyNextPropertyFor(block);
                 context.sendPropertiesOf(block);
                 return;
@@ -91,11 +90,12 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
                 IProperty<?, ?> property = context.getCurrentProperty(block);
 
                 if (property == null) {
-                    player.sendMessage(ChatColor.GRAY + "There are no properties for this block.");
+                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "This block has no properties");
+                    session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 
-                if (ConfigKey.CDM_VALUE) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+                if (ConfigKey.CDM_VALUE) session.sendSound(Sound.UI_BUTTON_CLICK);
                 context.applyNextValueFor(block);
                 context.sendPropertiesOf(block);
             }
@@ -109,15 +109,13 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
         //
         //Check if the configuration allows data viewing
         //
-        Player player = event.getPlayer();
-        if (hasSession(player.getUniqueId()) && ConfigKey.CDM_DISPLAY_ON_LOOK) {
-            ClassicDebugContext context = getDebugContext(player.getUniqueId());
-            if (context.getDebugSession().isHoldingDebugStick() && !isPaused(context.getDebugSession()) && player.hasPermission(getBasePermission() + ".use")) {
-                RayTraceResult hit = player.rayTraceBlocks(ConfigKey.CDM_DISPLAY_DISTANCE);
-                if (hit != null && hit.getHitBlock() != null) {
-                    context.sendPropertiesOf(hit.getHitBlock());
-                } else context.sendPropertiesOf(null);
-            }
+        DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
+
+        if (ConfigKey.CDM_DISPLAY_ON_LOOK && session.isUsing(this) && session.hasPermission(this)) {
+            ClassicDebugContext context = session.toDebugContext(this);
+            RayTraceResult hit = event.getPlayer().rayTraceBlocks(ConfigKey.CDM_DISPLAY_DISTANCE);
+            if (hit != null && hit.getHitBlock() != null) context.sendPropertiesOf(hit.getHitBlock());
+            else context.sendPropertiesOf(null);
         }
     }
 }

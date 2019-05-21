@@ -6,6 +6,7 @@ import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.DebugStickAPI;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -102,6 +103,26 @@ public final class DebugSession {
     }
 
     /**
+     * Quick check to see if this session has permission to do use the specified debug mode
+     *
+     * @param debugMode The debug mode to check
+     * @return True if the player has permission, false otherwise.
+     */
+    public boolean hasPermission(DebugModeType<?, ?> debugMode) {
+        return Bukkit.getPlayer(uuid).hasPermission(debugMode.getBasePermission() + ".use");
+    }
+
+    /**
+     * Quick check to see if this session is currently using the debug stick with the given mode
+     *
+     * @param debugMode The mode to check if the session is using
+     * @return True if the user is unpaused, in the given mode, and is holding the debug stick.
+     */
+    public boolean isUsing(DebugModeType<?, ?> debugMode) {
+        return debugMode.hasSession(uuid) && !debugMode.isPaused(this) && isHoldingDebugStick() && isDebugMode(debugMode);
+    }
+
+    /**
      * The UUID of this session. (Corresponds to the Player who owns this session)
      *
      * @return The session ID
@@ -130,7 +151,8 @@ public final class DebugSession {
      * @param message The message to send.
      */
     public void sendBar(String message) {
-        if (isOnline() && (System.currentTimeMillis() - lastForced) > 3000) ActionBar.of(message).sendTo(Bukkit.getPlayer(uuid));
+        if (isOnline() && (System.currentTimeMillis() - lastForced) > 3000)
+            ActionBar.of(message).sendTo(Bukkit.getPlayer(uuid));
     }
 
     /**
@@ -143,6 +165,32 @@ public final class DebugSession {
         if (isOnline() && (System.currentTimeMillis() - lastForced) > 3000) {
             this.lastForced = System.currentTimeMillis();
             ActionBar.of(message).sendTo(Bukkit.getPlayer(uuid));
+        }
+    }
+
+    /**
+     * Sends a plugin message to this player
+     *
+     * @param message The message to send.
+     */
+    public void sendMessage(String message) {
+        if (isOnline())
+            Bukkit.getPlayer(uuid).sendMessage(DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + RESET + message);
+    }
+
+    /**
+     * Sends a sound to this player
+     *
+     * @param sound The sound to send
+     */
+    public void sendSound(Sound sound) {
+        sendSound(sound, 1);
+    }
+
+    public void sendSound(Sound sound, float pitch) {
+        if (isOnline()) {
+            Player player = Bukkit.getPlayer(uuid);
+            player.playSound(player.getLocation(), sound, 1, pitch);
         }
     }
 

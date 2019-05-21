@@ -18,11 +18,11 @@ import java.util.UUID;
 public final class FreezeDebugContext implements DebugContext {
 
     private final DebugSession session;
-    private final Map<Location, BlockData> locked;
+    private final Map<Location, BlockData> frozen;
 
     FreezeDebugContext(DebugSession session) {
         this.session = session;
-        this.locked = new HashMap<>();
+        this.frozen = new HashMap<>();
     }
 
     @Override
@@ -36,11 +36,22 @@ public final class FreezeDebugContext implements DebugContext {
     }
 
     /**
-     * Freezes the specified block for the player, replacing it with a red wool block and highlighting it if theyre online
+     * Checks whether this player has any frozen blocks
+     *
+     * @return True if the player has frozen blocks, false otherwise.
+     */
+    public boolean hasFrozenBlocks() {
+        return !frozen.isEmpty();
+    }
+
+    /**
+     * Freezes the specified block for the player, replacing it with a red wool block and highlighting it if theyre
+     * online
+     *
      * @param block The block to lock
      */
     public void freezeBlock(Block block) {
-        locked.put(block.getLocation(), block.getBlockData());
+        frozen.put(block.getLocation(), block.getBlockData());
         if (session.isOnline()) {
             if (ConfigKey.FDM_OUTLINE) BlockHighlighter.lightBlock(block, Bukkit.getPlayer(session.getSessionId()));
             block.setType(Material.RED_WOOL, false);
@@ -49,10 +60,11 @@ public final class FreezeDebugContext implements DebugContext {
 
     /**
      * Unfreezes the specified block for the player, putting it  back to its original state.
+     *
      * @param block The block to unlock
      */
     public void unfreezeBlock(Block block) {
-        BlockData data = locked.remove(block.getLocation());
+        BlockData data = frozen.remove(block.getLocation());
         if (session.isOnline()) {
             if (ConfigKey.FDM_OUTLINE) BlockHighlighter.unLightBlock(block, Bukkit.getPlayer(session.getSessionId()));
             block.setBlockData(data, false);
@@ -64,7 +76,7 @@ public final class FreezeDebugContext implements DebugContext {
      */
     public void unfreezeAllBlocks() {
         if (session.isOnline()) unlightFrozen();
-        locked.clear();
+        frozen.clear();
     }
 
     /**
@@ -72,7 +84,7 @@ public final class FreezeDebugContext implements DebugContext {
      */
     public void lightFrozen() {
         Player player = Bukkit.getPlayer(session.getSessionId());
-        locked.forEach((location, data) -> {
+        frozen.forEach((location, data) -> {
             if (ConfigKey.FDM_OUTLINE) BlockHighlighter.lightBlock(location.getBlock(), player);
             location.getBlock().setType(Material.RED_WOOL, false);
         });
@@ -84,11 +96,12 @@ public final class FreezeDebugContext implements DebugContext {
     public void unlightFrozen() {
         Player player = Bukkit.getPlayer(session.getSessionId());
         if (ConfigKey.FDM_OUTLINE) BlockHighlighter.removeTask(player);
-        locked.forEach((location, data) -> location.getBlock().setBlockData(data, false));
+        frozen.forEach((location, data) -> location.getBlock().setBlockData(data, false));
     }
 
     /**
      * Checks if a block is selected or not
+     *
      * @param block The block to check
      * @return True if the block is selected, false otherwise.
      */
@@ -98,11 +111,12 @@ public final class FreezeDebugContext implements DebugContext {
 
     /**
      * Checks if a location is selected or not
+     *
      * @param location The location to check
      * @return True if the location is selected, false otherwise.
      */
     public boolean isSelected(Location location) {
-        return locked.get(location) != null;
+        return frozen.get(location) != null;
     }
 
 }

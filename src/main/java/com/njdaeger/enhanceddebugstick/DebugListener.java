@@ -47,7 +47,7 @@ public final class DebugListener implements Listener {
             int size = DebugModeType.getDebugModes().size();
             int index = DebugModeType.getDebugModes().indexOf(session.getDebugMode());
 
-            if (ConfigKey.MS_MODE_CHANGE) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+            if (ConfigKey.MS_MODE_CHANGE) session.sendSound(Sound.UI_BUTTON_CLICK);
 
             switch (event.getAction()) {
                 case LEFT_CLICK_AIR:
@@ -75,7 +75,7 @@ public final class DebugListener implements Listener {
             else {
                 if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.MS_SNEAK_TIMEOUT) session.setSelectingStart(0);
                 else {
-                    if (ConfigKey.MS_START_STOP_SOUND) event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 10);
+                    if (ConfigKey.MS_START_STOP_SOUND) session.sendSound(Sound.BLOCK_NOTE_BLOCK_PLING, 10);
                     session.setSelectingMode(true);
                     session.pause();
                 }
@@ -86,7 +86,7 @@ public final class DebugListener implements Listener {
             else {
                 if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.MS_SNEAK_TIMEOUT) session.setSelectingStart(0);
                 else {
-                    if (ConfigKey.MS_START_STOP_SOUND) event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+                    if (ConfigKey.MS_START_STOP_SOUND) session.sendSound(Sound.BLOCK_NOTE_BLOCK_PLING);
                     session.setSelectingMode(false);
                     session.resume();
                 }
