@@ -55,6 +55,15 @@ public abstract class DebugModeType<T extends DebugModeType<T, C>, C extends Deb
     }
 
     /**
+     * Get a debug mode by name
+     * @param name The name of the debug mode
+     * @return The debug mode if found, or null if not found.
+     */
+    public static DebugModeType<?, ?> getDebugMode(String name) {
+        return modeTypes.stream().filter(type -> type.getNiceName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    /**
      * Get a list of all the debug modes
      * @return All the debug modes which exist.
      */

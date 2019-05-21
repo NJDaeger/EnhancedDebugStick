@@ -78,7 +78,7 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
                 //
                 if (!context.hasClipboard()) {
                     session.sendForcedBar(RED.toString() + BOLD + "Your clipboard is clear");
-                    session.sendSound(Sound.UI_TOAST_IN);
+                    if (ConfigKey.SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 
@@ -92,7 +92,7 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
 
                 if (!IProperty.hasProperties(block)) {
                     session.sendForcedBar(RED.toString() + BOLD + "This block has no properties");
-                    session.sendSound(Sound.UI_TOAST_IN);
+                    if (ConfigKey.SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 
@@ -107,19 +107,19 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
 
                 if (!context.hasClipboard()) {
                     session.sendForcedBar(RED.toString() + BOLD + "Your clipboard is empty");
-                    session.sendSound(Sound.UI_TOAST_IN);
+                    if (ConfigKey.SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 
                 if (!IProperty.hasProperties(block)) {
                     session.sendForcedBar(RED.toString() + BOLD + "This block has no properties");
-                    session.sendSound(Sound.UI_TOAST_IN);
+                    if (ConfigKey.SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 
                 if (IProperty.getProperties(block).stream().noneMatch(pr -> context.getClipboardProperties().contains(pr))) {
                     session.sendForcedBar(RED.toString() + BOLD + "There are no applicable properties to apply to this block");
-                    session.sendSound(Sound.UI_TOAST_IN);
+                    if (ConfigKey.SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 

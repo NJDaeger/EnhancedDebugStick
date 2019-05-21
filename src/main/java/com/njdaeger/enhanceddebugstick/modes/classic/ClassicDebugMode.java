@@ -74,7 +74,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
 
                 if (!IProperty.hasProperties(block)) {
                     session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "This block has no properties");
-                    session.sendSound(Sound.UI_TOAST_IN);
+                    if (ConfigKey.SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 
@@ -91,7 +91,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
 
                 if (property == null) {
                     session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "This block has no properties");
-                    session.sendSound(Sound.UI_TOAST_IN);
+                    if (ConfigKey.SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 

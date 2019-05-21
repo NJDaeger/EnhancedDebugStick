@@ -68,7 +68,7 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
             if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_AIR) {
                 if (!context.hasFrozenBlocks()) {
                     session.sendForcedBar(RED.toString() + BOLD + "You do not have any frozen blocks");
-                    session.sendSound(Sound.UI_TOAST_IN);
+                    if (ConfigKey.SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
                 if (ConfigKey.FDM_UNFREEZE_ALL) session.sendSound(Sound.ITEM_TRIDENT_RETURN);

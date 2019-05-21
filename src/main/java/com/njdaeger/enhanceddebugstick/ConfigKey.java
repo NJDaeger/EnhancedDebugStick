@@ -13,6 +13,14 @@ public final class ConfigKey<T> {
      */
     public static final boolean SOUND_ON_SELECT = get("sound-on-select", true);
     /**
+     * Whether to play sounds when errors happen in game
+     */
+    public static final boolean SOUND_ON_ERROR = get("sound-on-error", true);
+    /**
+     * Whether to use the double shift method to change modes or to use commands instead.
+     */
+    public static final boolean MS_COMMAND_SHIFTING = get("mode-shift.command-shifting", false);
+    /**
      * Whether to do a sound when the mode selector is enabled or disabled.
      */
     public static final boolean MS_START_STOP_SOUND = get("mode-shift.start-stop-sound", true);
@@ -24,6 +32,10 @@ public final class ConfigKey<T> {
      * How long to wait for a player to double sneak before the timeout is reached.
      */
     public static final long MS_SNEAK_TIMEOUT = get("mode-shift.double-sneak-timeout", 750L, t -> t >= 0);
+    /**
+     * How long to wait before being able to use the mode shifter again.
+     */
+    public static final long MS_CHANGE_COOLDOWN = get("mode-shift.mode-change-cooldown", 2000, t -> t >= 0);
     /**
      * Whether to display the block data when a player looks at the block
      */
