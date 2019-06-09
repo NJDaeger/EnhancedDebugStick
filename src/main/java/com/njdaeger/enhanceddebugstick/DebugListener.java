@@ -84,7 +84,7 @@ public final class DebugListener implements Listener {
                     }
                 }
             }
-            if (session.isHoldingDebugStick() && !event.isSneaking() && session.isSelectingMode()) {
+            if (session.isHoldingDebugStick() && !event.isSneaking() && session.isSelectingMode() && (System.currentTimeMillis() - session.getLastStart()) > 1000) {
                 if (session.getSelectingStart() == 0) session.setSelectingStart(System.currentTimeMillis());
                 else {
                     if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.MS_SNEAK_TIMEOUT) session.setSelectingStart(0);

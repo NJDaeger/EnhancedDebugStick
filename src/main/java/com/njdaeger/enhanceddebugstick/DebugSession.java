@@ -16,6 +16,7 @@ import static org.bukkit.ChatColor.*;
 public final class DebugSession {
 
     //These are used for the mode changes.
+    private long lastStart;
     private long lastStop;
     private int taskNumber;
     private long sneakStart;
@@ -202,6 +203,7 @@ public final class DebugSession {
         this.sneakStart = 0;
         this.selecting = enabled;
         if (enabled) {
+            this.lastStart = System.currentTimeMillis();
             this.taskNumber = Bukkit.getScheduler().scheduleSyncRepeatingTask(EnhancedDebugStick.getPlugin(EnhancedDebugStick.class), getSelectingTask(), 0, 20);
         } else {
             this.lastStop = System.currentTimeMillis();
@@ -213,6 +215,10 @@ public final class DebugSession {
 
     long getLastStop() {
         return lastStop;
+    }
+
+    long getLastStart() {
+        return lastStart;
     }
 
     long getSelectingStart() {
