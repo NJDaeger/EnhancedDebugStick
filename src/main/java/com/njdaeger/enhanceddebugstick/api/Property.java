@@ -8,7 +8,6 @@ import org.bukkit.block.data.MultipleFacing;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -24,14 +23,12 @@ import java.util.function.Function;
  * @param <D> BlockData type
  * @param <V> Value type
  */
-@SuppressWarnings({"unused"})
 public final class Property<D extends BlockData, V> implements IProperty<D, V> {
 
     private static boolean registered;
     private static int currentOrdinal;
     private static final Map<Material, List<IProperty<?, ?>>> PROPERTIES = new HashMap<>();
     private static final Map<String, IProperty<?, ?>> PROPERTY_FIELD_MAP = new HashMap<>();
-    private static final Collection<IProperty<?, ?>> PROPERTY_FIELD_PRE_MAP = new ArrayList<>();
 
     public static void registerProperties() {
         if (registered) throw new RuntimeException("Cannot re-register properties after they've been registered.");

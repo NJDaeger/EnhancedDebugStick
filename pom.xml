@@ -6,7 +6,7 @@
 
     <groupId>com.njdaeger</groupId>
     <artifactId>EnhancedDebugStick</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 
     <repositories>
         <repository>
@@ -102,7 +102,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.13.2-R0.1-SNAPSHOT</version>
+            <version>1.14.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 

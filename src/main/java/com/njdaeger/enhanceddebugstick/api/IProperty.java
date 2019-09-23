@@ -22,10 +22,13 @@ import org.bukkit.block.data.Rail;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.data.Snowable;
 import org.bukkit.block.data.Waterlogged;
+import org.bukkit.block.data.type.Bamboo;
 import org.bukkit.block.data.type.Bed;
+import org.bukkit.block.data.type.Bell;
 import org.bukkit.block.data.type.BrewingStand;
 import org.bukkit.block.data.type.BubbleColumn;
 import org.bukkit.block.data.type.Cake;
+import org.bukkit.block.data.type.Campfire;
 import org.bukkit.block.data.type.Chest;
 import org.bukkit.block.data.type.CommandBlock;
 import org.bukkit.block.data.type.Comparator;
@@ -36,6 +39,7 @@ import org.bukkit.block.data.type.EndPortalFrame;
 import org.bukkit.block.data.type.Farmland;
 import org.bukkit.block.data.type.Gate;
 import org.bukkit.block.data.type.Hopper;
+import org.bukkit.block.data.type.Lantern;
 import org.bukkit.block.data.type.Leaves;
 import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.block.data.type.Piston;
@@ -43,6 +47,7 @@ import org.bukkit.block.data.type.PistonHead;
 import org.bukkit.block.data.type.RedstoneWire;
 import org.bukkit.block.data.type.Repeater;
 import org.bukkit.block.data.type.Sapling;
+import org.bukkit.block.data.type.Scaffolding;
 import org.bukkit.block.data.type.SeaPickle;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Snow;
@@ -868,6 +873,54 @@ public interface IProperty<D extends BlockData, V> {
     }, TurtleEgg::getEggs, (egg, value) -> {
         egg.setEggs(value);
         return egg;
+    });
+
+    IProperty<Lantern, Boolean> LANTERN_HANGING = new Property<>("Hanging", Lantern.class, (lantern) -> {
+        lantern.setHanging(!lantern.isHanging());
+        return lantern;
+    }, Lantern::isHanging, (lantern, hanging) -> {
+        lantern.setHanging(hanging);
+        return lantern;
+    });
+
+    IProperty<Bamboo, Bamboo.Leaves> BAMBOO_LEAVES = new Property<>("Leaves", Bamboo.class, (bamboo) -> {
+        bamboo.setLeaves(nextEnumOption(bamboo.getLeaves()));
+        return bamboo;
+    }, Bamboo::getLeaves, ((bamboo, leaves) -> {
+        bamboo.setLeaves(leaves);
+        return bamboo;
+    }));
+
+    IProperty<Bell, Bell.Attachment> BELL_ATTACHMENT = new Property<>("Attachment", Bell.class, (bell) -> {
+        bell.setAttachment(nextEnumOption(bell.getAttachment()));
+        return bell;
+    }, Bell::getAttachment, (bell, attachment) -> {
+        bell.setAttachment(attachment);
+        return bell;
+    });
+
+    IProperty<Campfire, Boolean> CAMPFIRE_SIGNAL_FIRE = new Property<>("Signal Fire", Campfire.class, (campfire) -> {
+        campfire.setSignalFire(!campfire.isSignalFire());
+        return campfire;
+    }, Campfire::isSignalFire, (campfire, signalFire) -> {
+        campfire.setSignalFire(signalFire);
+        return campfire;
+    });
+
+    IProperty<Scaffolding, Boolean> SCAFFOLDING_IS_BOTTOM = new Property<>("Bottom", Scaffolding.class, (scaffolding) -> {
+        scaffolding.setBottom(!scaffolding.isBottom());
+        return scaffolding;
+    }, Scaffolding::isBottom, (scaffolding, bottom) -> {
+        scaffolding.setBottom(bottom);
+        return scaffolding;
+    });
+
+    IProperty<Scaffolding, Integer> SCAFFOLDING_DISTANCE = new Property<>("Distance", Scaffolding.class, (scaffolding) -> {
+        scaffolding.setDistance(scaffolding.getMaximumDistance() == scaffolding.getDistance() ? 0 : scaffolding.getDistance() + 1);
+        return scaffolding;
+    }, Scaffolding::getDistance, (scaffolding, distance) -> {
+        scaffolding.setDistance(distance);
+        return scaffolding;
     });
 
     /**
