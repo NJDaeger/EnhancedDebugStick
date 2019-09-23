@@ -5,7 +5,6 @@ import com.njdaeger.bci.defaults.CommandContext;
 import com.njdaeger.bci.defaults.CommandStore;
 import com.njdaeger.bci.defaults.TabContext;
 import com.njdaeger.enhanceddebugstick.api.DebugStickAPI;
-import com.njdaeger.enhanceddebugstick.api.IProperty;
 import com.njdaeger.enhanceddebugstick.api.Property;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
@@ -19,7 +18,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAPI {
 
@@ -33,13 +31,7 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
     public void onEnable() {
         PLUGIN = this;
 
-        try {
-            Property.registerProperties();
-            Stream.of(IProperty.getMaterialProperties()).forEach(System.out::println);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        } catch (Throwable ignore) {
-        }
+        Property.registerProperties();
         if (!new File(getDataFolder() + File.separator + "config.yml").exists()) saveResource("config.yml", false);
         this.configuration = new ConfigurationFile(this);
         new DebugStickCommand(this);
