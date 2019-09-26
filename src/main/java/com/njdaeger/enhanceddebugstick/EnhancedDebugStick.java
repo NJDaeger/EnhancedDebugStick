@@ -37,10 +37,13 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
         new DebugStickCommand(this);
         new DebugListener(this);
 
-        if (ConfigKey.CDM_LOGGING) {
+        if (ConfigKey.CDM_LOGGING || ConfigKey.COPY_LOGGING) {
             coreProtectAPI = initializeCoreprotect();
             if (coreProtectAPI == null) getLogger().warning("CoreProtectAPI was unable to be hooked. (Is CoreProtect installed?)");
             else getLogger().info("CoreProtectAPI was successfully hooked.");
+        }
+        if (ConfigKey.CDM_PLOT || ConfigKey.COPY_PLOT || ConfigKey.FDM_PLOT) {
+
         }
         if (ConfigKey.BSTATS_INTEGRATION) {
             new Metrics(this);

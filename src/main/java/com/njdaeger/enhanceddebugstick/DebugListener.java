@@ -38,6 +38,11 @@ public final class DebugListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
+        switch (ConfigKey.MS_DEFAULT_SHIFT_PREFERENCE) {
+            case HOLD:
+            case DOUBLE:
+            default:
+        }
         if (!ConfigKey.MS_COMMAND_SHIFTING) {
             Player player = event.getPlayer();
             DebugSession session = plugin.getDebugSession(player.getUniqueId());
