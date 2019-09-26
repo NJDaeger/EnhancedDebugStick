@@ -11,31 +11,69 @@ sound-on-select: true
 # will still send, just not the sound.
 sound-on-error: true
 
+
+
+#
 # Settings for when a player wants to change between debug modes.
+#
 mode-shift:
 
-  # If command shifting is enabled, the next 4 configuration nodes after this will not do anything. This makes it so
-  # command shifting will need to be done via the debug stick command rather than just double shifting to enable/disable
-  # the mode shifter.
-  command-shifting: false
+  # By default, how should users be changing modes? Possible options are:
+  #   COMMAND   - If set to command, the user will need to do /dbs <newMode> to shift modes.
+  #   DOUBLE    - If set to double, the user will need to double sneak to enable/disable the mode shifter
+  #   HOLD      - If set to hold, the user will need to be holding sneak and not moving to enable/disable the mode shifter
+  #
+  # Note: users can set their own preference if enabled (see next configuration node)
+  # If this node doesn't exist or if the value set is invalid, the default will be DOUBLE
+  default-mode-shift-preference: DOUBLE
 
-  # When enabling and disabling the mode selector, should a sound be played? (Note: command-shifting must be false)
+  # When this is enabled, users are able to set their own preference as to how they want to change modes. If they do not
+  # have a preference, they will default to what is set in the default-mode-shift-preference
+  user-mode-shift-preference: true
+
+  # When enabling and disabling the mode shifter, should a sound be played? (only affects the DOUBLE and HOLD preference)
   start-stop-sound: true
 
-  # When going to the next mode, should a sound be played? (Note: command-shifting must be false)
+  # When going to the next mode, should a sound be played? (only affects the DOUBLE and HOLD preference)
   mode-change-sound: true
 
-  # When shifting between modes, how quickly (in milliseconds... 1000 milliseconds = 1 second) must a player double sneak
-  # in order for it to be detected as them wanting to change debug modes? Typically anything lower than 500ms is unusable.
-  # (Note: command-shifting must be false)
-  double-sneak-timeout: 750
+  #
+  # These options only take effect if the user's (or server if user preferences are disabled) mode shift preference
+  # is DOUBLE.
+  #
+  double-sneak-options:
 
-  # How long (in milliseconds... 1000 milliseconds = 1 second) should the user wait before being able to change to a
-  # different debug mode? In a nutshell, after you double shift to close the mode shifter, by default, 2 seconds can go
-  # by where you can spam shift and the mode shifter will not pop up. (Note: command-shifting must be false)
-  mode-change-cooldown: 2000
+    # When shifting between modes, how quickly (in milliseconds... 1000 milliseconds = 1 second) must a player double sneak
+    # in order for it to be detected as them wanting to change debug modes? Typically anything lower than 500ms is unusable.
+    double-sneak-timeout: 750
 
+    # How long (in milliseconds... 1000 milliseconds = 1 second) should the user wait before being able to change to a
+    # different debug mode? In a nutshell, after you double shift to close the mode shifter, by default, 2 seconds can go
+    # by where you can spam shift and the mode shifter will not pop up.
+    mode-change-cooldown: 2000
+
+  #
+  # These options only take effect if the user's (or server if the user preferences are disabled) mode shift preference
+  # is HOLD.
+  #
+  hold-sneak-options:
+
+    # When attempting to switch modes, what is the minimum amount of time (in milliseconds... 1000 milliseconds = 1 second)
+    # a player needs to hold sneak in order to enable/disable the mode shifter? Default is 1000. If this is less than or
+    # equal to 0 the value will go to the default
+    sneak-minimum: 1000
+
+    # When attempting to switch modes, what is the maximum amount of time (in milliseconds... 1000 milliseconds = 1 second)
+    # a player can hold sneak and still enable/disable the mode shifter? Default is -1 for no time maximum. If this is less
+    # than or equal to the shift-minimum value, there will then be no maximum set. So, if the player were to hold shift any
+    # amount of time after the shift-minimum time requirement is met- the mode shifter will be enabled/disabled.
+    sneak-maximum: 2000
+
+
+
+#
 # Settings for the classic debug mode. This mode acts like the standard debug stick
+#
 classic-debug-mode:
 
   # When looking at a block within a specified distance,
@@ -59,8 +97,13 @@ classic-debug-mode:
   # indicating the next value for the selected property has been chosen.
   next-value-sound: true
 
+  # Enable this if you want to prevent players from editing outside of their PlotSquared plot
+  plotsquared-integration: false
+
+#
 # Settings for the frozen debug mode. This mode allows the locking of blocks so their properties wont update when a
 # block is placed nearby
+#
 frozen-debug-mode:
 
   # Outlines the selected block to furthermore express that the block is frozen. This outline will only be shown to
@@ -76,6 +119,18 @@ frozen-debug-mode:
   # When all frozen blocks are unfrozen at the same time, play a sound to indicate it.
   mass-unfreeze-sound: true
 
+  # Enable this if you want to prevent players from editing outside of their PlotSquared plot.
+  plotsquared-integration: false
+
+
+
+#
+# Settings for the copy debug mode. This mode allows the copying and pasting of blockstates (not blocks!) so the common
+# properties of the current copied block can be applied to the common properties (which have mismatching values) of another
+# block. For example, you have a slab: "stone_slab[type=upper,waterlogged=true]" and you want to copy the properties of
+# that block and paste them on another block of similar properties. You copy the slab, and then paste it on a stair block
+# which is NOT waterlogged- in this case, the stair block would become waterlogged and nothing else about it would change.
+#
 copy-debug-mode:
 
   # When looking at a block within a specified distance,
@@ -106,3 +161,6 @@ copy-debug-mode:
   # When the clipblard is cleared (left click air) a sound will be played to the player
   # indicating the clipboard was cleared.
   clear-sound: true
+
+  # Enable this if you want to prevent players from editing outside of their PlotSquared plot.
+  plotsquared-integration: false

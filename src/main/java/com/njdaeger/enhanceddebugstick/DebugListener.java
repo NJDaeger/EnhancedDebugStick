@@ -73,10 +73,10 @@ public final class DebugListener implements Listener {
     public void onSneak(PlayerToggleSneakEvent event) {
         if (!ConfigKey.MS_COMMAND_SHIFTING) {
             DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
-            if (session.isHoldingDebugStick() && !session.isSelectingMode() && event.isSneaking() && ((System.currentTimeMillis() - session.getLastStop()) > ConfigKey.MS_CHANGE_COOLDOWN)) {
+            if (session.isHoldingDebugStick() && !session.isSelectingMode() && event.isSneaking() && ((System.currentTimeMillis() - session.getLastStop()) > ConfigKey.DOUBLE_CHANGE_COOLDOWN)) {
                 if (session.getSelectingStart() == 0) session.setSelectingStart(System.currentTimeMillis());
                 else {
-                    if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.MS_SNEAK_TIMEOUT) session.setSelectingStart(0);
+                    if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.DOUBLE_SNEAK_TIMEOUT) session.setSelectingStart(0);
                     else {
                         if (ConfigKey.MS_START_STOP_SOUND) session.sendSound(Sound.BLOCK_NOTE_BLOCK_PLING, 10);
                         session.setSelectingMode(true);
@@ -87,7 +87,7 @@ public final class DebugListener implements Listener {
             if (session.isHoldingDebugStick() && !event.isSneaking() && session.isSelectingMode() && (System.currentTimeMillis() - session.getLastStart()) > 1000) {
                 if (session.getSelectingStart() == 0) session.setSelectingStart(System.currentTimeMillis());
                 else {
-                    if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.MS_SNEAK_TIMEOUT) session.setSelectingStart(0);
+                    if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.DOUBLE_SNEAK_TIMEOUT) session.setSelectingStart(0);
                     else {
                         if (ConfigKey.MS_START_STOP_SOUND) session.sendSound(Sound.BLOCK_NOTE_BLOCK_PLING);
                         session.setSelectingMode(false);
