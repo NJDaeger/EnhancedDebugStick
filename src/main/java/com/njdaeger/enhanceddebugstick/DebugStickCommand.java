@@ -4,6 +4,7 @@ import com.njdaeger.bci.defaults.BCIBuilder;
 import com.njdaeger.bci.defaults.CommandContext;
 import com.njdaeger.bci.defaults.TabContext;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
+import com.njdaeger.enhanceddebugstick.api.ShiftMode;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ final class DebugStickCommand {
                 .executor(this::debugStick)
                 .completer(this::completions)
                 .permissions("enhanceddebugstick.command")
-                .maxArgs(ConfigKey.MS_COMMAND_SHIFTING ? 1 : 0)
+                .maxArgs(ConfigKey.MS_DEFAULT_SHIFT_PREFERENCE == ShiftMode.COMMAND ? 1 : 0)
                 .locatableSenders()
                 .usage("/debugstick")
                 .description("Gives you a usable debug stick.")
@@ -48,7 +49,7 @@ final class DebugStickCommand {
     }
 
     private void completions(TabContext context) {
-        if (ConfigKey.MS_COMMAND_SHIFTING) context.completionAt(0, DebugModeType.getDebugModes().stream().filter(mode -> context.hasPermission(mode.getBasePermission() + ".use")).map(DebugModeType::getNiceName).toArray(String[]::new));
+        if (ConfigKey.MS_DEFAULT_SHIFT_PREFERENCE == ShiftMode.COMMAND) context.completionAt(0, DebugModeType.getDebugModes().stream().filter(mode -> context.hasPermission(mode.getBasePermission() + ".use")).map(DebugModeType::getNiceName).toArray(String[]::new));
     }
 
 

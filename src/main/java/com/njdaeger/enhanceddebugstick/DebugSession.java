@@ -41,15 +41,6 @@ public final class DebugSession {
     }
 
     /**
-     * Get the current debug mode in use
-     *
-     * @return The current debug mode in use
-     */
-    public DebugModeType<?, ?> getDebugMode() {
-        return debugMode;
-    }
-
-    /**
      * Check if the current debug matches the given debug mode
      *
      * @param type The mode to check
@@ -57,6 +48,15 @@ public final class DebugSession {
      */
     public boolean isDebugMode(DebugModeType type) {
         return debugMode.equals(type);
+    }
+
+    /**
+     * Get the current debug mode in use
+     *
+     * @return The current debug mode in use
+     */
+    public DebugModeType<?, ?> getDebugMode() {
+        return debugMode;
     }
 
     /**
@@ -188,6 +188,11 @@ public final class DebugSession {
         sendSound(sound, 1);
     }
 
+    /**
+     * Sends a sound to this player
+     * @param sound The sound to send
+     * @param pitch The pitch of the sound
+     */
     public void sendSound(Sound sound, float pitch) {
         if (isOnline()) {
             Player player = Bukkit.getPlayer(uuid);
@@ -195,11 +200,11 @@ public final class DebugSession {
         }
     }
 
-    boolean isSelectingMode() {
+    public boolean isSelectingMode() {
         return selecting;
     }
 
-    void setSelectingMode(boolean enabled) {
+    public void setSelectingMode(boolean enabled) {
         this.sneakStart = 0;
         this.selecting = enabled;
         if (enabled) {
@@ -213,23 +218,23 @@ public final class DebugSession {
         }
     }
 
-    long getLastStop() {
+    public long getLastStop() {
         return lastStop;
     }
 
-    long getLastStart() {
+    public long getLastStart() {
         return lastStart;
     }
 
-    long getSelectingStart() {
+    public long getSelectingStart() {
         return sneakStart;
     }
 
-    void setSelectingStart(long start) {
+    public void setSelectingStart(long start) {
         this.sneakStart = start;
     }
 
-    Runnable getSelectingTask() {
+    public Runnable getSelectingTask() {
         return () -> {
             Player player = Bukkit.getPlayer(uuid);
             StringBuilder builder = new StringBuilder();

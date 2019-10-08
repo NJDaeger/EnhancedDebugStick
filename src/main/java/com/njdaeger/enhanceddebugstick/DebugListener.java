@@ -1,9 +1,8 @@
 package com.njdaeger.enhanceddebugstick;
 
-import com.njdaeger.enhanceddebugstick.api.DebugModeType;
-import org.bukkit.Sound;
+import com.njdaeger.enhanceddebugstick.api.ShiftMode;
+import com.njdaeger.enhanceddebugstick.shifter.Shifter;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -38,68 +37,24 @@ public final class DebugListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        switch (ConfigKey.MS_DEFAULT_SHIFT_PREFERENCE) {
-            case HOLD:
-            case DOUBLE:
-            default:
-        }
-        if (!ConfigKey.MS_COMMAND_SHIFTING) {
-            Player player = event.getPlayer();
-            DebugSession session = plugin.getDebugSession(player.getUniqueId());
-            if (session.isHoldingDebugStick() && session.isSelectingMode()) {
-                event.setCancelled(true);
-                event.setUseInteractedBlock(Event.Result.DENY);
-                event.setUseItemInHand(Event.Result.DENY);
-                int size = DebugModeType.getDebugModes().size();
-                int index = DebugModeType.getDebugModes().indexOf(session.getDebugMode());
-
-                if (ConfigKey.MS_MODE_CHANGE) session.sendSound(Sound.UI_BUTTON_CLICK);
-
-                switch (event.getAction()) {
-                    case LEFT_CLICK_AIR:
-                    case LEFT_CLICK_BLOCK:
-                        session.setDebugMode(index + 1 == size ? DebugModeType.getDebugModes().get(0) : DebugModeType.getDebugModes().get(index + 1));
-                        session.getDebugMode().pauseSession(session);
-                        session.getSelectingTask().run();
-                        break;
-                    case RIGHT_CLICK_AIR:
-                    case RIGHT_CLICK_BLOCK:
-                        session.setDebugMode(index - 1 < 0 ? DebugModeType.getDebugModes().get(size - 1) : DebugModeType.getDebugModes().get(index - 1));
-                        session.getDebugMode().pauseSession(session);
-                        session.getSelectingTask().run();
-                        break;
-                }
-                return;
-            }
-        }
+        Player player = event.getPlayer();
+        DebugSession session = plugin.getDebugSession(player.getUniqueId());
+        ShiftMode mode = ConfigKey.MS_DEFAULT_SHIFT_PREFERENCE;
+        Shifter shifter = ConfigKey.MS_DEFAULT_SHIFT_PREFERENCE.getShifter();
+        if ((mode == ShiftMode.HOLD || mode == ShiftMode.DOUBLE) && shifter.canShift(session, event)) shifter.runShift(session, event);
     }
 
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
-        if (!ConfigKey.MS_COMMAND_SHIFTING) {
-            DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
-            if (session.isHoldingDebugStick() && !session.isSelectingMode() && event.isSneaking() && ((System.currentTimeMillis() - session.getLastStop()) > ConfigKey.DOUBLE_CHANGE_COOLDOWN)) {
-                if (session.getSelectingStart() == 0) session.setSelectingStart(System.currentTimeMillis());
-                else {
-                    if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.DOUBLE_SNEAK_TIMEOUT) session.setSelectingStart(0);
-                    else {
-                        if (ConfigKey.MS_START_STOP_SOUND) session.sendSound(Sound.BLOCK_NOTE_BLOCK_PLING, 10);
-                        session.setSelectingMode(true);
-                        session.pause();
-                    }
-                }
+        DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
+        ShiftMode mode = ConfigKey.MS_DEFAULT_SHIFT_PREFERENCE;
+        Shifter shifter = mode.getShifter();
+        if (mode == ShiftMode.HOLD || mode == ShiftMode.DOUBLE) {
+            if (shifter.canEnable(session, event)) {
+                shifter.runEnable(session, event);
+                return;
             }
-            if (session.isHoldingDebugStick() && !event.isSneaking() && session.isSelectingMode() && (System.currentTimeMillis() - session.getLastStart()) > 1000) {
-                if (session.getSelectingStart() == 0) session.setSelectingStart(System.currentTimeMillis());
-                else {
-                    if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.DOUBLE_SNEAK_TIMEOUT) session.setSelectingStart(0);
-                    else {
-                        if (ConfigKey.MS_START_STOP_SOUND) session.sendSound(Sound.BLOCK_NOTE_BLOCK_PLING);
-                        session.setSelectingMode(false);
-                        session.resume();
-                    }
-                }
-            }
+            if (shifter.canDisable(session, event)) shifter.runDisable(session, event);
         }
     }
 }
