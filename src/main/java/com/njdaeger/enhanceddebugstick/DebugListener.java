@@ -49,7 +49,6 @@ public final class DebugListener implements Listener {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
         ShiftMode mode = ConfigKey.MS_DEFAULT_SHIFT_PREFERENCE;
         Shifter shifter = mode.getShifter();
-        System.out.println("snek");
         if (mode == ShiftMode.HOLD || mode == ShiftMode.DOUBLE) {
             if (shifter.canEnable(session, event)) {
                 shifter.runEnable(session, event);

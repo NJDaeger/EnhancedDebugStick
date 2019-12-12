@@ -12,7 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class BossBarTimer {
+public final class BossBarTimer {
 
     private final long startTime;
     private final long totalTime;
