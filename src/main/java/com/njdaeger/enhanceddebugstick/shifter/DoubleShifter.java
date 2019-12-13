@@ -23,7 +23,10 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
                     (timer) -> DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + ChatColor.GRAY + "Timeout: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.), (p) -> session.isSelectingMode());
         }
         else {
-            if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.DOUBLE_SNEAK_TIMEOUT) session.setSelectingStart(0);
+            if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.DOUBLE_SNEAK_TIMEOUT) {
+                session.setSelectingStart(0);
+                runEnable(session, event);
+            }
             else {
                 if (ConfigKey.MS_START_STOP_SOUND) session.sendSound(Sound.BLOCK_NOTE_BLOCK_PLING, 10);
                 session.setSelectingMode(true);
@@ -45,7 +48,10 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
                     (timer) -> DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + ChatColor.GRAY + "Timeout: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.), (p) -> !session.isSelectingMode());
         }
         else {
-            if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.DOUBLE_SNEAK_TIMEOUT) session.setSelectingStart(0);
+            if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.DOUBLE_SNEAK_TIMEOUT) {
+                session.setSelectingStart(0);
+                runDisable(session, event);
+            }
             else {
                 if (ConfigKey.MS_START_STOP_SOUND) session.sendSound(Sound.BLOCK_NOTE_BLOCK_PLING);
                 session.setSelectingMode(false);
