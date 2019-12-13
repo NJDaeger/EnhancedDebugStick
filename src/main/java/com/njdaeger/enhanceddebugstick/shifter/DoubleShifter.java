@@ -20,7 +20,7 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
         if (session.getSelectingStart() == 0) {
             session.setSelectingStart(System.currentTimeMillis());
             BossBarTimer.create(event.getPlayer(), false, ConfigKey.DOUBLE_SNEAK_TIMEOUT, 2,
-                    (timer) -> DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + ChatColor.GRAY + "Timeout: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.)/*, (p) -> session.isSelectingMode()*/);
+                    (timer) -> DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + ChatColor.GRAY + "Timeout: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.), (p) -> session.isSelectingMode());
         }
         else {
             if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.DOUBLE_SNEAK_TIMEOUT) session.setSelectingStart(0);
@@ -39,7 +39,11 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
 
     @Override
     public void runDisable(DebugSession session, PlayerToggleSneakEvent event) {
-        if (session.getSelectingStart() == 0) session.setSelectingStart(System.currentTimeMillis());
+        if (session.getSelectingStart() == 0) {
+            session.setSelectingStart(System.currentTimeMillis());
+            BossBarTimer.create(event.getPlayer(), false, ConfigKey.DOUBLE_SNEAK_TIMEOUT, 2,
+                    (timer) -> DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + ChatColor.GRAY + "Timeout: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.), (p) -> !session.isSelectingMode());
+        }
         else {
             if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.DOUBLE_SNEAK_TIMEOUT) session.setSelectingStart(0);
             else {

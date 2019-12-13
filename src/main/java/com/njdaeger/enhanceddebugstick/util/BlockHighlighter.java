@@ -20,6 +20,7 @@ public final class BlockHighlighter {
     private static final Map<UUID, Highlighter> tasks = new HashMap<>();
 
     private static Field connection;
+    private static Field entityType;
     private static Method sendPacket;
 
     private static Method invisible;
@@ -40,13 +41,13 @@ public final class BlockHighlighter {
 
     static {
         try {
-
             connection = Util.getNMSClass("EntityPlayer").getDeclaredField("playerConnection");
             sendPacket = connection.getType().getDeclaredMethod("sendPacket", Util.getNMSClass("Packet"));
 
             Class<?> shulkerClass = Util.getNMSClass("EntityShulker");
             Class<?> insentientClass = Util.getNMSClass("EntityInsentient");
             Class<?> entityClass = Util.getNMSClass("Entity");
+            entityType = Util.getNMSClass("EntityTypes").getField("SHULKER");
 
             invisible = entityClass.getDeclaredMethod("setInvisible", boolean.class);
             invulnerable = entityClass.getDeclaredMethod("setInvulnerable", boolean.class);
@@ -58,7 +59,7 @@ public final class BlockHighlighter {
 
             entityLivingClass = Util.getNMSClass("EntityLiving");
             world = Util.getOBCClass("CraftWorld").getDeclaredMethod("getHandle");
-            shulkerConstructor = shulkerClass.getConstructor(Util.getNMSClass("World"));
+            shulkerConstructor = shulkerClass.getConstructor(Util.getNMSClass("EntityTypes"), Util.getNMSClass("World"));
             packetEntityLivingConstructor = Util.getNMSClass("PacketPlayOutSpawnEntityLiving").getDeclaredConstructor(Util.getNMSClass("EntityLiving"));
             packetEntityMetadataConstructor = Util.getNMSClass("PacketPlayOutEntityMetadata").getDeclaredConstructor(int.class, Util.getNMSClass("DataWatcher"), boolean.class);
             packetEntityDestroyConstructor = Util.getNMSClass("PacketPlayOutEntityDestroy").getDeclaredConstructor(int[].class);
@@ -155,7 +156,7 @@ public final class BlockHighlighter {
          */
         public void addBlock(Block block) {
             try {
-                Object shulker = shulkerConstructor.newInstance(world.invoke(block.getWorld()));
+                Object shulker = shulkerConstructor.newInstance(entityType.get(null), world.invoke(block.getWorld()));
 
                 invisible.invoke(shulker, true);
                 invulnerable.invoke(shulker, true);
