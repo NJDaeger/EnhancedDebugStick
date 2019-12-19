@@ -1,4 +1,4 @@
-package com.njdaeger.enhanceddebugstick;
+package com.njdaeger.enhanceddebugstick.util;
 
 public final class Util {
 

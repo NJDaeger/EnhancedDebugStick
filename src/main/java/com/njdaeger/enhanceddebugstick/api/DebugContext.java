@@ -1,6 +1,6 @@
 package com.njdaeger.enhanceddebugstick.api;
 
-import com.njdaeger.enhanceddebugstick.DebugSession;
+import com.njdaeger.enhanceddebugstick.session.DebugSession;
 
 import java.util.UUID;
 

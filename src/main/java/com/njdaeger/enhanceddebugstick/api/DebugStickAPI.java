@@ -1,7 +1,7 @@
 package com.njdaeger.enhanceddebugstick.api;
 
 import com.njdaeger.enhanceddebugstick.ConfigurationFile;
-import com.njdaeger.enhanceddebugstick.DebugSession;
+import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.DebugStick;
 import org.bukkit.entity.Player;
 

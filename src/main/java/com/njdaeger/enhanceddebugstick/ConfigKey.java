@@ -19,17 +19,17 @@ public final class ConfigKey<T> {
      * Whether to play sounds when errors happen in game
      */
     public static final boolean SOUND_ON_ERROR = get("sound-on-error", true);
+
+    /**
+     * Whether to enable users to set custom preferences
+     */
+    public static final boolean ENABLE_PREFERENCES = get("enable-user-preferences", true);
+
     /**
      * What default mode shifting preference to use
-     * //TODO implement
      */
     public static final ShiftMode MS_DEFAULT_SHIFT_PREFERENCE = get("mode-shift.default-mode-shift-preference", ShiftMode.DOUBLE);
 
-    /**
-     * Whether to allow users to have a mode shifting preference
-     * //TODO implement
-     */
-    public static final boolean MS_USER_SHIFT_PREFERENCE = get("mode-shift.user-mode-shift-preference", true);
     /**
      * Whether to do a sound when the mode selector is enabled or disabled.
      */
@@ -39,13 +39,13 @@ public final class ConfigKey<T> {
      */
     public static final boolean MS_MODE_CHANGE = get("mode-shift.mode-change-sound", true);
     /**
+     * How long to wait before being able to use the mode shifter again.
+     */
+    public static final long MS_CHANGE_COOLDOWN = get("mode-shift.mode-change-cooldown", 2000, t -> t >= 0);
+    /**
      * How long to wait for a player to double sneak before the timeout is reached.
      */
     public static final long DOUBLE_SNEAK_TIMEOUT = get("mode-shift.double-sneak-options.double-sneak-timeout", 750L, t -> t >= 0);
-    /**
-     * How long to wait before being able to use the mode shifter again.
-     */
-    public static final long DOUBLE_CHANGE_COOLDOWN = get("mode-shift.double-sneak-options.mode-change-cooldown", 2000, t -> t >= 0);
     /**
      * Minimum time to hold sneak for the HOLD preference
      * //TODO implement

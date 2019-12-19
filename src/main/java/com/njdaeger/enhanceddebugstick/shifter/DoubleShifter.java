@@ -1,7 +1,7 @@
 package com.njdaeger.enhanceddebugstick.shifter;
 
 import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.DebugSession;
+import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.util.BossBarTimer;
 import org.bukkit.ChatColor;
@@ -37,7 +37,7 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
 
     @Override
     public boolean canEnable(DebugSession session, PlayerToggleSneakEvent event) {
-        return session.isHoldingDebugStick() && !session.isSelectingMode() && event.isSneaking() && ((System.currentTimeMillis() - session.getLastStop()) > ConfigKey.DOUBLE_CHANGE_COOLDOWN);
+        return session.isHoldingDebugStick() && !session.isSelectingMode() && event.isSneaking() && ((System.currentTimeMillis() - session.getLastStop()) > ConfigKey.MS_CHANGE_COOLDOWN);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
                 if (ConfigKey.MS_START_STOP_SOUND) session.sendSound(Sound.BLOCK_NOTE_BLOCK_PLING);
                 session.setSelectingMode(false);
                 session.resume();
-                BossBarTimer.create(event.getPlayer(), false, ConfigKey.DOUBLE_CHANGE_COOLDOWN, 2,
+                BossBarTimer.create(event.getPlayer(), false, ConfigKey.MS_CHANGE_COOLDOWN, 2,
                         (timer) -> DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + ChatColor.GRAY + "Cooldown: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.));
             }
         }

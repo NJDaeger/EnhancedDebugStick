@@ -1,7 +1,7 @@
 package com.njdaeger.enhanceddebugstick.modes.copy;
 
 import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.DebugSession;
+import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
@@ -13,7 +13,7 @@ import org.bukkit.block.data.BlockData;
 import java.util.List;
 import java.util.UUID;
 
-import static com.njdaeger.enhanceddebugstick.Util.format;
+import static com.njdaeger.enhanceddebugstick.util.Util.format;
 import static org.bukkit.ChatColor.*;
 
 public final class CopyDebugContext implements DebugContext {

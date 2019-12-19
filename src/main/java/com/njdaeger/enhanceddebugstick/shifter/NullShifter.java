@@ -1,6 +1,6 @@
 package com.njdaeger.enhanceddebugstick.shifter;
 
-import com.njdaeger.enhanceddebugstick.DebugSession;
+import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import org.bukkit.event.player.PlayerEvent;
 
 public class NullShifter implements Shifter<PlayerEvent, PlayerEvent> {

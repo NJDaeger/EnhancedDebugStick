@@ -1,7 +1,7 @@
 package com.njdaeger.enhanceddebugstick.api;
 
 import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.DebugSession;
+import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import com.njdaeger.enhanceddebugstick.modes.classic.ClassicDebugMode;
 import com.njdaeger.enhanceddebugstick.modes.copy.CopyDebugMode;

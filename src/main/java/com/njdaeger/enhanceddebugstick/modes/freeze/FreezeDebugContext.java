@@ -1,7 +1,7 @@
 package com.njdaeger.enhanceddebugstick.modes.freeze;
 
 import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.DebugSession;
+import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
 import com.njdaeger.enhanceddebugstick.util.BlockHighlighter;
 import org.bukkit.Bukkit;

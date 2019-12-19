@@ -11,7 +11,44 @@ sound-on-select: true
 # will still send, just not the sound.
 sound-on-error: true
 
+# Allow users to set personal settings for themselves without changing this settings file. They would be allowed to
+# modify the following:
+#   Mode Shifter              - Set a custom shift mode other than the default preference
+#   *Double Sneak timeout     - How fast the user must be able to shift to enable/disable the mode shifter
+#   Mode Change Cooldown      - How long the user must wait to change modes again.
+#   **Sneak Minimum           - Least amount of time the user can sneak to enable/disable the mode shifter
+#   **Sneak Maximum           - Most amount of time the user can sneak to still enable/disable the mode shifter
+#
+# *   The DOUBLE mode shifter must be selected to be an option
+# **  The HOLD mode shifter must be selected to be an option
+enable-user-preferences: true
 
+# If PlotSquared is installed, settings for it are below.
+plotsquared-integration:
+
+  #Enables PlotSquared integration. If enabled, and PS is not installed, the plugin will not act differently. If
+  #disabled and PS is installed, the plugin will work as a free for all where players can edit outside of their plots
+  enable: false
+
+  # When enabled, this will restrict the usage of the Debug Stick on a plot to only trusted+ people. People who are
+  # added temporarily will not be allowed to use the Debug Stick on the plot they were added to. Otherwise, if this is
+  # disabled, the temporary people will be able to use the Debug Stick if they have been added, in addition to the other
+  # trusted+ members of the plot.
+  only-trusted: false
+
+  classic-options:
+
+
+
+  freeze-options:
+
+
+
+  copy-options:
+
+    copy-outside-of-plot: false
+
+    paste-outside-of-plot: false
 
 #
 # Settings for when a player wants to change between debug modes.
@@ -27,15 +64,16 @@ mode-shift:
   # If this node doesn't exist or if the value set is invalid, the default will be DOUBLE
   default-mode-shift-preference: DOUBLE
 
-  # When this is enabled, users are able to set their own preference as to how they want to change modes. If they do not
-  # have a preference, they will default to what is set in the default-mode-shift-preference
-  user-mode-shift-preference: true
-
   # When enabling and disabling the mode shifter, should a sound be played? (only affects the DOUBLE and HOLD preference)
   start-stop-sound: true
 
   # When going to the next mode, should a sound be played? (only affects the DOUBLE and HOLD preference)
   mode-change-sound: true
+
+  # How long (in milliseconds... 1000 milliseconds = 1 second) should the user wait before being able to change to a
+  # different debug mode? In a nutshell, after you disable the mode shifter, by default, 2 seconds can go
+  # by where you can spam shift and the mode shifter will not pop up.
+  mode-change-cooldown: 2000
 
   #
   # These options only take effect if the user's (or server if user preferences are disabled) mode shift preference
@@ -46,11 +84,6 @@ mode-shift:
     # When shifting between modes, how quickly (in milliseconds... 1000 milliseconds = 1 second) must a player double sneak
     # in order for it to be detected as them wanting to change debug modes? Typically anything lower than 500ms is unusable.
     double-sneak-timeout: 750
-
-    # How long (in milliseconds... 1000 milliseconds = 1 second) should the user wait before being able to change to a
-    # different debug mode? In a nutshell, after you double shift to close the mode shifter, by default, 2 seconds can go
-    # by where you can spam shift and the mode shifter will not pop up.
-    mode-change-cooldown: 2000
 
   #
   # These options only take effect if the user's (or server if the user preferences are disabled) mode shift preference
@@ -161,6 +194,3 @@ copy-debug-mode:
   # When the clipblard is cleared (left click air) a sound will be played to the player
   # indicating the clipboard was cleared.
   clear-sound: true
-
-  # Enable this if you want to prevent players from editing outside of their PlotSquared plot.
-  plotsquared-integration: false

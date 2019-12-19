@@ -1,7 +1,7 @@
 package com.njdaeger.enhanceddebugstick.modes.classic;
 
 import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.DebugSession;
+import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.njdaeger.enhanceddebugstick.Util.format;
+import static com.njdaeger.enhanceddebugstick.util.Util.format;
 import static com.njdaeger.enhanceddebugstick.api.IProperty.getProperties;
 import static com.njdaeger.enhanceddebugstick.api.IProperty.hasProperties;
 import static org.bukkit.ChatColor.*;

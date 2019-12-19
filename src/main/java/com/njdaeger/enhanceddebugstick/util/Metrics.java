@@ -1,4 +1,4 @@
-package com.njdaeger.enhanceddebugstick;
+package com.njdaeger.enhanceddebugstick.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;

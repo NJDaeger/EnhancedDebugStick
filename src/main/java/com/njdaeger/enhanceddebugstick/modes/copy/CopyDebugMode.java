@@ -1,7 +1,7 @@
 package com.njdaeger.enhanceddebugstick.modes.copy;
 
 import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.DebugSession;
+import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
 import org.bukkit.Sound;

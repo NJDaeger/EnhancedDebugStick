@@ -1,9 +1,12 @@
-package com.njdaeger.enhanceddebugstick;
+package com.njdaeger.enhanceddebugstick.session;
 
 import com.njdaeger.btu.ActionBar;
+import com.njdaeger.enhanceddebugstick.ConfigKey;
+import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.DebugStickAPI;
+import com.njdaeger.enhanceddebugstick.api.ShiftMode;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -25,10 +28,22 @@ public final class DebugSession {
     private long lastForced;
     private final UUID uuid;
     private DebugModeType debugMode;
+    private PreferenceTrack prefs;
 
-    DebugSession(UUID uuid) {
+    public DebugSession(UUID uuid) {
         this.uuid = uuid;
+        if (ConfigKey.ENABLE_PREFERENCES) this.prefs = new PreferenceTrack(uuid);
         setDebugMode(DebugModeType.CLASSIC);
+    }
+
+    /**
+     * Get a user preference from a user
+     * @param preference The preference to get
+     * @param <T> The data type of the preference
+     * @return The preference from the user, or the default config value if preferences arent enabled.
+     */
+    public <T> T getPref(Preference<T> preference) {
+        return prefs == null ? preference.getDefault() : prefs.get(preference);
     }
 
     /**
@@ -110,7 +125,7 @@ public final class DebugSession {
      * @return True if the player has permission, false otherwise.
      */
     public boolean hasPermission(DebugModeType<?, ?> debugMode) {
-        return Bukkit.getPlayer(uuid).hasPermission(debugMode.getBasePermission() + ".use");
+        return Bukkit.getPlayer(uuid).hasPermission(debugMode.getBasePermission());
     }
 
     /**

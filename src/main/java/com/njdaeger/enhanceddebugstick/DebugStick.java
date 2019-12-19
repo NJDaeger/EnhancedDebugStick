@@ -16,7 +16,7 @@ public final class DebugStick extends ItemStack {
         setAmount(1);
         setType(Material.STICK);
         ItemMeta meta = getItemMeta();
-        meta.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "Debug Stick");
+        meta.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "Enhanced Debug Stick");
         meta.addEnchant(Enchantment.DURABILITY, 1, true);
         meta.setUnbreakable(true);
         meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);

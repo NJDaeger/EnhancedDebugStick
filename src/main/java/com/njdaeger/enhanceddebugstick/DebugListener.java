@@ -1,6 +1,7 @@
 package com.njdaeger.enhanceddebugstick;
 
 import com.njdaeger.enhanceddebugstick.api.ShiftMode;
+import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.shifter.Shifter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
