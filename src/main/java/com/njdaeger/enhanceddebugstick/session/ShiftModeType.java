@@ -5,7 +5,7 @@ import com.njdaeger.bci.exceptions.ArgumentParseException;
 import com.njdaeger.bci.types.ParsedType;
 import com.njdaeger.enhanceddebugstick.api.ShiftMode;
 
-public class ShiftModeType extends ParsedType<ShiftMode> {
+public final class ShiftModeType extends ParsedType<ShiftMode> {
     @Override
     public ShiftMode parse(String input) throws BCIException {
         ShiftMode mode;

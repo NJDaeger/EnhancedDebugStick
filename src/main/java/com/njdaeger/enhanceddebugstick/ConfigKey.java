@@ -48,12 +48,10 @@ public final class ConfigKey<T> {
     public static final long DOUBLE_SNEAK_TIMEOUT = get("mode-shift.double-sneak-options.double-sneak-timeout", 750L, t -> t >= 0);
     /**
      * Minimum time to hold sneak for the HOLD preference
-     * //TODO implement
      */
     public static final long HOLD_SNEAK_MINIMUM = get("mode-shift.hold-sneak-options.sneak-minimum", 1000, t -> t > 0);
     /**
      * Maximum time to hold sneak for the HOLD preference
-     * //TODO implement
      */
     public static final long HOLD_SNEAK_MAXIMUM = get("mode-shift.hold-sneak-options.sneak-maximum", -1, t -> t > HOLD_SNEAK_MINIMUM);
     /**
@@ -77,11 +75,6 @@ public final class ConfigKey<T> {
      */
     public static final boolean CDM_VALUE = get("classic-debug-mode.next-value-sound", true);
     /**
-     * Whether to enable PlotSquared support for the classic debug mode
-     * //TODO implement this and add permission bypass
-     */
-    public static final boolean CDM_PLOT = get("classic-debug-mode.plotsquared-integration", false, t -> t && Bukkit.getPluginManager().getPlugin("PlotSquared") != null);
-    /**
      * Whether to outline the frozen blocks with an invisible shulker
      */
     public static final boolean FDM_OUTLINE = get("frozen-debug-mode.outline-selected-block", true);
@@ -97,11 +90,7 @@ public final class ConfigKey<T> {
      * Whether to play a sound when all currently selected blocks are unfrozen at the same time.
      */
     public static final boolean FDM_UNFREEZE_ALL = get("frozen-debug-mode.mass-unfreeze-sound", true);
-    /**
-     * Whether to enable PlotSquared support for the freeze debug mode
-     * //TODO implement this and add permission bypass
-     */
-    public static final boolean FDM_PLOT = get("classic-debug-mode.plotsquared-integration", false, t -> t && Bukkit.getPluginManager().getPlugin("PlotSquared") != null);
+
     public static final boolean COPY_DISPLAY_ON_LOOK = get("copy-debug-mode.display-data-on-look", true);
 
     public static final int COPY_DISPLAY_DISTANCE  = get("copy-debug-mode.display-data-distance", 10, d -> d >= 0);
@@ -115,11 +104,6 @@ public final class ConfigKey<T> {
     public static final boolean COPY_PASTE_SOUND = get("copy-debug-mode.paste-sound", true);
 
     public static final boolean COPY_CLEAR_SOUND = get("copy-debug-mode.clear-sound", true);
-    /**
-     * Whether to enable PlotSquared support for the copy debug mode
-     * //TODO implement this and add permission bypass
-     */
-    public static final boolean COPY_PLOT = get("classic-debug-mode.plotsquared-integration", false, t -> t && Bukkit.getPluginManager().getPlugin("PlotSquared") != null);
 
     private final T current;
 

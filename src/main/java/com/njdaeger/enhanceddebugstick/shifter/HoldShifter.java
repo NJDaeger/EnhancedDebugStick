@@ -1,13 +1,12 @@
 package com.njdaeger.enhanceddebugstick.shifter;
 
 import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
+import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.session.Preference;
 import com.njdaeger.enhanceddebugstick.util.BossBarTimer;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -30,7 +29,9 @@ public class HoldShifter implements Shifter<PlayerInteractEvent, PlayerToggleSne
                     (p) -> !p.isSneaking(), max <= 0 ? null :
                     () -> BossBarTimer.create(event.getPlayer(), true, max, 2,
                             (timer) -> DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + ChatColor.GRAY + "Time Remaining: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.),
-                            (p) -> !p.isSneaking(), () -> session.setSelectingStart(0)).start()).start();
+                            (p) -> !p.isSneaking(), () -> {
+                                if (ConfigKey.SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
+                            }).start()).start();
         } else {
             if (session.getSelectingStart() == -1) session.setSelectingStart(0);
             if (ConfigKey.MS_START_STOP_SOUND) session.sendSound(Sound.BLOCK_NOTE_BLOCK_PLING, 10);
@@ -47,7 +48,9 @@ public class HoldShifter implements Shifter<PlayerInteractEvent, PlayerToggleSne
     @Override
     public void runDisable(DebugSession session, PlayerToggleSneakEvent event) {
         long millis = (System.currentTimeMillis() - session.getSelectingStart());
-        if (!session.isSelectingMode() && millis > session.getPref(Preference.SNEAK_MINIMUM)) {
+        long min = session.getPref(Preference.SNEAK_MINIMUM);
+        long max = session.getPref(Preference.SNEAK_MAXIMUM);//We need to offset for the amount of time which it was held for
+        if (!session.isSelectingMode() && millis > min && (max <= 0 || millis < max + min)) {
             session.setSelectingStart(-1);
             runEnable(session, event);
         } else {

@@ -7,8 +7,17 @@ import com.njdaeger.enhanceddebugstick.shifter.Shifter;
 
 public enum ShiftMode {
 
+    /**
+     * The command shift mode
+     */
     COMMAND("Command", new NullShifter()),
+    /**
+     * The double shift mode
+     */
     DOUBLE("Double", new DoubleShifter()),
+    /**
+     * The hold shift mode
+     */
     HOLD("Hold", new HoldShifter());
 
     private final String name;

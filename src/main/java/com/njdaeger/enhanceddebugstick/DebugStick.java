@@ -16,6 +16,7 @@ public final class DebugStick extends ItemStack {
         setAmount(1);
         setType(Material.STICK);
         ItemMeta meta = getItemMeta();
+        if (meta == null) throw new IllegalStateException("ItemMeta was null. Please contact the developer.");
         meta.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "Enhanced Debug Stick");
         meta.addEnchant(Enchantment.DURABILITY, 1, true);
         meta.setUnbreakable(true);
@@ -32,6 +33,8 @@ public final class DebugStick extends ItemStack {
             ItemMeta objMeta = stack.getItemMeta();
             ItemMeta meta = getItemMeta();
             return stack.getType() == getType() &&
+                    objMeta != null &&
+                    meta != null &&
                     objMeta.getDisplayName().equals(meta.getDisplayName()) &&
                     objMeta.hasEnchant(Enchantment.DURABILITY) &&
                     objMeta.hasItemFlag(ItemFlag.HIDE_UNBREAKABLE) &&

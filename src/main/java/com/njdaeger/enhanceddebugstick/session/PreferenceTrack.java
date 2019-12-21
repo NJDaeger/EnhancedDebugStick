@@ -32,5 +32,6 @@ public final class PreferenceTrack extends YmlConfig {
 
     public <T, P extends ParsedType<T>> void set(Preference<T, P> pref, T val) {
         preferences.put(pref, val);
+        setEntry(pref.getKey(), val instanceof Enum ? ((Enum) val).name() : val);
     }
 }
