@@ -1,6 +1,7 @@
 package com.njdaeger.enhanceddebugstick.modes.copy;
 
 import com.njdaeger.enhanceddebugstick.ConfigKey;
+import com.njdaeger.enhanceddebugstick.api.Permissions;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
@@ -29,7 +30,7 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
 
     @Override
     public String getBasePermission() {
-        return "enhanceddebugstick.copy";
+        return Permissions.COPY_MODE;
     }
 
     @Override

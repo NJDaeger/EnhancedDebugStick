@@ -1,6 +1,7 @@
 package com.njdaeger.enhanceddebugstick.modes.classic;
 
 import com.njdaeger.enhanceddebugstick.ConfigKey;
+import com.njdaeger.enhanceddebugstick.api.Permissions;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
@@ -26,7 +27,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
 
     @Override
     public String getBasePermission() {
-        return "enhanceddebugstick.classic";
+        return Permissions.CLASSIC_MODE;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.njdaeger.enhanceddebugstick.modes.freeze;
 
 import com.njdaeger.enhanceddebugstick.ConfigKey;
+import com.njdaeger.enhanceddebugstick.api.Permissions;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import org.bukkit.Sound;
@@ -22,7 +23,7 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
 
     @Override
     public String getBasePermission() {
-        return "enhanceddebugstick.freeze";
+        return Permissions.COPY_MODE;
     }
 
     @Override
