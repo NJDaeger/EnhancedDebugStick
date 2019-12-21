@@ -1,12 +1,12 @@
 package com.njdaeger.enhanceddebugstick.session;
 
+import com.njdaeger.bci.types.ParsedType;
 import com.njdaeger.btu.ActionBar;
 import com.njdaeger.enhanceddebugstick.ConfigKey;
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.DebugStickAPI;
-import com.njdaeger.enhanceddebugstick.api.ShiftMode;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -42,8 +42,12 @@ public final class DebugSession {
      * @param <T> The data type of the preference
      * @return The preference from the user, or the default config value if preferences arent enabled.
      */
-    public <T> T getPref(Preference<T> preference) {
+    public <T, P extends ParsedType<T>> T getPref(Preference<T, P> preference) {
         return prefs == null ? preference.getDefault() : prefs.get(preference);
+    }
+
+    public <T, P extends ParsedType<T>> void setPref(Preference<T, P> preference, T value) {
+        if (prefs != null) prefs.set(preference, value == null ? preference.getDefault() : value);
     }
 
     /**

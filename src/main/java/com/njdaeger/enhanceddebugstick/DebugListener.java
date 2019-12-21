@@ -2,10 +2,12 @@ package com.njdaeger.enhanceddebugstick;
 
 import com.njdaeger.enhanceddebugstick.api.ShiftMode;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
+import com.njdaeger.enhanceddebugstick.session.Preference;
 import com.njdaeger.enhanceddebugstick.shifter.Shifter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -40,15 +42,15 @@ public final class DebugListener implements Listener {
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         DebugSession session = plugin.getDebugSession(player.getUniqueId());
-        ShiftMode mode = ConfigKey.MS_DEFAULT_SHIFT_PREFERENCE;
-        Shifter shifter = ConfigKey.MS_DEFAULT_SHIFT_PREFERENCE.getShifter();
+        ShiftMode mode = session.getPref(Preference.SHIFT_MODE);
+        Shifter shifter = mode.getShifter();
         if ((mode == ShiftMode.HOLD || mode == ShiftMode.DOUBLE) && shifter.canShift(session, event)) shifter.runShift(session, event);
     }
 
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
-        ShiftMode mode = ConfigKey.MS_DEFAULT_SHIFT_PREFERENCE;
+        ShiftMode mode = session.getPref(Preference.SHIFT_MODE);
         Shifter shifter = mode.getShifter();
         if (mode == ShiftMode.HOLD || mode == ShiftMode.DOUBLE) {
             if (shifter.canEnable(session, event)) {

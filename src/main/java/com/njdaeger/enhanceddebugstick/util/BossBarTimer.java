@@ -14,12 +14,21 @@ import java.util.function.Predicate;
 
 public final class BossBarTimer {
 
+    private final Runnable onFinish;
     private final long startTime;
     private final long totalTime;
     private final Player player;
+    private final boolean fill;
+    private final long updateInterval;
+    private final Function<BossBarTimer, String> title;
+    private final Predicate<Player> cancel;
+
+    public static BossBarTimer create(Player player, boolean fill, long time, long updateInterval, Function<BossBarTimer, String> title, Predicate<Player> cancel, Runnable onFinish) {
+        return new BossBarTimer(player, fill, time, updateInterval, title, cancel, onFinish);
+    }
 
     public static BossBarTimer create(Player player, boolean fill, long time, long updateInterval, Function<BossBarTimer, String> title, Predicate<Player> cancel) {
-        return new BossBarTimer(player, fill, time, updateInterval, title, cancel);
+        return create(player, fill, time, updateInterval, title, cancel, null);
     }
 
     public static BossBarTimer create(Player player, boolean fill, long time, long updateInterval, Function<BossBarTimer, String> title) {
@@ -27,7 +36,7 @@ public final class BossBarTimer {
     }
 
     public static BossBarTimer create(Player player, boolean fill, long time, long updateInterval) {
-        return create(player, fill, time, updateInterval);
+        return create(player, fill, time, updateInterval, null);
     }
 
     /**
@@ -41,30 +50,15 @@ public final class BossBarTimer {
         return create(player, fill, time, 5);
     }
 
-    private BossBarTimer(Player player, boolean fill, long time, long updateInterval, Function<BossBarTimer, String> title, Predicate<Player> cancel) {
-        BossBar bossBar = Bukkit.createBossBar(title != null ? title.apply(this) : "", BarColor.BLUE, BarStyle.SOLID, BarFlag.CREATE_FOG);
-        bossBar.setProgress(fill ? 0 : 1);
-        bossBar.addPlayer(player);
-        bossBar.setVisible(true);
-
+    private BossBarTimer(Player player, boolean fill, long time, long updateInterval, Function<BossBarTimer, String> title, Predicate<Player> cancel, Runnable onFinish) {
+        this.fill = fill;
+        this.updateInterval = updateInterval;
+        this.title = title;
+        this.cancel = cancel;
         this.player = player;
         this.startTime = System.currentTimeMillis();
         this.totalTime = time;
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (((startTime+time) - System.currentTimeMillis()) < 0 || (cancel != null && cancel.test(player))) {
-                    bossBar.setVisible(false);
-                    bossBar.removePlayer(player);
-                    cancel();
-                    return;
-                }
-                if (title != null) bossBar.setTitle(title.apply(BossBarTimer.this));
-                bossBar.setProgress(fill ? getFillProgress() : getEmptyProgress());
-            }
-
-        }.runTaskTimer(EnhancedDebugStick.getInstance(), 0, updateInterval);
+        this.onFinish = onFinish;
     }
 
     public long getStartTime() {
@@ -77,6 +71,44 @@ public final class BossBarTimer {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public Runnable getOnFinish() {
+        return onFinish;
+    }
+
+    public void start() {
+        BossBar bossBar = Bukkit.createBossBar(title != null ? title.apply(this) : "", BarColor.BLUE, BarStyle.SOLID, BarFlag.CREATE_FOG);
+        bossBar.setProgress(fill ? 0 : 1);
+        bossBar.addPlayer(player);
+        bossBar.setVisible(true);
+        new BukkitRunnable() {
+            boolean t = true;
+            @Override
+            public void run() {
+                if (t) {
+                    t = false;
+                    System.out.println(startTime);
+                    System.out.println(totalTime);
+                    System.out.println(System.currentTimeMillis());
+                    System.out.println("STARTED");
+                }
+                System.out.println(((startTime+totalTime) - System.currentTimeMillis()));
+                if (((startTime+totalTime) - System.currentTimeMillis()) < 0 || (cancel != null && cancel.test(player))) {
+                    bossBar.setVisible(false);
+                    bossBar.removePlayer(player);
+                    cancel();
+                    if (cancel != null && !cancel.test(player) && onFinish != null) {
+                        System.out.println("FINISH");
+                        onFinish.run();
+                    }
+                    return;
+                }
+                if (title != null) bossBar.setTitle(title.apply(BossBarTimer.this));
+                bossBar.setProgress(fill ? getFillProgress() : getEmptyProgress());
+            }
+
+        }.runTaskTimer(EnhancedDebugStick.getInstance(), 0, updateInterval);
     }
 
     private double getFillProgress() {

@@ -3,6 +3,7 @@ package com.njdaeger.enhanceddebugstick.shifter;
 import com.njdaeger.enhanceddebugstick.ConfigKey;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
+import com.njdaeger.enhanceddebugstick.session.Preference;
 import com.njdaeger.enhanceddebugstick.util.BossBarTimer;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -17,13 +18,14 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
 
     @Override
     public void runEnable(DebugSession session, PlayerToggleSneakEvent event) {
+        long timeout = session.getPref(Preference.SNEAK_TIMEOUT);
         if (session.getSelectingStart() == 0) {
             session.setSelectingStart(System.currentTimeMillis());
-            BossBarTimer.create(event.getPlayer(), false, ConfigKey.DOUBLE_SNEAK_TIMEOUT, 2,
-                    (timer) -> DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + ChatColor.GRAY + "Timeout: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.), (p) -> session.isSelectingMode());
+            BossBarTimer.create(event.getPlayer(), false, timeout, 2,
+                    (timer) -> DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + ChatColor.GRAY + "Timeout: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.), (p) -> session.isSelectingMode()).start();
         }
         else {
-            if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.DOUBLE_SNEAK_TIMEOUT) {
+            if ((System.currentTimeMillis() - session.getSelectingStart()) > timeout) {
                 session.setSelectingStart(0);
                 runEnable(session, event);
             }
@@ -42,10 +44,11 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
 
     @Override
     public void runDisable(DebugSession session, PlayerToggleSneakEvent event) {
+        long timeout = session.getPref(Preference.SNEAK_TIMEOUT);
         if (session.getSelectingStart() == 0) {
             session.setSelectingStart(System.currentTimeMillis());
-            BossBarTimer.create(event.getPlayer(), false, ConfigKey.DOUBLE_SNEAK_TIMEOUT, 2,
-                    (timer) -> DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + ChatColor.GRAY + "Timeout: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.), (p) -> !session.isSelectingMode());
+            BossBarTimer.create(event.getPlayer(), false, timeout, 2,
+                    (timer) -> DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + ChatColor.GRAY + "Timeout: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.), (p) -> !session.isSelectingMode()).start();
         }
         else {
             if ((System.currentTimeMillis() - session.getSelectingStart()) > ConfigKey.DOUBLE_SNEAK_TIMEOUT) {
@@ -57,7 +60,7 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
                 session.setSelectingMode(false);
                 session.resume();
                 BossBarTimer.create(event.getPlayer(), false, ConfigKey.MS_CHANGE_COOLDOWN, 2,
-                        (timer) -> DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + ChatColor.GRAY + "Cooldown: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.));
+                        (timer) -> DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + ChatColor.GRAY + "Cooldown: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.)).start();
             }
         }
     }
