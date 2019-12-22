@@ -30,6 +30,31 @@ plotsquared-integration:
   #disabled and PS is installed, the plugin will work as a free for all where players can edit outside of their plots
   enable: false
 
+  # When enabled, this will restrict the usage of the Debug Stick on a plot to only trusted+ people. People who are
+  # added temporarily will not be allowed to use the Debug Stick on the plot they were added to. Otherwise, if this is
+  # disabled, the temporary people will be able to use the Debug Stick if they have been added, in addition to the other
+  # trusted+ members of the plot.
+  only-trusted: false
+
+  # PlotSquared options for the classic debug mode
+  classic-options:
+
+    # If enabled, members who are allowed to build inside a given plot can use the classic debug stick. Otherwise, if
+    # this is disabled, the user can only use the classic debug mode inside their own plot.
+    edit-outside-of-plot: false
+
+  # PlotSquared options for the freeze debug mode
+  freeze-options:
+
+    # If enabled, members who are allowed to build inside a given plot can do so without
+    freeze-outside-of-plot: false
+
+  copy-options:
+
+    copy-outside-of-plot: false
+
+    paste-outside-of-plot: false
+
 #
 # Settings for when a player wants to change between debug modes.
 #
