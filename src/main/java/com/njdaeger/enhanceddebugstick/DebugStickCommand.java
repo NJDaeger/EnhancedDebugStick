@@ -91,13 +91,6 @@ final class DebugStickCommand {
         //Check permission
         if (!context.hasPermission(RELOAD_COMMAND)) context.noPermission();
 
-        //Check if the configuration file exists.
-        /*if (!new File(EnhancedDebugStick.getInstance().getDataFolder() + File.separator + "config.yml").exists()) {
-            context.send(DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + GRAY + "config.yml did not exist. Creating it...");
-            EnhancedDebugStick.getInstance().saveResource("config.yml", false);
-            EnhancedDebugStick.getInstance().configuration = new ConfigurationFile(EnhancedDebugStick.getInstance());
-        }
-        else EnhancedDebugStick.getInstance().getDebugConfig().reload();*/
         EnhancedDebugStick.getInstance().onDisable();
         EnhancedDebugStick.getInstance().onEnable();
         context.send(DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + GRAY + "Plugin Reloaded.");
@@ -247,23 +240,25 @@ final class DebugStickCommand {
             if (context.hasPermission(HELP_COMMAND)) completions.add("help");
             context.completion(completions.toArray(new String[0]));
         }
-        else if (ConfigKey.ENABLE_PREFERENCES && context.hasPermission(PREFERENCE_COMMAND) && context.isPrevious(true, "preference")) {
-            context.completionAt(1, Preference.getPreferences().stream().map(Preference::getKey).toArray(String[]::new));
-            if (context.subCompletionAt(2, true, Preference.SHIFT_MODE.getKey(), (c) -> {
-                session.sendBar(DARK_GRAY + BOLD.toString() +"[" + Preference.SHIFT_MODE.getKey() + "] " + GRAY + Preference.SHIFT_MODE.getDescription());
-                c.completion(Stream.of(ShiftMode.values()).map(ShiftMode::getName).map(String::toLowerCase).toArray(String[]::new));
-            })) return;
-            context.completionAt(2, (c) -> {
-                Preference<?, ?> pref = Preference.fromKey(context.getPrevious());
-                if (pref == null) {
-                    session.sendBar(RED + BOLD.toString() +"Unknown Preference Key. Try tab-completions");
-                    return new ArrayList<>();
-                }
-                else {
-                    session.sendBar(DARK_GRAY + BOLD.toString() + "[" + pref.getKey() + "] " + GRAY + pref.getDescription());
-                    return IntStream.rangeClosed(1, 10).map(x -> x * 1000).mapToObj(String::valueOf).collect(Collectors.toList());
-                }
-            });
+        else if (ConfigKey.ENABLE_PREFERENCES && context.hasPermission(PREFERENCE_COMMAND)) {
+            if (context.isPrevious(true, "preference")) context.completionAt(1, Preference.getPreferences().stream().map(Preference::getKey).toArray(String[]::new));
+            if (context.argAt(0).equalsIgnoreCase("preference") && context.isLength(3)) {
+                if (context.subCompletionAt(2, true, Preference.SHIFT_MODE.getKey(), (c) -> {
+                    session.sendBar(DARK_GRAY + BOLD.toString() +"[" + Preference.SHIFT_MODE.getKey() + "] " + GRAY + Preference.SHIFT_MODE.getDescription());
+                    c.completion(Stream.of(ShiftMode.values()).map(ShiftMode::getName).map(String::toLowerCase).toArray(String[]::new));
+                })) return;
+                context.completionAt(2, (c) -> {
+                    Preference<?, ?> pref = Preference.fromKey(context.getPrevious());
+                    if (pref == null) {
+                        session.sendBar(RED + BOLD.toString() + "Unknown Preference Key. Try tab-completions");
+                        return new ArrayList<>();
+                    }
+                    else {
+                        session.sendBar(DARK_GRAY + BOLD.toString() + "[" + pref.getKey() + "] " + GRAY + pref.getDescription());
+                        return IntStream.rangeClosed(1, 10).map(x -> x * 1000).mapToObj(String::valueOf).collect(Collectors.toList());
+                    }
+                });
+            }
         }
     }
 

@@ -131,7 +131,10 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
 
     @Override
     public boolean addDebugSession(UUID uuid) {
-        if (hasDebugSession(uuid)) return false;
+        if (hasDebugSession(uuid)) {
+            getDebugSession(uuid).resume();
+            return false;
+        }
         debugSessions.put(uuid, new DebugSession(uuid));
         return true;
     }
