@@ -1,5 +1,6 @@
 package com.njdaeger.enhanceddebugstick;
 
+import com.github.intellectualsites.plotsquared.api.PlotAPI;
 import com.njdaeger.bci.base.BCICommand;
 import com.njdaeger.bci.defaults.CommandContext;
 import com.njdaeger.bci.defaults.CommandStore;
@@ -27,6 +28,7 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
     private static EnhancedDebugStick PLUGIN;
     ConfigurationFile configuration;
     private CoreProtectAPI coreProtectAPI;
+    private PlotAPI plotAPI;
     private final CommandStore commandStore = new CommandStore(this);
     private final Map<UUID, DebugSession> debugSessions = new HashMap<>();
 
@@ -43,11 +45,18 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
         new DebugStickCommand(this);
         new DebugListener(this);
 
-        if (ConfigKey.CDM_LOGGING || ConfigKey.COPY_LOGGING) {
+        if (ConfigKey.CLASSIC_LOGGING || ConfigKey.COPY_LOGGING) {
             coreProtectAPI = initializeCoreprotect();
-            if (coreProtectAPI == null) getLogger().warning("CoreProtectAPI was unable to be hooked. (Is CoreProtect installed?)");
-            else getLogger().info("CoreProtectAPI was successfully hooked.");
+            if (coreProtectAPI == null) getLogger().warning("CoreProtect integration was unable to be enabled. (Is CoreProtect installed?)");
+            else getLogger().info("CoreProtect integration successfully enabled.");
         }
+
+        if (ConfigKey.PLOT_INTEGRATION) {
+            plotAPI = initializePlotSquared();
+            if (plotAPI == null) getLogger().warning("PlotSquaredAPI integration was unable to be enabled. (Is PlotSquared installed?)");
+            else getLogger().info("PlotSquared integration successfully enabled.");
+        }
+
         if (ConfigKey.BSTATS_INTEGRATION) {
             new Metrics(this);
         }
@@ -70,6 +79,15 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
 
     public static EnhancedDebugStick getInstance() {
         return PLUGIN;
+    }
+
+    private PlotAPI initializePlotSquared() {
+        if (Bukkit.getPluginManager().getPlugin("PlotSquared") == null) return null;
+        else return new PlotAPI();
+    }
+
+    public PlotAPI getPlotAPI() {
+        return plotAPI;
     }
 
     private CoreProtectAPI initializeCoreprotect() {

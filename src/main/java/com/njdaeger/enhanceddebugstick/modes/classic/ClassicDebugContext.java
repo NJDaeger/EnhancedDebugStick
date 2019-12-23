@@ -147,13 +147,7 @@ public final class ClassicDebugContext implements DebugContext {
 
         BlockData newData = getCurrentProperty(block).nextBlockData(block);//This wont be null.
 
-        if (ConfigKey.CDM_LOGGING) {
-            CoreProtectAPI api = plugin.getCoreProtectAPI();
-            if (api != null) {
-                api.logRemoval(Bukkit.getPlayer(uuid).getName(), block.getLocation(), block.getType(), block.getBlockData());
-                api.logPlacement(Bukkit.getPlayer(uuid).getName(), block.getLocation(), block.getType(), newData);
-            }
-        }
+        log(uuid, block, newData);
         block.setType(block.getType(), false);
         block.setBlockData(newData, false);
     }
@@ -180,6 +174,16 @@ public final class ClassicDebugContext implements DebugContext {
             }
         }
         session.sendBar(builder.toString().trim());
+    }
+
+    private void log(UUID uuid, Block block, BlockData newData) {
+        if (ConfigKey.PROTECT_INTEGRATION && ConfigKey.CLASSIC_LOGGING) {
+            CoreProtectAPI api = plugin.getCoreProtectAPI();
+            if (api != null) {
+                api.logRemoval(Bukkit.getPlayer(uuid).getName(), block.getLocation(), block.getType(), block.getBlockData());
+                api.logPlacement(Bukkit.getPlayer(uuid).getName(), block.getLocation(), block.getType(), newData);
+            }
+        }
     }
 
 }

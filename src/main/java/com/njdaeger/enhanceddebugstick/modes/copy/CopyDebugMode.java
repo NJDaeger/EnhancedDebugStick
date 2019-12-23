@@ -1,12 +1,16 @@
 package com.njdaeger.enhanceddebugstick.modes.copy;
 
+import com.github.intellectualsites.plotsquared.plot.object.Location;
+import com.github.intellectualsites.plotsquared.plot.object.Plot;
+import com.github.intellectualsites.plotsquared.plot.object.PlotArea;
 import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.api.Permissions;
-import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
+import com.njdaeger.enhanceddebugstick.api.Permissions;
+import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -106,28 +110,30 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
 
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
-                if (!context.hasClipboard()) {
-                    session.sendForcedBar(RED.toString() + BOLD + "Your clipboard is empty");
-                    if (ConfigKey.SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
-                    return;
-                }
+                if (plot(event.getPlayer(), block)) {
+                    if (!context.hasClipboard()) {
+                        session.sendForcedBar(RED.toString() + BOLD + "Your clipboard is empty");
+                        if (ConfigKey.SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
+                        return;
+                    }
 
-                if (!IProperty.hasProperties(block)) {
-                    session.sendForcedBar(RED.toString() + BOLD + "This block has no properties");
-                    if (ConfigKey.SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
-                    return;
-                }
+                    if (!IProperty.hasProperties(block)) {
+                        session.sendForcedBar(RED.toString() + BOLD + "This block has no properties");
+                        if (ConfigKey.SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
+                        return;
+                    }
 
-                if (IProperty.getProperties(block).stream().noneMatch(pr -> context.getClipboardProperties().contains(pr))) {
-                    session.sendForcedBar(RED.toString() + BOLD + "There are no applicable properties to apply to this block");
-                    if (ConfigKey.SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
-                    return;
-                }
+                    if (IProperty.getProperties(block).stream().noneMatch(pr -> context.getClipboardProperties().contains(pr))) {
+                        session.sendForcedBar(RED.toString() + BOLD + "There are no applicable properties to apply to this block");
+                        if (ConfigKey.SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
+                        return;
+                    }
 
-                context.applyClipboardFor(block);
-                context.sendMeshedPropertiesOf(block);
-                session.sendMessage(GRAY + "Pasted applicable properties");
-                if (ConfigKey.COPY_PASTE_SOUND) session.sendSound(Sound.ENTITY_TROPICAL_FISH_FLOP);
+                    context.applyClipboardFor(block);
+                    context.sendMeshedPropertiesOf(block);
+                    session.sendMessage(GRAY + "Pasted applicable properties");
+                    if (ConfigKey.COPY_PASTE_SOUND) session.sendSound(Sound.ENTITY_TROPICAL_FISH_FLOP);
+                } else session.sendForcedBar(RED.toString() + BOLD + "You are not an owner or a member of the location pasted at.");
             }
         }
     }
@@ -152,4 +158,17 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
             }
         }
     }
+
+    private boolean plot(Player player, Block block) {
+        if (ConfigKey.PLOT_INTEGRATION) {
+            Location location = new Location(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
+            PlotArea area = plugin.getPlotAPI().getPlotSquared().getApplicablePlotArea(location);
+            if (area == null) return false;
+            Plot plot = area.getOwnedPlot(location);
+            if (plot == null || plot.isDenied(player.getUniqueId())) return false;
+            else return plot.isOwner(player.getUniqueId()) || plot.isAdded(player.getUniqueId());
+        }
+        return true;
+    }
+
 }

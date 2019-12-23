@@ -63,10 +63,6 @@ public final class ConfigKey<T> {
      */
     public static final int CDM_DISPLAY_DISTANCE = get("classic-debug-mode.display-data-distance", 10, d -> d >= 0);
     /**
-     * Whether to log all changed blocks with coreprotect
-     */
-    public static final boolean CDM_LOGGING = get("classic-debug-mode.coreprotect-logging", false);
-    /**
      * Whether to play a sound on property change
      */
     public static final boolean CDM_PROPERTY = get("classic-debug-mode.next-property-sound", true);
@@ -97,13 +93,24 @@ public final class ConfigKey<T> {
 
     public static final boolean COPY_DISPLAY_ALL = get("copy-debug-mode.display-all-properties", true);
 
-    public static final boolean COPY_LOGGING = get("copy-debug-mode.coreprotect-logging", false);
-
     public static final boolean COPY_COPY_SOUND = get("copy-debug-mode.copy-sound", true);
 
     public static final boolean COPY_PASTE_SOUND = get("copy-debug-mode.paste-sound", true);
 
     public static final boolean COPY_CLEAR_SOUND = get("copy-debug-mode.clear-sound", true);
+
+    public static final boolean PLOT_INTEGRATION = get("plotsquared-integration.enable", false, b -> !b || Bukkit.getPluginManager().getPlugin("PlotSquared") != null);
+
+    public static final boolean PROTECT_INTEGRATION = get("coreprotect-integration.enable", false, b -> !b || Bukkit.getPluginManager().getPlugin("CoreProtect") != null);
+
+    /**
+     * Whether to log all changed blocks with coreprotect
+     */
+    public static final boolean CLASSIC_LOGGING = get("coreprotect-integration.classic-debug-mode-logging", true);
+
+    public static final boolean COPY_LOGGING = get("coreprotect-integration.copy-debug-mode-logging", true);
+
+    public static final boolean FREEZE_LOGGING = get("coreprotect-integration.freeze-debug-mode-logging", true);
 
     private final T current;
 

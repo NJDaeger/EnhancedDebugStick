@@ -74,7 +74,6 @@ public final class CopyDebugContext implements DebugContext {
     }
 
     //TODO double left click for clipboard clearing
-    //TODO implement configuration keys
 
     /**
      * Applies the clipboard to the given block, pasting any similar properties which dont match on either block.
@@ -92,14 +91,7 @@ public final class CopyDebugContext implements DebugContext {
             }
         }
 
-        if (ConfigKey.COPY_LOGGING) {
-            CoreProtectAPI api = plugin.getCoreProtectAPI();
-            if (api != null) {
-                api.logRemoval(Bukkit.getPlayer(session.getSessionId()).getName(), block.getLocation(), block.getType(), oldData);
-                api.logPlacement(Bukkit.getPlayer(session.getSessionId()).getName(), block.getLocation(), block.getType(), block.getBlockData());
-            }
-        }
-
+        log(session.getSessionId(), block, oldData);
     }
 
     /**
@@ -153,6 +145,16 @@ public final class CopyDebugContext implements DebugContext {
             }
         }
         session.sendBar(builder.toString().trim());
+    }
+
+    private void log(UUID uuid, Block block, BlockData oldData) {
+        if (ConfigKey.PROTECT_INTEGRATION && ConfigKey.COPY_LOGGING) {
+            CoreProtectAPI api = plugin.getCoreProtectAPI();
+            if (api != null) {
+                api.logRemoval(Bukkit.getPlayer(uuid).getName(), block.getLocation(), block.getType(), oldData);
+                api.logPlacement(Bukkit.getPlayer(uuid).getName(), block.getLocation(), block.getType(), block.getBlockData());
+            }
+        }
     }
 
 }

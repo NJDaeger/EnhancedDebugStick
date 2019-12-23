@@ -1,9 +1,11 @@
 package com.njdaeger.enhanceddebugstick.modes.freeze;
 
 import com.njdaeger.enhanceddebugstick.ConfigKey;
+import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
 import com.njdaeger.enhanceddebugstick.util.BlockHighlighter;
+import net.coreprotect.CoreProtectAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,6 +13,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -53,8 +57,10 @@ public final class FreezeDebugContext implements DebugContext {
     public void freezeBlock(Block block) {
         frozen.put(block.getLocation(), block.getBlockData());
         if (session.isOnline()) {
-            if (ConfigKey.FDM_OUTLINE) BlockHighlighter.lightBlock(block, Bukkit.getPlayer(session.getSessionId()));
+            Player player = Bukkit.getPlayer(session.getSessionId());
+            if (ConfigKey.FDM_OUTLINE) BlockHighlighter.lightBlock(block, player);
             block.setType(Material.RED_WOOL, false);
+            log(player, block);
         }
     }
 
@@ -66,8 +72,10 @@ public final class FreezeDebugContext implements DebugContext {
     public void unfreezeBlock(Block block) {
         BlockData data = frozen.remove(block.getLocation());
         if (session.isOnline()) {
-            if (ConfigKey.FDM_OUTLINE) BlockHighlighter.unLightBlock(block, Bukkit.getPlayer(session.getSessionId()));
+            Player player = Bukkit.getPlayer(session.getSessionId());
+            if (ConfigKey.FDM_OUTLINE) BlockHighlighter.unLightBlock(block, player);
             block.setBlockData(data, false);
+            log(player, block);
         }
     }
 
@@ -76,7 +84,8 @@ public final class FreezeDebugContext implements DebugContext {
      */
     public void unfreezeAllBlocks() {
         if (session.isOnline()) unlightFrozen();
-        frozen.clear();
+        Collection<Location> locations = new ArrayList<>(frozen.keySet());
+        locations.forEach(loc -> unfreezeBlock(loc.getBlock()));
     }
 
     /**
@@ -117,6 +126,13 @@ public final class FreezeDebugContext implements DebugContext {
      */
     public boolean isSelected(Location location) {
         return frozen.get(location) != null;
+    }
+
+    private void log(Player player, Block block) {
+        if (ConfigKey.PROTECT_INTEGRATION && ConfigKey.FREEZE_LOGGING) {
+            CoreProtectAPI api = EnhancedDebugStick.getInstance().getCoreProtectAPI();
+            if (api != null) api.logInteraction(player.getName(), block.getLocation());
+        }
     }
 
 }

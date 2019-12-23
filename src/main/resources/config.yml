@@ -26,9 +26,30 @@ enable-user-preferences: true
 # If PlotSquared is installed, settings for it are below.
 plotsquared-integration:
 
-  #Enables PlotSquared integration. If enabled, and PS is not installed, the plugin will not act differently. If
-  #disabled and PS is installed, the plugin will work as a free for all where players can edit outside of their plots
+  # Enables PlotSquared integration. If enabled, and PS is not installed, the plugin will not act differently. If
+  # disabled and PS is installed, the plugin will work as a free for all where players can edit outside of their plots
   enable: false
+
+# If CoreProtect is installed, logging can be enabled.
+coreprotect-integration:
+
+  # Enables CoreProtect integration. If enabled, and CP is not installed OR if it is installed and this setting is set
+  # to false, the plugin will act no different in either case. It should function as normal. If enabled and the plugin
+  # is installed, the three keys following it will take effect.
+  enable: false
+
+  # This will log any changes with a classic debug stick with CoreProtect. This will only take effect if
+  # coreprotect-integration is enabled and CP is installed.
+  classic-debug-mode-logging: true
+
+  # This will log any pastes with the copy debug stick with CoreProtect. This will only take effect if coreprotect-integration
+  # is enabled and CP is installed.
+  copy-debug-mode-logging: true
+
+  # This will log any freeze and unfreeze interactions with the freeze debug stick with CoreProtect. This will only take
+  # effect if coreprotect-integration is enabled and CP is installed.
+  freeze-debug-mode-logging: true
+
 
 #
 # Settings for when a player wants to change between debug modes.
