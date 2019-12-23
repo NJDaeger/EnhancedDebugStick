@@ -34,36 +34,51 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
 
     @Override
     public void onEnable() {
-        PLUGIN = this;
+        boolean reload = false;
 
-        if (!new File(getDataFolder() + File.separator + "config.yml").exists()) saveResource("config.yml", false);
+        if (PLUGIN != null) {
+            reload = true;
+            getLogger().info("Reloading...");
+        } else PLUGIN = this;
+
+        if (!new File(getDataFolder() + File.separator + "config.yml").exists()) {
+            saveResource("config.yml", false);
+            getLogger().info("Configuration file does not exist. Creating it.");
+        }
         this.configuration = new ConfigurationFile(this);
 
-        Property.registerProperties();
-        Preference.registerPreferences();
+        if (!reload) {
+            Property.registerProperties();
+            Preference.registerPreferences();
+        }
 
-        new DebugStickCommand(this);
-        new DebugListener(this);
+        if (!reload) {
+            new DebugStickCommand(this);
+            new DebugListener(this);
+        }
 
-        if (ConfigKey.CLASSIC_LOGGING || ConfigKey.COPY_LOGGING) {
+        if (ConfigKey.PROTECT_INTEGRATION) {
             coreProtectAPI = initializeCoreprotect();
             if (coreProtectAPI == null) getLogger().warning("CoreProtect integration was unable to be enabled. (Is CoreProtect installed?)");
             else getLogger().info("CoreProtect integration successfully enabled.");
-        }
+        } else getLogger().info("CoreProtect integration disabled.");
 
         if (ConfigKey.PLOT_INTEGRATION) {
             plotAPI = initializePlotSquared();
             if (plotAPI == null) getLogger().warning("PlotSquaredAPI integration was unable to be enabled. (Is PlotSquared installed?)");
             else getLogger().info("PlotSquared integration successfully enabled.");
-        }
+        } else getLogger().info("PlotSquared integration disabled.");
 
         if (ConfigKey.BSTATS_INTEGRATION) {
             new Metrics(this);
-        }
+            getLogger().info("BStats Metrics enabled.");
+        } else getLogger().info("BStats Metrics disabled.");
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             addDebugSession(player.getUniqueId());
         }
+
+        if (reload) getLogger().info("Reload complete!");
 
     }
 

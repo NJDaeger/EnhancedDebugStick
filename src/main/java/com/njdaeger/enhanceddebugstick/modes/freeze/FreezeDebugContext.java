@@ -58,9 +58,9 @@ public final class FreezeDebugContext implements DebugContext {
         frozen.put(block.getLocation(), block.getBlockData());
         if (session.isOnline()) {
             Player player = Bukkit.getPlayer(session.getSessionId());
+            log(player, block);
             if (ConfigKey.FDM_OUTLINE) BlockHighlighter.lightBlock(block, player);
             block.setType(Material.RED_WOOL, false);
-            log(player, block);
         }
     }
 

@@ -92,13 +92,15 @@ final class DebugStickCommand {
         if (!context.hasPermission(RELOAD_COMMAND)) context.noPermission();
 
         //Check if the configuration file exists.
-        if (!new File(EnhancedDebugStick.getInstance().getDataFolder() + File.separator + "config.yml").exists()) {
+        /*if (!new File(EnhancedDebugStick.getInstance().getDataFolder() + File.separator + "config.yml").exists()) {
             context.send(DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + GRAY + "config.yml did not exist. Creating it...");
             EnhancedDebugStick.getInstance().saveResource("config.yml", false);
             EnhancedDebugStick.getInstance().configuration = new ConfigurationFile(EnhancedDebugStick.getInstance());
         }
-        else EnhancedDebugStick.getInstance().getDebugConfig().reload();
-        context.send(DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + GRAY + "Configuration Reloaded.");
+        else EnhancedDebugStick.getInstance().getDebugConfig().reload();*/
+        EnhancedDebugStick.getInstance().onDisable();
+        EnhancedDebugStick.getInstance().onEnable();
+        context.send(DARK_GRAY + "[" + BLUE + "EDS" + DARK_GRAY + "] " + GRAY + "Plugin Reloaded.");
     }
 
     private void helpCommand(CommandContext context) throws BCIException {
