@@ -24,6 +24,7 @@ import org.bukkit.block.data.Snowable;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Bamboo;
 import org.bukkit.block.data.type.Bed;
+import org.bukkit.block.data.type.Beehive;
 import org.bukkit.block.data.type.Bell;
 import org.bukkit.block.data.type.BrewingStand;
 import org.bukkit.block.data.type.BubbleColumn;
@@ -875,6 +876,12 @@ public interface IProperty<D extends BlockData, V> {
         return egg;
     });
 
+    // #   # #  #
+    // #   # #  #
+    // #   # ####
+    // #   #    #
+    // # # #    #
+
     IProperty<Lantern, Boolean> LANTERN_HANGING = new Property<>("Hanging", Lantern.class, (lantern) -> {
         lantern.setHanging(!lantern.isHanging());
         return lantern;
@@ -922,6 +929,26 @@ public interface IProperty<D extends BlockData, V> {
         scaffolding.setDistance(distance);
         return scaffolding;
     });
+
+    // #   # ####
+    // #   # #
+    // #   # ####
+    // #   #    #
+    // # # # ####
+
+    IProperty<Beehive, Integer> HONEY_LEVEL = new Property<>("Honey Level", Beehive.class, (beehive) -> {
+        beehive.setHoneyLevel(beehive.getMaximumHoneyLevel() == beehive.getHoneyLevel() ? 0 : beehive.getHoneyLevel() + 1);
+        return beehive;
+    }, Beehive::getHoneyLevel, (beehive, level) -> {
+        beehive.setHoneyLevel(level);
+        return beehive;
+    });
+
+    // #   # ####
+    // #   # #
+    // #   # ####
+    // #   # #  #
+    // # # # ####
 
     /**
      * The constant ordinal

@@ -73,8 +73,8 @@ public final class BlockHighlighter {
     private BlockHighlighter() {}
 
     /**
-     * This unlights all the blocks for a specific player and removes their Highlighter instance
-     * @param player The player to unlight all blocks from and remove the Highlighter instance of
+     * This unlights all the blocks for a specific player and removes their AbstractHighlighter instance
+     * @param player The player to unlight all blocks from and remove the AbstractHighlighter instance of
      */
     public static void removeTask(Player player) {
         unLightAllBlocks(player);
@@ -82,7 +82,7 @@ public final class BlockHighlighter {
     }
 
     /**
-     * This unlights all the blocks for a specific player without removing their Highlighter instance.
+     * This unlights all the blocks for a specific player without removing their AbstractHighlighter instance.
      * @param player The player to unlight all blocks from
      */
     public static void unLightAllBlocks(Player player) {
