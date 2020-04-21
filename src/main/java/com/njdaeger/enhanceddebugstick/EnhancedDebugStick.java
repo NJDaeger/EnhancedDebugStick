@@ -1,6 +1,5 @@
 package com.njdaeger.enhanceddebugstick;
 
-import com.github.intellectualsites.plotsquared.api.PlotAPI;
 import com.njdaeger.bci.base.BCICommand;
 import com.njdaeger.bci.defaults.CommandContext;
 import com.njdaeger.bci.defaults.CommandStore;
@@ -10,6 +9,7 @@ import com.njdaeger.enhanceddebugstick.api.Property;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.session.Preference;
 import com.njdaeger.enhanceddebugstick.util.Metrics;
+import com.plotsquared.core.api.PlotAPI;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.Bukkit;

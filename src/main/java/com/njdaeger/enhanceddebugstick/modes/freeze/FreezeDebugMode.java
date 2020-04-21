@@ -1,12 +1,12 @@
 package com.njdaeger.enhanceddebugstick.modes.freeze;
 
-import com.github.intellectualsites.plotsquared.plot.object.Location;
-import com.github.intellectualsites.plotsquared.plot.object.Plot;
-import com.github.intellectualsites.plotsquared.plot.object.PlotArea;
 import com.njdaeger.enhanceddebugstick.ConfigKey;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.Permissions;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
+import com.plotsquared.core.location.Location;
+import com.plotsquared.core.plot.Plot;
+import com.plotsquared.core.plot.PlotArea;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
