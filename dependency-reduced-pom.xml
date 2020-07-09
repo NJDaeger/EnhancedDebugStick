@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.njdaeger</groupId>
   <artifactId>EnhancedDebugStick</artifactId>
-  <version>1.3.1</version>
+  <version>1.4</version>
   <build>
     <resources>
       <resource>
@@ -38,16 +38,8 @@
         <configuration>
           <relocations>
             <relocation>
-              <pattern>com.njdaeger.bci</pattern>
+              <pattern>com.njdaeger.pdk</pattern>
               <shadedPattern>com.njdaeger.enhanceddebugstick.libs.bci</shadedPattern>
-            </relocation>
-            <relocation>
-              <pattern>com.njdaeger.btu</pattern>
-              <shadedPattern>com.njdaeger.enhanceddebugstick.libs.btu</shadedPattern>
-            </relocation>
-            <relocation>
-              <pattern>com.njdaeger.bcm</pattern>
-              <shadedPattern>com.njdaeger.enhanceddebugstick.libs.bcm</shadedPattern>
             </relocation>
           </relocations>
         </configuration>

@@ -1,0 +1,5 @@
+main: com.njdaeger.enhanceddebugstick.EnhancedDebugStick
+name: ${project.parent.artifactId}
+version: ${project.parent.version}
+api-version: 1.13
+author: NJDaeger
