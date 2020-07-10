@@ -1,5 +1,6 @@
 package com.njdaeger.enhanceddebugstick.api;
 
+import net.minecraft.server.v1_15_R1.BlockSoil;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -79,19 +80,19 @@ public abstract class AbstractProperty<D extends BlockData, V> implements IPrope
     }
     
     @Override
-    public D getBlockData(Block block, V value) {
+    public D getBlockData(Block block, Object value) {
         return getBlockData(block.getBlockData(), value);
     }
     
     @Override
-    public D getBlockData(BlockData data, V value) {
+    public D getBlockData(BlockData data, Object value) {
         if (!isApplicableTo(data)) throw new RuntimeException("Property \"" + getNiceName() + "\" is not applicable for block " + data.getMaterial().name());
-        if (!getValueType().isInstance(value)) throw new RuntimeException("Value \"" + value + "\" does not meet the required type of " + getValueType().getTypeName());
-        return set.apply((D)data, value);
+        if (!getValueType().isInstance(value)) throw new RuntimeException("Value \"" + value + "\" is not the required type of " + getValueType().getTypeName());
+        return set.apply((D)data, (V)value);
     }
     
     @Override
-    public D getBlockData(Material material, V value) {
+    public D getBlockData(Material material, Object value) {
         return getBlockData(material.createBlockData(), value);
     }
     

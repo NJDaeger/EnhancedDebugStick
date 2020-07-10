@@ -21,33 +21,33 @@ import static com.njdaeger.enhanceddebugstick.api.IProperty.hasProperties;
 import static com.njdaeger.enhanceddebugstick.util.Util.format;
 
 public final class ClassicDebugContext implements DebugContext {
-
+    
     private final Map<Material, Integer> currentProperty;
     private final EnhancedDebugStick plugin;
     private final UUID uuid;
     private final DebugSession session;
-
+    
     ClassicDebugContext(DebugSession session) {
         this.plugin = EnhancedDebugStick.getInstance();
         this.currentProperty = new HashMap<>();
         this.uuid = session.getSessionId();
         this.session = session;
-
+        
         for (Material mat : IProperty.getMaterialProperties().keySet()) {
             currentProperty.put(mat, 0);
         }
     }
-
+    
     @Override
     public UUID getOwner() {
         return session.getSessionId();
     }
-
+    
     @Override
     public DebugSession getDebugSession() {
         return session;
     }
-
+    
     /**
      * Gets the current property selected for the specific block.
      *
@@ -57,7 +57,7 @@ public final class ClassicDebugContext implements DebugContext {
     public IProperty<?, ?> getCurrentProperty(Block block) {
         return getCurrentProperty(block.getType());
     }
-
+    
     /**
      * Gets the current property selected for the specific material.
      *
@@ -65,10 +65,13 @@ public final class ClassicDebugContext implements DebugContext {
      * @return The property selected for the material, or null if the material has no properties.
      */
     public IProperty<?, ?> getCurrentProperty(Material material) {
-        if (!hasProperties(material)) return null;
-        else return getProperties(material).get(currentProperty.get(material));
+        if (!hasProperties(material)) {
+            return null;
+        } else {
+            return getProperties(material).get(currentProperty.get(material));
+        }
     }
-
+    
     /**
      * Gets the next property to be selected for the specific block. (This will not change the current selection of the
      * block, it will only find the next property which will be selected by the {@link #applyNextPropertyFor(Block)}
@@ -80,7 +83,7 @@ public final class ClassicDebugContext implements DebugContext {
     public IProperty<?, ?> getNextProperty(Block block) {
         return getNextProperty(block.getType());
     }
-
+    
     /**
      * Gets the next property to be selected for the specific material. (This will not change the current selection of
      * the material, it will only find the next property which will be selected by the {@link
@@ -90,24 +93,29 @@ public final class ClassicDebugContext implements DebugContext {
      * @return The next property to be selected for the material, or null if the material has no properties.
      */
     public IProperty<?, ?> getNextProperty(Material material) {
-        if (!hasProperties(material)) return null;
+        if (!hasProperties(material)) {
+            return null;
+        }
         int current = currentProperty.get(material);
-        if (current == getProperties(material).size() - 1) current = 0;
-        else current++;
+        if (current == getProperties(material).size() - 1) {
+            current = 0;
+        } else {
+            current++;
+        }
         return getProperties(material).get(current);
     }
-
+    
     /**
      * Sets the current property to be selected for the specific block
      *
-     * @param block The block to change the current property of.
+     * @param block    The block to change the current property of.
      * @param property The property to change the block's selection to.
      * @throws RuntimeException if the property given is not applicable to the specified block.
      */
     public void setCurrent(Block block, IProperty<?, ?> property) {
         setCurrent(block.getType(), property);
     }
-
+    
     /**
      * Sets the current property to be selected for the specific material
      *
@@ -116,11 +124,12 @@ public final class ClassicDebugContext implements DebugContext {
      * @throws RuntimeException if the property given is not applicable to the specified material.
      */
     public void setCurrent(Material material, IProperty<?, ?> property) {
-        if (!property.isApplicableTo(material))
+        if (!property.isApplicableTo(material)) {
             throw new RuntimeException("Property \"" + property.getNiceName() + "\" is not applicable for material " + material.name());
+        }
         currentProperty.replace(material, getProperties(material).indexOf(property));
     }
-
+    
     /**
      * Shifts the selected property to the next property for the specific block. Does nothing if the block has no
      * properties.
@@ -128,26 +137,29 @@ public final class ClassicDebugContext implements DebugContext {
      * @param block The block to shift to the next property for.
      */
     public void applyNextPropertyFor(Block block) {
-        if (!hasProperties(block)) return;
+        if (!hasProperties(block)) {
+            return;
+        }
         int current = currentProperty.get(block.getType());
-        if (current == getProperties(block).size() - 1) current = 0;
-        else current++;
+        if (current == getProperties(block).size() - 1) {
+            current = 0;
+        } else {
+            current++;
+        }
         currentProperty.replace(block.getType(), current);
     }
     
+    /**
+     * Sets the current property of the specified block to the given value.
+     *
+     * @param block The block to set the property of
+     * @param value The value of the new property value
+     */
     public void setValue(Block block, Object value) {
-        if (!hasProperties(block) || !checkValueCast(block, value)) return;
-        
-
-    }
-    
-    private boolean checkValueCast(Block block, Object value) {
-        try {
-            getCurrentProperty(block).getValueType().cast(value);
-        } catch (ClassCastException e) {
-            return false;
+        if (!hasProperties(block) || !getCurrentProperty(block).getValueType().isInstance(value)) {
+            return;
         }
-        return true;
+        block.setBlockData(getCurrentProperty(block).getBlockData(block, value), false);
     }
     
     /**
@@ -156,17 +168,14 @@ public final class ClassicDebugContext implements DebugContext {
      *
      * @param block The block to shift to the next property value for.
      */
-    @SuppressWarnings("all")
+    @SuppressWarnings( "all" )
     public void applyNextValueFor(Block block) {
-        if (!hasProperties(block)) return;
-
-        BlockData newData = getCurrentProperty(block).nextBlockData(block);//This wont be null.
-
-        log(uuid, block, newData);
-        block.setType(block.getType(), false);
-        block.setBlockData(newData, false);
+        if (!hasProperties(block)) {
+            return;
+        }
+        block.setBlockData(getCurrentProperty(block).nextBlockData(block), false);
     }
-
+    
     /**
      * Sends the player information about the properties of a specific block via ActionBar. If this block has no
      * properties, or if the block is null, the message sent will be empty.
@@ -190,7 +199,7 @@ public final class ClassicDebugContext implements DebugContext {
         }
         session.sendBar(builder.toString().trim());
     }
-
+    
     private void log(UUID uuid, Block block, BlockData newData) {
         if (ConfigKey.get().PROTECT_INTEGRATION && ConfigKey.get().CLASSIC_LOGGING) {
             CoreProtectAPI api = plugin.getCoreProtectAPI();
@@ -200,5 +209,5 @@ public final class ClassicDebugContext implements DebugContext {
             }
         }
     }
-
+    
 }

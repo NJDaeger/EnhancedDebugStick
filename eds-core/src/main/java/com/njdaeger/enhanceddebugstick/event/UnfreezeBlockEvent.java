@@ -27,7 +27,11 @@ public class UnfreezeBlockEvent extends PlayerEvent implements Cancellable {
         this.unfreezeList = locked;
         this.debugContext = debugContext;
     }
-
+    
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+    
     @Override
     public HandlerList getHandlers() {
         return HANDLERS;
@@ -49,7 +53,7 @@ public class UnfreezeBlockEvent extends PlayerEvent implements Cancellable {
      *
      * @return A list of block(s) which are to be unfrozen. An empty list if no blocks are being unfrozen.
      */
-    public List<Block> getBlocksToUnlock() {
+    public List<Block> getUnfrozenBlocks() {
         return unfreezeList;
     }
 

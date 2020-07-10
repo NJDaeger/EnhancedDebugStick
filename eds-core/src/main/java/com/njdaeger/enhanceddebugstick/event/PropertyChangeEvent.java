@@ -23,7 +23,11 @@ public class PropertyChangeEvent extends PlayerEvent implements Cancellable {
         this.nextProperty = nextProperty;
         this.block = block;
     }
-
+    
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+    
     @Override
     public HandlerList getHandlers() {
         return HANDLERS;

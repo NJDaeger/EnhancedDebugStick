@@ -931,7 +931,7 @@ public class Property_114<D extends BlockData, V> extends AbstractProperty<D, V>
     public static void registerProperties() {
         if (registered) throw new RuntimeException("Cannot re-register properties after they've been registered.");
         registered = true;
-        for (Field field : Property_114.class.getFields()) {
+        for (Field field : Property_114.class.getDeclaredFields()) {
             if (field.getType() == IProperty.class) {
                 try {
                     PROPERTY_FIELD_MAP.put(field.getName(), (IProperty<?, ?>) field.get(null));

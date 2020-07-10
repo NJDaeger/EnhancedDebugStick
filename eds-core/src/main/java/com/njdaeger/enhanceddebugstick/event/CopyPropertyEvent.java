@@ -26,7 +26,11 @@ public class CopyPropertyEvent extends PlayerEvent implements Cancellable {
         this.cancelled = false;
         this.debugContext = debugContext;
     }
-
+    
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+    
     @Override
     public HandlerList getHandlers() {
         return HANDLERS;

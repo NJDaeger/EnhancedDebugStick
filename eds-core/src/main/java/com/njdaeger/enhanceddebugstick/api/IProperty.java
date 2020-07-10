@@ -217,7 +217,7 @@ public interface IProperty<D extends BlockData, V> {
      * @param value The new value of the block data
      * @return The changed block data, or the old block data if the value wasn't applicable
      */
-    D getBlockData(Block block, V value);
+    D getBlockData(Block block, Object value);
     
     /**
      * Sets block data value to a specific block data object
@@ -225,9 +225,9 @@ public interface IProperty<D extends BlockData, V> {
      * @param value
      * @return
      */
-    D getBlockData(BlockData data, V value);
+    D getBlockData(BlockData data, Object value);
     
-    D getBlockData(Material material, V value);
+    D getBlockData(Material material, Object value);
     
     /**
      * Gets a map of all bukkit materials which have properies, and a list of their (editable) properties.

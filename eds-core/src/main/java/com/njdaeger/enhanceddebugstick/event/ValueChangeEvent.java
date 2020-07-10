@@ -26,7 +26,11 @@ public class ValueChangeEvent extends PlayerEvent implements Cancellable {
         this.nextValue = nextValue;
         this.property = property;
     }
-
+    
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+    
     @Override
     public HandlerList getHandlers() {
         return HANDLERS;

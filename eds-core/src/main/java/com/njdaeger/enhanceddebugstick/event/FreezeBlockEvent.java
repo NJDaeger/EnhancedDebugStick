@@ -25,6 +25,10 @@ public class FreezeBlockEvent extends PlayerEvent implements Cancellable {
         this.debugContext = debugContext;
     }
 
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+    
     @Override
     public HandlerList getHandlers() {
         return HANDLERS;
@@ -45,7 +49,7 @@ public class FreezeBlockEvent extends PlayerEvent implements Cancellable {
      *
      * @return The block which is meant to be frozen.
      */
-    public Block getBlockToFreeze() {
+    public Block getFrozenBlock() {
         return toFreeze;
     }
 
@@ -54,7 +58,7 @@ public class FreezeBlockEvent extends PlayerEvent implements Cancellable {
      *
      * @param toFreeze The block which is to now be frozen.
      */
-    public void setBlockToFreeze(Block toFreeze) {
+    public void setFrozenBlock(Block toFreeze) {
         this.toFreeze = toFreeze;
     }
 

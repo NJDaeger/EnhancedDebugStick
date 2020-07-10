@@ -109,17 +109,17 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 
                 IProperty<?, ?> property = context.getCurrentProperty(block);
+    
+                if (property == null) {
+                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "This block has no properties");
+                    if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
+                    return;
+                }
                 
                 ValueChangeEvent valEvent = new ValueChangeEvent(event.getPlayer(), block, property.getCurrentValue(block), property.getNextValue(block), property);
                 Bukkit.getPluginManager().callEvent(valEvent);
 
                 if (valEvent.isCancelled()) return;
-                
-                if (valEvent.getProperty() == null) {
-                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "This block has no properties");
-                    if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
-                    return;
-                }
     
                 if (!valEvent.isValueApplicable()) {
                     session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "You cannot apply that property to that block");
