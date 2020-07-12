@@ -76,13 +76,13 @@ public class HoldShifter implements Shifter<PlayerInteractEvent, PlayerToggleSne
         switch (event.getAction()) {
             case LEFT_CLICK_AIR:
             case LEFT_CLICK_BLOCK:
-                session.setDebugMode(index + 1 == size ? DebugModeType.getDebugModes().get(0) : DebugModeType.getDebugModes().get(index + 1));
+                session.setDebugMode(index - 1 < 0 ? DebugModeType.getDebugModes().get(size - 1) : DebugModeType.getDebugModes().get(index - 1));
                 session.getDebugMode().pauseSession(session);
                 session.getSelectingTask().run();
                 break;
             case RIGHT_CLICK_AIR:
             case RIGHT_CLICK_BLOCK:
-                session.setDebugMode(index - 1 < 0 ? DebugModeType.getDebugModes().get(size - 1) : DebugModeType.getDebugModes().get(index - 1));
+                session.setDebugMode(index + 1 == size ? DebugModeType.getDebugModes().get(0) : DebugModeType.getDebugModes().get(index + 1));
                 session.getDebugMode().pauseSession(session);
                 session.getSelectingTask().run();
                 break;

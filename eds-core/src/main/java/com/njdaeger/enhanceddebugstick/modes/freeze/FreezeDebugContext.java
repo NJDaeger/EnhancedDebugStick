@@ -16,29 +16,31 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public final class FreezeDebugContext implements DebugContext {
-
+    
     private final DebugSession session;
     private final Map<Location, BlockData> frozen;
-
+    
     FreezeDebugContext(DebugSession session) {
         this.session = session;
         this.frozen = new HashMap<>();
     }
-
+    
     @Override
     public UUID getOwner() {
         return session.getSessionId();
     }
-
+    
     @Override
     public DebugSession getDebugSession() {
         return session;
     }
-
+    
     /**
      * Checks whether this player has any frozen blocks
      *
@@ -47,7 +49,7 @@ public final class FreezeDebugContext implements DebugContext {
     public boolean hasFrozenBlocks() {
         return !frozen.isEmpty();
     }
-
+    
     /**
      * Freezes the specified block for the player, replacing it with a red wool block and highlighting it if theyre
      * online
@@ -59,11 +61,13 @@ public final class FreezeDebugContext implements DebugContext {
         if (session.isOnline()) {
             Player player = Bukkit.getPlayer(session.getSessionId());
             log(player, block);
-            if (ConfigKey.get().FDM_OUTLINE) BlockHighlighter.lightBlock(block, player);
+            if (ConfigKey.get().FDM_OUTLINE) {
+                BlockHighlighter.lightBlock(block, player);
+            }
             block.setType(Material.RED_WOOL, false);
         }
     }
-
+    
     /**
      * Unfreezes the specified block for the player, putting it  back to its original state.
      *
@@ -71,68 +75,95 @@ public final class FreezeDebugContext implements DebugContext {
      */
     public void unfreezeBlock(Block block) {
         BlockData data = frozen.remove(block.getLocation());
-        if (session.isOnline()) {
+        if (session.isOnline() && data != null) {
             Player player = Bukkit.getPlayer(session.getSessionId());
-            if (ConfigKey.get().FDM_OUTLINE) BlockHighlighter.unLightBlock(block, player);
+            if (ConfigKey.get().FDM_OUTLINE) {
+                BlockHighlighter.unLightBlock(block, player);
+            }
             block.setBlockData(data, false);
             log(player, block);
         }
     }
-
+    
     /**
-     * Unlocks all currently selected blocks.
+     * Attempts to unfreeze a list of blocks. If the block is not frozen, nothing will be done.
+     * @param blocks The blocks to attempt to unfreeze.
+     */
+    public void unfreezeBlocks(List<Block> blocks) {
+        blocks.forEach(this::unfreezeBlock);
+    }
+    
+    /**
+     * Unlocks all currently frozen blocks.
      */
     public void unfreezeAllBlocks() {
-        if (session.isOnline()) unlightFrozen();
+        if (session.isOnline()) {
+            unlightFrozen();
+        }
         Collection<Location> locations = new ArrayList<>(frozen.keySet());
         locations.forEach(loc -> unfreezeBlock(loc.getBlock()));
     }
-
+    
     /**
-     * Lights any selected blocks for the player.
+     * Lights any frozen blocks for the player.
      */
     public void lightFrozen() {
         Player player = Bukkit.getPlayer(session.getSessionId());
         frozen.forEach((location, data) -> {
-            if (ConfigKey.get().FDM_OUTLINE) BlockHighlighter.lightBlock(location.getBlock(), player);
+            if (ConfigKey.get().FDM_OUTLINE) {
+                BlockHighlighter.lightBlock(location.getBlock(), player);
+            }
             location.getBlock().setType(Material.RED_WOOL, false);
         });
     }
-
+    
     /**
-     * Unlights any selected blocks for the player
+     * Unlights any frozen blocks for the player
      */
     public void unlightFrozen() {
         Player player = Bukkit.getPlayer(session.getSessionId());
-        if (ConfigKey.get().FDM_OUTLINE) BlockHighlighter.removeTask(player);
+        if (ConfigKey.get().FDM_OUTLINE) {
+            BlockHighlighter.removeTask(player);
+        }
         frozen.forEach((location, data) -> location.getBlock().setBlockData(data, false));
     }
-
+    
     /**
      * Checks if a block is selected or not
      *
      * @param block The block to check
      * @return True if the block is selected, false otherwise.
      */
-    public boolean isSelected(Block block) {
-        return isSelected(block.getLocation());
+    public boolean isFrozen(Block block) {
+        return isFrozen(block.getLocation());
     }
-
+    
     /**
      * Checks if a location is selected or not
      *
      * @param location The location to check
      * @return True if the location is selected, false otherwise.
      */
-    public boolean isSelected(Location location) {
+    public boolean isFrozen(Location location) {
         return frozen.get(location) != null;
     }
-
+    
+    /**
+     * Gets the list of currently frozen blocks.
+     *
+     * @return The list of frozen blocks.
+     */
+    public List<Block> getFrozen() {
+        return frozen.keySet().stream().map(Location::getBlock).collect(Collectors.toList());
+    }
+    
     private void log(Player player, Block block) {
         if (ConfigKey.get().PROTECT_INTEGRATION && ConfigKey.get().FREEZE_LOGGING) {
             CoreProtectAPI api = EnhancedDebugStick.getInstance().getCoreProtectAPI();
-            if (api != null) api.logInteraction(player.getName(), block.getLocation());
+            if (api != null) {
+                api.logInteraction(player.getName(), block.getLocation());
+            }
         }
     }
-
+    
 }

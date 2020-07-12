@@ -3,10 +3,13 @@ package com.njdaeger.enhanceddebugstick.modes.freeze;
 import com.njdaeger.enhanceddebugstick.ConfigKey;
 import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.Permissions;
+import com.njdaeger.enhanceddebugstick.event.FreezeBlockEvent;
+import com.njdaeger.enhanceddebugstick.event.UnfreezeBlockEvent;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.plotsquared.core.location.Location;
 import com.plotsquared.core.plot.Plot;
 import com.plotsquared.core.plot.PlotArea;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -17,6 +20,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugContext> {
 
@@ -70,29 +76,45 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
             FreezeDebugContext context = session.toDebugContext(this);
 
             if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_AIR) {
+    
+                UnfreezeBlockEvent unfreezeEvent = new UnfreezeBlockEvent(event.getPlayer(), context.getFrozen(), context);
+                Bukkit.getPluginManager().callEvent(unfreezeEvent);
+                
+                if (unfreezeEvent.isCancelled()) return;
+                
                 if (!context.hasFrozenBlocks()) {
                     session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "You do not have any frozen blocks");
                     if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
                 if (ConfigKey.get().FDM_UNFREEZE_ALL) session.sendSound(Sound.ITEM_TRIDENT_RETURN);
-                context.unfreezeAllBlocks();
-                session.sendMessage(ChatColor.GRAY + "Unfroze all frozen blocks.");
+                
+                long unfreezeAmount = unfreezeEvent.getUnfrozenBlocks().stream().filter(context::isFrozen).count();
+                int currentlyFrozen = context.getFrozen().size();
+                
+                context.unfreezeBlocks(unfreezeEvent.getUnfrozenBlocks());
+                session.sendMessage(String.format(ChatColor.GRAY + "Unfroze %d/%d blocks.", unfreezeAmount, currentlyFrozen));
                 return;
             }
 
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                if (context.isSelected(block)) {
-                    if (plot(event.getPlayer(), block)) {
-                        if (ConfigKey.get().FDM_UNFREEZE) session.sendSound(Sound.ITEM_AXE_STRIP);
-                        context.unfreezeBlock(block);
-                    } else session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "You are not an owner or a member of the location being unlocked.");
+                if (context.isFrozen(block)) {
+                    UnfreezeBlockEvent unfreezeEvent = new UnfreezeBlockEvent(event.getPlayer(), Collections.singletonList(block), context);
+                    Bukkit.getPluginManager().callEvent(unfreezeEvent);
+    
+                    if (unfreezeEvent.isCancelled()) return;
+                    
+                    if (ConfigKey.get().FDM_UNFREEZE) session.sendSound(Sound.ITEM_AXE_STRIP);
+                    context.unfreezeBlocks(unfreezeEvent.getUnfrozenBlocks());
                 }
                 else {
-                    if (plot(event.getPlayer(), block)) {
-                        if (ConfigKey.get().FDM_FREEZE) session.sendSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP);
-                        context.freezeBlock(block);
-                    } else session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "You are not an owner or a member of the location being locked.");
+                    FreezeBlockEvent freezeEvent = new FreezeBlockEvent(event.getPlayer(), block, context);
+                    Bukkit.getPluginManager().callEvent(freezeEvent);
+                    
+                    if (freezeEvent.isCancelled()) return;
+                    
+                    if (ConfigKey.get().FDM_FREEZE) session.sendSound(Sound.ENTITY_PLAYER_ATTACK_SWEEP);
+                    context.freezeBlock(freezeEvent.getFrozenBlock());
                 }
             }
 

@@ -1,13 +1,6 @@
 package com.njdaeger.enhanceddebugstick;
 
-import com.njdaeger.enhanceddebugstick.api.IProperty;
 import com.njdaeger.enhanceddebugstick.api.ShiftMode;
-import com.njdaeger.enhanceddebugstick.event.CopyPropertyEvent;
-import com.njdaeger.enhanceddebugstick.event.FreezeBlockEvent;
-import com.njdaeger.enhanceddebugstick.event.PastePropertyEvent;
-import com.njdaeger.enhanceddebugstick.event.PropertyChangeEvent;
-import com.njdaeger.enhanceddebugstick.event.UnfreezeBlockEvent;
-import com.njdaeger.enhanceddebugstick.event.ValueChangeEvent;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.session.Preference;
 import com.njdaeger.enhanceddebugstick.shifter.Shifter;
@@ -18,8 +11,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-
-import java.util.stream.Collectors;
 
 public final class DebugListener implements Listener {
 
@@ -68,42 +59,4 @@ public final class DebugListener implements Listener {
             if (shifter.canDisable(session, event)) shifter.runDisable(session, event);
         }
     }
-    
-    @EventHandler
-    public void testCopyEvent(CopyPropertyEvent event) {
-        System.out.println(event.getCopiedBlock().getBlockData());
-        System.out.println(event.getCopiedProperties().stream().map(IProperty::getNiceName).collect(Collectors.toList()));
-        System.out.println(event.getCopyLocation());
-    }
-    
-    @EventHandler
-    public void testPasteEvent(PastePropertyEvent event) {
-        System.out.println(event.getBefore().getBlockData());
-        System.out.println(event.getAfter());
-    }
-    
-    @EventHandler
-    public void testFreezeEvent(FreezeBlockEvent event) {
-        System.out.println(event.getFrozenBlock().getBlockData());
-    }
-    
-    @EventHandler
-    public void testUnfreezeEvent(UnfreezeBlockEvent event) {
-        System.out.println(event.getUnfrozenBlocks());
-    }
-    
-    @EventHandler
-    public void testPropertyEvent(PropertyChangeEvent event) {
-        System.out.println(event.getLastProperty().getNiceName());
-        System.out.println(event.getNextProperty().getNiceName());
-        System.out.println(event.getLocation());
-    }
-    
-    @EventHandler
-    public void testValueEvent(ValueChangeEvent event) {
-        System.out.println(event.getBlockBefore().getBlockData());
-        System.out.println(event.getBlockDataAfter());
-        System.out.println(event.getLocation());
-    }
-    
 }

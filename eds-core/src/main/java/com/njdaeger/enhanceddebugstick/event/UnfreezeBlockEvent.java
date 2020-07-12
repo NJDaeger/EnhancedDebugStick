@@ -21,11 +21,11 @@ public class UnfreezeBlockEvent extends PlayerEvent implements Cancellable {
     private List<Block> unfreezeList;
     private boolean cancelled;
 
-    public UnfreezeBlockEvent(Player who, List<Block> locked, FreezeDebugContext debugContext) {
+    public UnfreezeBlockEvent(Player who, List<Block> listToUnfreeze, FreezeDebugContext debugContext) {
         super(who);
         this.cancelled = false;
-        this.unfreezeList = locked;
         this.debugContext = debugContext;
+        this.unfreezeList = listToUnfreeze;
     }
     
     public static HandlerList getHandlerList() {
@@ -62,7 +62,7 @@ public class UnfreezeBlockEvent extends PlayerEvent implements Cancellable {
      *
      * @param blocksToUnfreeze The list of blocks to unfreeze
      */
-    public void setBlocksToUnlock(List<Block> blocksToUnfreeze) {
+    public void setBlocksToUnfreeze(List<Block> blocksToUnfreeze) {
         this.unfreezeList = blocksToUnfreeze;
     }
 
