@@ -1,6 +1,7 @@
 package com.njdaeger.enhanceddebugstick.event;
 
 import com.njdaeger.enhanceddebugstick.api.IProperty;
+import com.njdaeger.enhanceddebugstick.modes.classic.ClassicDebugContext;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -18,13 +19,15 @@ public class ValueChangeEvent extends PlayerEvent implements Cancellable {
     private final Object lastValue;
     private final IProperty property;
     private Object nextValue;
+    private final ClassicDebugContext context;
 
-    public ValueChangeEvent(Player who, Block block, Object lastValue, Object nextValue, IProperty property) {
+    public ValueChangeEvent(Player who, Block block, Object lastValue, Object nextValue, IProperty property, ClassicDebugContext context) {
         super(who);
         this.block = block;
         this.lastValue = lastValue;
         this.nextValue = nextValue;
         this.property = property;
+        this.context = context;
     }
     
     public static HandlerList getHandlerList() {
@@ -89,4 +92,9 @@ public class ValueChangeEvent extends PlayerEvent implements Cancellable {
     public IProperty getProperty() {
         return property;
     }
+    
+    public ClassicDebugContext getDebugContext() {
+        return context;
+    }
+    
 }

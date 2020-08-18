@@ -6,14 +6,10 @@ import com.njdaeger.enhanceddebugstick.api.Permissions;
 import com.njdaeger.enhanceddebugstick.event.FreezeBlockEvent;
 import com.njdaeger.enhanceddebugstick.event.UnfreezeBlockEvent;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
-import com.plotsquared.core.location.Location;
-import com.plotsquared.core.plot.Plot;
-import com.plotsquared.core.plot.PlotArea;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -21,7 +17,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugContext> {
@@ -126,17 +121,4 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
     public void onMove(PlayerMoveEvent event) {
 
     }
-
-    private boolean plot(Player player, Block block) {
-        if (ConfigKey.get().PLOT_INTEGRATION) {
-            Location location = new Location(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
-            PlotArea area = plugin.getPlotAPI().getPlotSquared().getApplicablePlotArea(location);
-            if (area == null) return false;
-            Plot plot = area.getOwnedPlot(location);
-            if (plot == null || plot.isDenied(player.getUniqueId())) return false;
-            else return plot.isOwner(player.getUniqueId()) || plot.isAdded(player.getUniqueId());
-        }
-        return true;
-    }
-
 }

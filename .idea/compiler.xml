@@ -7,12 +7,17 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="eds-v114impl" />
+        <module name="eds-coreprotect-v6" />
         <module name="eds-v115impl" />
         <module name="eds-core" />
         <module name="eds-v116impl" />
-        <module name="edsjar" />
+        <module name="eds-jar" />
         <module name="eds-v113impl" />
+        <module name="eds-plotsquared" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="eds-plot-v5" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

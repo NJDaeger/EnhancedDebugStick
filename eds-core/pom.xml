@@ -111,19 +111,6 @@
             </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>com.plotsquared</groupId>
-            <artifactId>PlotSquared</artifactId>
-            <version>5.1</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
     </dependencies>
 
 </project>

@@ -7,14 +7,10 @@ import com.njdaeger.enhanceddebugstick.api.Permissions;
 import com.njdaeger.enhanceddebugstick.event.CopyPropertyEvent;
 import com.njdaeger.enhanceddebugstick.event.PastePropertyEvent;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
-import com.plotsquared.core.location.Location;
-import com.plotsquared.core.plot.Plot;
-import com.plotsquared.core.plot.PlotArea;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -182,17 +178,4 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
             }
         }
     }
-
-    private boolean plot(Player player, Block block) {
-        if (ConfigKey.get().PLOT_INTEGRATION) {
-            Location location = new Location(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
-            PlotArea area = plugin.getPlotAPI().getPlotSquared().getApplicablePlotArea(location);
-            if (area == null) return false;
-            Plot plot = area.getOwnedPlot(location);
-            if (plot == null || plot.isDenied(player.getUniqueId())) return false;
-            else return plot.isOwner(player.getUniqueId()) || plot.isAdded(player.getUniqueId());
-        }
-        return true;
-    }
-
 }
