@@ -22,8 +22,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static org.bukkit.ChatColor.*;
-
 final class DebugStickCommand {
 
     DebugStickCommand(EnhancedDebugStick plugin) {

@@ -1,16 +1,11 @@
 package com.njdaeger.enhanceddebugstick.modes.classic;
 
-import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
-import net.coreprotect.CoreProtectAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,14 +18,10 @@ import static com.njdaeger.enhanceddebugstick.util.Util.format;
 public final class ClassicDebugContext implements DebugContext {
     
     private final Map<Material, Integer> currentProperty;
-    private final EnhancedDebugStick plugin;
-    private final UUID uuid;
     private final DebugSession session;
     
     ClassicDebugContext(DebugSession session) {
-        this.plugin = EnhancedDebugStick.getInstance();
         this.currentProperty = new HashMap<>();
-        this.uuid = session.getSessionId();
         this.session = session;
         
         for (Material mat : IProperty.getMaterialProperties().keySet()) {
@@ -199,15 +190,4 @@ public final class ClassicDebugContext implements DebugContext {
         }
         session.sendBar(builder.toString().trim());
     }
-    
-    private void log(UUID uuid, Block block, BlockData newData) {
-        if (ConfigKey.get().PROTECT_INTEGRATION && ConfigKey.get().CLASSIC_LOGGING) {
-            CoreProtectAPI api = plugin.getCoreProtectAPI();
-            if (api != null) {
-                api.logRemoval(Bukkit.getPlayer(uuid).getName(), block.getLocation(), block.getType(), block.getBlockData());
-                api.logPlacement(Bukkit.getPlayer(uuid).getName(), block.getLocation(), block.getType(), newData);
-            }
-        }
-    }
-    
 }

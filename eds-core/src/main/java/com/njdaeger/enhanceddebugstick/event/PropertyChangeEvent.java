@@ -2,7 +2,6 @@ package com.njdaeger.enhanceddebugstick.event;
 
 import com.njdaeger.enhanceddebugstick.api.IProperty;
 import com.njdaeger.enhanceddebugstick.modes.classic.ClassicDebugContext;
-import com.njdaeger.enhanceddebugstick.modes.copy.CopyDebugContext;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

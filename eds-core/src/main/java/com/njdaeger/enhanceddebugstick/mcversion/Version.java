@@ -2,7 +2,6 @@ package com.njdaeger.enhanceddebugstick.mcversion;
 
 import org.bukkit.Bukkit;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.function.Function;
 
 public enum Version {

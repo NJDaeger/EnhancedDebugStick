@@ -1,11 +1,9 @@
 package com.njdaeger.enhanceddebugstick.modes.freeze;
 
 import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.util.BlockHighlighter;
-import net.coreprotect.CoreProtectAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -60,7 +58,6 @@ public final class FreezeDebugContext implements DebugContext {
         frozen.put(block.getLocation(), block.getBlockData());
         if (session.isOnline()) {
             Player player = Bukkit.getPlayer(session.getSessionId());
-            log(player, block);
             if (ConfigKey.get().FDM_OUTLINE) {
                 BlockHighlighter.lightBlock(block, player);
             }
@@ -81,7 +78,6 @@ public final class FreezeDebugContext implements DebugContext {
                 BlockHighlighter.unLightBlock(block, player);
             }
             block.setBlockData(data, false);
-            log(player, block);
         }
     }
     
@@ -155,15 +151,6 @@ public final class FreezeDebugContext implements DebugContext {
      */
     public List<Block> getFrozen() {
         return frozen.keySet().stream().map(Location::getBlock).collect(Collectors.toList());
-    }
-    
-    private void log(Player player, Block block) {
-        if (ConfigKey.get().PROTECT_INTEGRATION && ConfigKey.get().FREEZE_LOGGING) {
-            CoreProtectAPI api = EnhancedDebugStick.getInstance().getCoreProtectAPI();
-            if (api != null) {
-                api.logInteraction(player.getName(), block.getLocation());
-            }
-        }
     }
     
 }

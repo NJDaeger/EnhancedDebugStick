@@ -7,7 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="eds-v114impl" />
-        <module name="eds-coreprotect-v6" />
+        <module name="eds-coreprotect" />
         <module name="eds-v115impl" />
         <module name="eds-core" />
         <module name="eds-v116impl" />

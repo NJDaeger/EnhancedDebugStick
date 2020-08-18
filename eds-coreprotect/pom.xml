@@ -9,17 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>eds-plotsquared</artifactId>
+    <artifactId>eds-coreprotect</artifactId>
     <version>1.0</version>
 
     <repositories>
         <repository>
-            <id>enginehub</id>
-            <url>https://maven.enginehub.org/repo/</url>
-        </repository>
-        <repository>
-            <id>plotsquared</id>
-            <url>https://plotsquared.com/mvn/</url>
+            <id>coreprotect</id>
+            <url>https://maven.playpro.com/</url>
         </repository>
     </repositories>
 
@@ -39,9 +35,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.plotsquared</groupId>
-            <artifactId>PlotSquared</artifactId>
-            <version>5.1</version>
+            <groupId>net.coreprotect</groupId>
+            <artifactId>coreprotect</artifactId>
+            <version>19.1</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -78,7 +74,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>EnhancedDebugStick-PlotSquared-${project.version}</finalName>
+                    <finalName>EnhancedDebugStick-CoreProtect-${project.version}</finalName>
                     <outputDirectory>${project.parent.basedir}/jars</outputDirectory>
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>

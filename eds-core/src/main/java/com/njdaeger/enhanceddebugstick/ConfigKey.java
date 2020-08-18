@@ -100,19 +100,6 @@ public final class ConfigKey extends SmartConfig<YmlConfig> {
 
     public final boolean COPY_CLEAR_SOUND = get("copy-debug-mode.clear-sound", true);
 
-    public final boolean PLOT_INTEGRATION = get("plotsquared-integration.enable", false, b -> !b || Bukkit.getPluginManager().getPlugin("PlotSquared") != null);
-
-    public final boolean PROTECT_INTEGRATION = get("coreprotect-integration.enable", false, b -> !b || Bukkit.getPluginManager().getPlugin("CoreProtect") != null);
-
-    /**
-     * Whether to log all changed blocks with coreprotect
-     */
-    public final boolean CLASSIC_LOGGING = get("coreprotect-integration.classic-debug-mode-logging", true);
-
-    public final boolean COPY_LOGGING = get("coreprotect-integration.copy-debug-mode-logging", true);
-
-    public final boolean FREEZE_LOGGING = get("coreprotect-integration.freeze-debug-mode-logging", true);
-
     ConfigKey(EnhancedDebugStick plugin) {
         super(plugin, ConfigType.YML, "config");
     }

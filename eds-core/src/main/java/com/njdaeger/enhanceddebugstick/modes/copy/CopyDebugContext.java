@@ -1,13 +1,10 @@
 package com.njdaeger.enhanceddebugstick.modes.copy;
 
 import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.util.Util;
-import net.coreprotect.CoreProtectAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -16,13 +13,11 @@ import java.util.List;
 import java.util.UUID;
 
 public final class CopyDebugContext implements DebugContext {
-
-    private final EnhancedDebugStick plugin;
+    
     private final DebugSession session;
     private BlockData clipboard;
 
     CopyDebugContext(DebugSession session) {
-        this.plugin = EnhancedDebugStick.getInstance();
         this.session = session;
     }
 
@@ -80,15 +75,11 @@ public final class CopyDebugContext implements DebugContext {
     public void applyClipboardFor(Block block) {
 
         List<IProperty<?, ?>> clipboardProperties = getClipboardProperties();
-        BlockData oldData = block.getBlockData().clone();
-
         for (IProperty<?, ?> property : clipboardProperties) {
             if (property.isApplicableTo(block)) {
                 block.setBlockData(property.mergeBlockData(clipboard, block), false);
             }
         }
-
-        log(session.getSessionId(), block, oldData);
     }
 
     /**
@@ -143,15 +134,4 @@ public final class CopyDebugContext implements DebugContext {
         }
         session.sendBar(builder.toString().trim());
     }
-
-    private void log(UUID uuid, Block block, BlockData oldData) {
-        if (ConfigKey.get().PROTECT_INTEGRATION && ConfigKey.get().COPY_LOGGING) {
-            CoreProtectAPI api = plugin.getCoreProtectAPI();
-            if (api != null) {
-                api.logRemoval(Bukkit.getPlayer(uuid).getName(), block.getLocation(), block.getType(), oldData);
-                api.logPlacement(Bukkit.getPlayer(uuid).getName(), block.getLocation(), block.getType(), block.getBlockData());
-            }
-        }
-    }
-
 }

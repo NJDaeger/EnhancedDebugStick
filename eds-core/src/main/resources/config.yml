@@ -22,33 +22,7 @@ sound-on-error: true
 # *   The DOUBLE mode shifter must be selected to be an option
 # **  The HOLD mode shifter must be selected to be an option
 enable-user-preferences: true
-#
-# If PlotSquared is installed, settings for it are below.
-plotsquared-integration:
-  #
-  # Enables PlotSquared integration. If enabled, and PS is not installed, the plugin will not act differently. If
-  # disabled and PS is installed, the plugin will work as a free for all where players can edit outside of their plots
-  enable: false
-#
-# If CoreProtect is installed, logging can be enabled.
-coreprotect-integration:
-  #
-  # Enables CoreProtect integration. If enabled, and CP is not installed OR if it is installed and this setting is set
-  # to false, the plugin will act no different in either case. It should function as normal. If enabled and the plugin
-  # is installed, the three keys following it will take effect.
-  enable: false
-  #
-  # This will log any changes with a classic debug stick with CoreProtect. This will only take effect if
-  # coreprotect-integration is enabled and CP is installed.
-  classic-debug-mode-logging: true
-  #
-  # This will log any pastes with the copy debug stick with CoreProtect. This will only take effect if coreprotect-integration
-  # is enabled and CP is installed.
-  copy-debug-mode-logging: true
-  #
-  # This will log any freeze and unfreeze interactions with the freeze debug stick with CoreProtect. This will only take
-  # effect if coreprotect-integration is enabled and CP is installed.
-  freeze-debug-mode-logging: true
+
 #
 #
 # Settings for when a player wants to change between debug modes.
@@ -119,10 +93,6 @@ classic-debug-mode:
   # display-data-on-look to false). If it is set to -1, the limit will default to 10 blocks.
   display-data-distance: 7
 
-  # Enable this if you want CoreProtect to log the edited block.
-  # If CoreProtect is not installed, this will do nothing.
-  coreprotect-logging: false
-
   # When the next property is selected (left click) a click will be played to the player
   # indicating the next property has been chosen.
   next-property-sound: true
@@ -130,9 +100,6 @@ classic-debug-mode:
   # When the next value is selected (right click) a click will be played to the player
   # indicating the next value for the selected property has been chosen.
   next-value-sound: true
-
-  # Enable this if you want to prevent players from editing outside of their PlotSquared plot
-  plotsquared-integration: false
 
 #
 # Settings for the frozen debug mode. This mode allows the locking of blocks so their properties wont update when a
@@ -152,9 +119,6 @@ frozen-debug-mode:
 
   # When all frozen blocks are unfrozen at the same time, play a sound to indicate it.
   mass-unfreeze-sound: true
-
-  # Enable this if you want to prevent players from editing outside of their PlotSquared plot.
-  plotsquared-integration: false
 
 
 
@@ -179,10 +143,6 @@ copy-debug-mode:
   # When looking at a block to paste properties on, should we always display all the properties
   # of that block or should we only display the applicable properties?
   display-all-properties: true
-
-  # Enable this if you want CoreProtect to log the edited block.
-  # If CoreProtect is not installed, this will do nothing.
-  coreprotect-logging: false
 
   # When BlockData is copied (left click) a sound will be played to the player
   # indicating the data was copied

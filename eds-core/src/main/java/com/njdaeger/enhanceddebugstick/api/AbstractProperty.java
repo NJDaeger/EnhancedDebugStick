@@ -1,6 +1,5 @@
 package com.njdaeger.enhanceddebugstick.api;
 
-import net.minecraft.server.v1_15_R1.BlockSoil;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;

@@ -53,7 +53,7 @@ public class ValueChangeEvent extends PlayerEvent implements Cancellable {
         return block.getLocation();
     }
 
-    public Block getBlockBefore() {
+    public Block getBefore() {
         return block;
     }
 
@@ -61,7 +61,7 @@ public class ValueChangeEvent extends PlayerEvent implements Cancellable {
         this.block = block;
     }
 
-    public BlockData getBlockDataAfter() {
+    public BlockData getAfter() {
         return property.getBlockData(block, nextValue);
     }
     

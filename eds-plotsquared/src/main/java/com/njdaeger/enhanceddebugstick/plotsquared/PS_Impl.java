@@ -28,6 +28,7 @@ public class PS_Impl extends JavaPlugin implements Listener {
         } else {
             this.config = new PS_Config(this);
             Bukkit.getPluginManager().registerEvents(this, this);
+            getLogger().info("PlotSquared integration enabled.");
         }
     }
     
@@ -49,7 +50,7 @@ public class PS_Impl extends JavaPlugin implements Listener {
     
     @EventHandler
     public void onValueChangeEvent(ValueChangeEvent event) {
-        if (!canUse(event.getPlayer(), event.getBlockBefore())) {
+        if (!canUse(event.getPlayer(), event.getBefore())) {
             event.setCancelled(true);
             event.getDebugContext().getDebugSession().sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "You are not an owner or a member of the location being changed.");
         }

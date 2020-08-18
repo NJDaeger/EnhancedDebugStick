@@ -124,8 +124,8 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
                 }
                 
                 if (ConfigKey.get().CDM_VALUE) session.sendSound(Sound.UI_BUTTON_CLICK);
-                context.setValue(valEvent.getBlockBefore(), valEvent.getNextValue());
-                context.sendPropertiesOf(valEvent.getBlockBefore());
+                context.setValue(valEvent.getBefore(), valEvent.getNextValue());
+                context.sendPropertiesOf(valEvent.getBefore());
             }
         }
     }
