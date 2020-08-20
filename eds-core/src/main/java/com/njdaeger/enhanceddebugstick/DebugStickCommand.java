@@ -193,7 +193,7 @@ final class DebugStickCommand {
 
         Text.of("  - ")
                 .setColor(ChatColor.GRAY)
-                .append(Permissions.GET_COMMAND)
+                .append(Permissions.RELOAD_COMMAND)
                 .setColor(ChatColor.BLUE)
                 .setItalic(true)
                 .hoverEvent(Text.HoverAction.SHOW_TEXT, Text.of("Reload plugin permission\n").setBold(true).append("  /dbs reload").setColor(ChatColor.GRAY))
@@ -201,7 +201,7 @@ final class DebugStickCommand {
 
         Text.of("  - ")
                 .setColor(ChatColor.GRAY)
-                .append(Permissions.GET_COMMAND)
+                .append(Permissions.HELP_COMMAND)
                 .setColor(ChatColor.BLUE)
                 .setItalic(true)
                 .hoverEvent(Text.HoverAction.SHOW_TEXT, Text.of("EDS Help Menu permission\n").setBold(true).append("  /dbs help").setColor(ChatColor.GRAY))
@@ -209,7 +209,7 @@ final class DebugStickCommand {
 
         Text.of("  - ")
                 .setColor(ChatColor.GRAY)
-                .append(Permissions.GET_COMMAND)
+                .append(Permissions.PREFERENCE_COMMAND)
                 .setColor(ChatColor.BLUE)
                 .setItalic(true)
                 .hoverEvent(Text.HoverAction.SHOW_TEXT, Text.of("Allows the setting of user preferences\n").setBold(true).append("  /dbs preference ...").setColor(ChatColor.GRAY))
