@@ -24,6 +24,8 @@ public class CP_Config extends Configuration {
         this.copyLogging = getBoolean("copy-debug-mode-logging");
         this.freezeLogging = getBoolean("freeze-debug-mode-logging");
         
+        save();
+        
     }
     
     public boolean doClassicLogging() {

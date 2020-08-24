@@ -25,6 +25,8 @@ public class PS_Config extends Configuration {
                 if (world != null) worlds.add(world);
             });
         }
+        
+        save();
     }
     
     public List<World> getWorlds() {
