@@ -998,6 +998,14 @@ public class Property_116<D extends BlockData, V> extends AbstractProperty<D, V>
         return wall;
     });
     
+    static IProperty<Wall, Boolean> WALL_UP = new Property_116<>("Up", Wall.class, Boolean.class, (wall) -> {
+        wall.setUp(!wall.isUp());
+        return wall;
+    }, Wall::isUp, (wall, up) -> {
+        wall.setUp(up);
+        return wall;
+    });
+    
     public static void registerProperties() {
         if (registered) throw new RuntimeException("Cannot re-register properties after they've been registered.");
         registered = true;
