@@ -966,7 +966,7 @@ public class Property_116<D extends BlockData, V> extends AbstractProperty<D, V>
         return anchor;
     });
     
-    static IProperty<Wall, Wall.Height> WALL_HEIGHT_NORTH = new Property_116<>("North Height", Wall.class, Wall.Height.class, (wall) -> {
+    static IProperty<Wall, Wall.Height> WALL_HEIGHT_NORTH = new Property_116<>("North", Wall.class, Wall.Height.class, (wall) -> {
         wall.setHeight(NORTH, nextEnumOption(wall.getHeight(NORTH)));
         return wall;
     }, (wall) -> wall.getHeight(NORTH), (wall, height) -> {
@@ -974,7 +974,7 @@ public class Property_116<D extends BlockData, V> extends AbstractProperty<D, V>
         return wall;
     });
     
-    static IProperty<Wall, Wall.Height> WALL_HEIGHT_SOUTH = new Property_116<>("South Height", Wall.class, Wall.Height.class, (wall) -> {
+    static IProperty<Wall, Wall.Height> WALL_HEIGHT_SOUTH = new Property_116<>("South", Wall.class, Wall.Height.class, (wall) -> {
         wall.setHeight(SOUTH, nextEnumOption(wall.getHeight(SOUTH)));
         return wall;
     }, (wall) -> wall.getHeight(SOUTH), (wall, height) -> {
@@ -982,7 +982,7 @@ public class Property_116<D extends BlockData, V> extends AbstractProperty<D, V>
         return wall;
     });
     
-    static IProperty<Wall, Wall.Height> WALL_HEIGHT_EAST = new Property_116<>("East Height", Wall.class, Wall.Height.class, (wall) -> {
+    static IProperty<Wall, Wall.Height> WALL_HEIGHT_EAST = new Property_116<>("East", Wall.class, Wall.Height.class, (wall) -> {
         wall.setHeight(EAST, nextEnumOption(wall.getHeight(EAST)));
         return wall;
     }, (wall) -> wall.getHeight(EAST), (wall, height) -> {
@@ -990,7 +990,7 @@ public class Property_116<D extends BlockData, V> extends AbstractProperty<D, V>
         return wall;
     });
     
-    static IProperty<Wall, Wall.Height> WALL_HEIGHT_WEST = new Property_116<>("West Height", Wall.class, Wall.Height.class, (wall) -> {
+    static IProperty<Wall, Wall.Height> WALL_HEIGHT_WEST = new Property_116<>("West", Wall.class, Wall.Height.class, (wall) -> {
         wall.setHeight(WEST, nextEnumOption(wall.getHeight(WEST)));
         return wall;
     }, (wall) -> wall.getHeight(WEST), (wall, height) -> {
