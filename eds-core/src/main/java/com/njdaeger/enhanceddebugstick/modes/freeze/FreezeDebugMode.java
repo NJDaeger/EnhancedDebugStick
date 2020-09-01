@@ -92,7 +92,7 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
                 return;
             }
 
-            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getHand() == EquipmentSlot.HAND) {
                 if (context.isFrozen(block)) {
                     UnfreezeBlockEvent unfreezeEvent = new UnfreezeBlockEvent(event.getPlayer(), Collections.singletonList(block), context);
                     Bukkit.getPluginManager().callEvent(unfreezeEvent);

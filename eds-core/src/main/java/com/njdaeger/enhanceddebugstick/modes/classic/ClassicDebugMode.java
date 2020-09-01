@@ -102,7 +102,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
             }
 
             //When the action is a right click on a block
-            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getHand() == EquipmentSlot.HAND) {
                 
                 IProperty<?, ?> property = context.getCurrentProperty(block);
     
