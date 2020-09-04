@@ -27,7 +27,8 @@ public final class DebugSession {
     private int taskNumber;
     private long sneakStart;
     private boolean selecting;
-
+    private long lastInteract;
+    
     private long lastForced;
     private final UUID uuid;
     private DebugModeType debugMode;
@@ -223,7 +224,15 @@ public final class DebugSession {
             player.playSound(player.getLocation(), sound, 1, pitch);
         }
     }
-
+    
+    public boolean canInteract() {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastInteract > 50) {
+            lastInteract = currentTime;
+            return true;
+        } else return false;
+    }
+    
     public boolean isSelectingMode() {
         return selecting;
     }

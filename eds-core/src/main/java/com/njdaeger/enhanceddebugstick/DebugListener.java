@@ -44,7 +44,7 @@ public final class DebugListener implements Listener {
         DebugSession session = plugin.getDebugSession(player.getUniqueId());
         ShiftMode mode = session.getPref(Preference.SHIFT_MODE);
         Shifter shifter = mode.getShifter();
-        if ((mode == ShiftMode.HOLD || mode == ShiftMode.DOUBLE) && shifter.canShift(session, event)) {
+        if ((mode == ShiftMode.HOLD || mode == ShiftMode.DOUBLE) && shifter.canShift(session, event) && session.canInteract()) {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
             event.setUseItemInHand(Event.Result.DENY);

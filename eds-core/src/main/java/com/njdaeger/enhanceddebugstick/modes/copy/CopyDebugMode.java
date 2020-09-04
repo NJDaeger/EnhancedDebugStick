@@ -55,7 +55,7 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
     public void onInteract(PlayerInteractEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
 
-        if (session.isUsing(this) && event.getHand() == EquipmentSlot.HAND) {
+        if (session.isUsing(this) && session.canInteract() && event.getHand() == EquipmentSlot.HAND) {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
             event.setUseItemInHand(Event.Result.DENY);
@@ -117,7 +117,7 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
                 return;
             }
 
-            if (event.getAction() == Action.RIGHT_CLICK_BLOCK &&  event.getHand() == EquipmentSlot.HAND) {
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
                 PastePropertyEvent e = new PastePropertyEvent(event.getPlayer(), block, context);
                 Bukkit.getPluginManager().callEvent(e);

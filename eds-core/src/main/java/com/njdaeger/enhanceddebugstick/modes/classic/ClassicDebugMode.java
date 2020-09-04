@@ -59,7 +59,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
 
         //We check if this Debug Mode contains the players session, we also check if the player is holding the debug stick
-        if (session.isUsing(this) && event.getHand() == EquipmentSlot.HAND) {
+        if (session.isUsing(this) && session.canInteract() && event.getHand() == EquipmentSlot.HAND) {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
             event.setUseItemInHand(Event.Result.DENY);
@@ -102,7 +102,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
             }
 
             //When the action is a right click on a block
-            if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getHand() == EquipmentSlot.HAND) {
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 
                 IProperty<?, ?> property = context.getCurrentProperty(block);
     
