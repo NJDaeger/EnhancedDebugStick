@@ -117,7 +117,7 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
                 return;
             }
 
-            if (event.getAction() == Action.RIGHT_CLICK_BLOCK &&  event.getHand() == EquipmentSlot.HAND) {
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
                 PastePropertyEvent e = new PastePropertyEvent(event.getPlayer(), block, context);
                 Bukkit.getPluginManager().callEvent(e);
