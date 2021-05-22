@@ -38,7 +38,7 @@ public final class ConfigurationFile extends Configuration {
         addEntry("stick-material", Material.STICK.name().toLowerCase());
         addComment("stick-material", "\nWhat material should the debug stick be? Defaults to a minecraft stick, but can be changed in case of plugin clashes.");
         
-        addEntry("disable-bossbar-timers", false);
+        addEntry("allow-bossbar-timers", false);
         addComment("allow-bossbar-timers", "\nBossbars are used to show how quickly you need to shift to move to the next mode. With them enabled, it may override and affect some other custom bossbars that are currently in use. When this is set to true, the Enhanced Debug Stick WILL show bossbars that show the time left to do certain actions. Otherwise, no bossbar will be shown.");
         
         addEntry("mode-shift.default-mode-shift-preference", ShiftMode.DOUBLE);
