@@ -21,7 +21,7 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
         long timeout = session.getPref(Preference.SNEAK_TIMEOUT);
         if (session.getSelectingStart() == 0) {
             session.setSelectingStart(System.currentTimeMillis());
-            BossBarTimer.create(event.getPlayer(), false, timeout, 2,
+            if (ConfigKey.get().ALLOW_BOSSBAR_TIMERS) BossBarTimer.create(event.getPlayer(), false, timeout, 2,
                     (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Timeout: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.), (p) -> session.isSelectingMode(), () -> {
                         if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     }).start();
@@ -49,7 +49,7 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
         long timeout = session.getPref(Preference.SNEAK_TIMEOUT);
         if (session.getSelectingStart() == 0) {
             session.setSelectingStart(System.currentTimeMillis());
-            BossBarTimer.create(event.getPlayer(), false, timeout, 2,
+            if (ConfigKey.get().ALLOW_BOSSBAR_TIMERS) BossBarTimer.create(event.getPlayer(), false, timeout, 2,
                     (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Timeout: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.), (p) -> !session.isSelectingMode(), () -> {
                         if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     }).start();
@@ -63,7 +63,7 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
                 if (ConfigKey.get().MS_START_STOP_SOUND) session.sendSound(Sound.BLOCK_NOTE_BLOCK_PLING);
                 session.setSelectingMode(false);
                 session.resume();
-                BossBarTimer.create(event.getPlayer(), false, session.getPref(Preference.CHANGE_COOLDOWN), 2,
+                if (ConfigKey.get().ALLOW_BOSSBAR_TIMERS) BossBarTimer.create(event.getPlayer(), false, session.getPref(Preference.CHANGE_COOLDOWN), 2,
                         (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Cooldown: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.)).start();
             }
         }

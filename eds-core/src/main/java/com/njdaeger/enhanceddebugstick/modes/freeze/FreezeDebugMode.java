@@ -27,7 +27,7 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
 
     @Override
     public String getBasePermission() {
-        return Permissions.COPY_MODE;
+        return Permissions.FREEZE_MODE;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
     }
 
     @Override
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
 
@@ -117,7 +117,7 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
     }
 
     @Override
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent event) {
 
     }

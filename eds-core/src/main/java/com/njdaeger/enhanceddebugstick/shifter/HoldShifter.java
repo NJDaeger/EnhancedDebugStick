@@ -21,7 +21,7 @@ public class HoldShifter implements Shifter<PlayerInteractEvent, PlayerToggleSne
         if (session.getSelectingStart() == 0 && !session.getDebugMode().isPaused(session)) {
             session.setSelectingStart(System.currentTimeMillis());
             long max = session.getPref(Preference.SNEAK_MAXIMUM);
-            BossBarTimer.create(event.getPlayer(), false, session.getPref(Preference.SNEAK_MINIMUM), 2,
+            if (ConfigKey.get().ALLOW_BOSSBAR_TIMERS) BossBarTimer.create(event.getPlayer(), false, session.getPref(Preference.SNEAK_MINIMUM), 2,
                     (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Hold Time: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.),
                     (p) -> !p.isSneaking(), max <= 0 ? null :
                     () -> BossBarTimer.create(event.getPlayer(), true, max, 2,

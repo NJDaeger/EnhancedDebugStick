@@ -22,14 +22,14 @@ public final class DebugListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
         if (session == null) plugin.addDebugSession(event.getPlayer().getUniqueId());
         else session.resume();
     }
-
-    @EventHandler
+    
+    @EventHandler(ignoreCancelled = true)
     public void onQuit(PlayerQuitEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
         if (session != null) {
@@ -37,8 +37,8 @@ public final class DebugListener implements Listener {
             if (session.isSelectingMode()) session.setSelectingMode(false);
         }
     }
-
-    @EventHandler
+    
+    @EventHandler(ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         DebugSession session = plugin.getDebugSession(player.getUniqueId());
@@ -51,8 +51,8 @@ public final class DebugListener implements Listener {
             shifter.runShift(session, event);
         }
     }
-
-    @EventHandler
+    
+    @EventHandler(ignoreCancelled = true)
     public void onSneak(PlayerToggleSneakEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
         ShiftMode mode = session.getPref(Preference.SHIFT_MODE);

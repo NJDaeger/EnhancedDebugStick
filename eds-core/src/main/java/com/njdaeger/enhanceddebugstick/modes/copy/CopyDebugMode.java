@@ -51,7 +51,7 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
     }
 
     @Override
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
 
@@ -159,7 +159,7 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
     }
 
     @Override
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent event) {
 
         //

@@ -13,8 +13,15 @@ public final class DebugStick extends ItemStack {
      * Represents a debug stick ItemStack
      */
     public DebugStick() {
+        
+        Material mat = Material.matchMaterial(ConfigKey.get().STICK_MATERIAL);
+        if (mat == null || !mat.isItem()) {
+            EnhancedDebugStick.getInstance().getLogger().severe("Unable to bind '" + ConfigKey.get().STICK_MATERIAL + "' to the debug stick. Is it an item? Defaulting to minecraft:stick");
+            mat = Material.STICK;
+        }
+        
         setAmount(1);
-        setType(Material.STICK);
+        setType(mat);
         ItemMeta meta = getItemMeta();
         if (meta == null) throw new IllegalStateException("ItemMeta was null. Please contact the developer.");
         meta.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "Enhanced Debug Stick");

@@ -21,7 +21,6 @@ public class CopyPropertyEvent extends PlayerEvent implements Cancellable {
 
     public CopyPropertyEvent(Player who, Block copied, CopyDebugContext debugContext) {
         super(who);
-
         this.copied = copied;
         this.cancelled = false;
         this.debugContext = debugContext;

@@ -2,20 +2,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <artifactId>EnhancedDebugStick</artifactId>
         <groupId>com.njdaeger</groupId>
         <version>1.4.1</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>eds-coreprotect</artifactId>
-    <version>1.0</version>
+    <artifactId>eds-worldguard</artifactId>
+    <version>0.1.0</version>
 
     <repositories>
         <repository>
-            <id>coreprotect</id>
-            <url>https://maven.playpro.com/</url>
+            <id>enginehub</id>
+            <url>https://maven.enginehub.org/repo/</url>
         </repository>
     </repositories>
 
@@ -26,25 +27,17 @@
             <version>1.4.1</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <artifactId>spigot-api</artifactId>
+            <version>1.16.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
-            <groupId>net.coreprotect</groupId>
-            <artifactId>coreprotect</artifactId>
-            <version>19.1</version>
+            <groupId>com.sk89q.worldguard</groupId>
+            <artifactId>worldguard-bukkit</artifactId>
+            <version>LATEST</version>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>*</artifactId>
-                    <groupId>*</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 
@@ -53,9 +46,6 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <includes>
-                    <include>plugin.yml</include>
-                </includes>
             </resource>
         </resources>
 
@@ -74,7 +64,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>EnhancedDebugStick-CoreProtect-${project.version}</finalName>
+                    <finalName>EnhancedDebugStick-WorldGuard-${project.version}</finalName>
                     <outputDirectory>${project.parent.basedir}/jars</outputDirectory>
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
@@ -103,5 +93,4 @@
         </plugins>
 
     </build>
-
 </project>

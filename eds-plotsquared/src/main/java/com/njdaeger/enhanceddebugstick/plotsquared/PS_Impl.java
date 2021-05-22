@@ -44,7 +44,10 @@ public class PS_Impl extends JavaPlugin implements Listener {
     
     @EventHandler
     public void onFreezeEvent(FreezeBlockEvent event) {
-        if (!canUse(event.getPlayer(), event.getFrozenBlock())) event.setCancelled(true);
+        if (!canUse(event.getPlayer(), event.getFrozenBlock())) {
+            event.setCancelled(true);
+            event.getDebugContext().getDebugSession().sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "You are not an owner or a member of the location being frozen.");
+        }
     }
     //The player should be able to unfreeze blocks not in their selection
     
@@ -52,7 +55,7 @@ public class PS_Impl extends JavaPlugin implements Listener {
     public void onValueChangeEvent(ValueChangeEvent event) {
         if (!canUse(event.getPlayer(), event.getBefore())) {
             event.setCancelled(true);
-            event.getDebugContext().getDebugSession().sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "You are not an owner or a member of the location being changed.");
+            event.getDebugContext().getDebugSession().sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "You are not an owner or a member of the location being changed.");
         }
     }
     
@@ -60,16 +63,32 @@ public class PS_Impl extends JavaPlugin implements Listener {
     public void onPasteEvent(PastePropertyEvent event) {
         if (!canUse(event.getPlayer(), event.getBefore())) {
             event.setCancelled(true);
-            event.getDebugContext().getDebugSession().sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "You are not an owner or a member of the location pasted at.");
+            event.getDebugContext().getDebugSession().sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "You are not an owner or a member of the location pasted at.");
         }
     }
     
     private boolean canUse(Player player, Block block) {
-        if (!config.affectPlotWorld(block.getWorld())) return true;
+        if (!config.affectPlotWorld(block.getWorld())) {
+            return true;
+        }
         Location location = new Location(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
         PlotArea area = plotApi.getPlotSquared().getApplicablePlotArea(location);
-        if (area == null) return false;
+        if (area == null) {
+            return false;
+        }
         Plot plot = area.getOwnedPlot(location);
-        return plot != null && !plot.isDenied(player.getUniqueId());
+        if (plot == null) {
+            return false;
+        }
+        if (plot.isDenied(player.getUniqueId())) {
+            return false;
+        }
+        /*
+        First, we check if the player is an owner of the plot- if they are, we automatically allow them to use the debug stick.
+        If they are not an owner, we check the configuration to see if we allow members to use it on the plot, then we check if the player is a member- if they are, they can use the debug stick.
+        Last, if they are not an owner or a member, we check if trusted members are allowed to use the debug stick- if they are, we check if the player is a trusted player.
+         */
+        return plot.isOwner(player.getUniqueId()) || config.allowMembers() && plot.getMembers().contains(player.getUniqueId()) || config.allowTrusted() && plot.getTrusted().contains(player.getUniqueId());
+        
     }
 }

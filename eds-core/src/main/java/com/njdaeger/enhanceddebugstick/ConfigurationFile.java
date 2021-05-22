@@ -3,6 +3,7 @@ package com.njdaeger.enhanceddebugstick;
 import com.njdaeger.enhanceddebugstick.api.ShiftMode;
 import com.njdaeger.pdk.config.ConfigType;
 import com.njdaeger.pdk.config.Configuration;
+import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 
 public final class ConfigurationFile extends Configuration {
@@ -34,6 +35,12 @@ public final class ConfigurationFile extends Configuration {
                         "* The DOUBLE mode shifter must be selected to be an option\n" +
                         "** The HOLD mode shifter must be selected to be an option");
 
+        addEntry("stick-material", Material.STICK.name().toLowerCase());
+        addComment("stick-material", "\nWhat material should the debug stick be? Defaults to a minecraft stick, but can be changed in case of plugin clashes.");
+        
+        addEntry("disable-bossbar-timers", false);
+        addComment("allow-bossbar-timers", "\nBossbars are used to show how quickly you need to shift to move to the next mode. With them enabled, it may override and affect some other custom bossbars that are currently in use. When this is set to true, the Enhanced Debug Stick WILL show bossbars that show the time left to do certain actions. Otherwise, no bossbar will be shown.");
+        
         addEntry("mode-shift.default-mode-shift-preference", ShiftMode.DOUBLE);
         addComment("mode-shift", "\n\nSettings for when a player wants to change between debug modes.\n\n");
         addComment("mode-shift.default-mode-shift-preference",

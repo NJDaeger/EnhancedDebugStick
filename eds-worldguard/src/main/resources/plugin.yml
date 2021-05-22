@@ -1,0 +1,8 @@
+name: ${project.parent.artifactId}-WorldGuard
+version: ${project.version}
+main: com.njdaeger.enhanceddebugstick.worldguard.WG_Impl
+api-version: 1.16
+depend:
+  - ${project.parent.artifactId}
+  - WorldGuard
+authors: [ NJDaeger ]

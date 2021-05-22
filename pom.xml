@@ -7,7 +7,7 @@
     <groupId>com.njdaeger</groupId>
     <artifactId>EnhancedDebugStick</artifactId>
     <packaging>pom</packaging>
-    <version>1.4</version>
+    <version>1.4.1</version>
     <modules>
         <module>eds-v113impl</module>
         <module>eds-v114impl</module>
@@ -17,6 +17,7 @@
         <module>eds-jar</module>
         <module>eds-coreprotect</module>
         <module>eds-plotsquared</module>
+        <module>eds-worldguard</module>
     </modules>
 
     <build>

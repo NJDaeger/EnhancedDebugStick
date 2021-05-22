@@ -9,12 +9,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public final class CopyDebugContext implements DebugContext {
     
     private final DebugSession session;
+    private List<IProperty<?, ?>> clipboardProperties;
     private BlockData clipboard;
 
     CopyDebugContext(DebugSession session) {
@@ -38,8 +40,19 @@ public final class CopyDebugContext implements DebugContext {
      */
     public void setClipboard(BlockData blockData) {
         this.clipboard = blockData;
+        this.clipboardProperties = IProperty.getProperties(blockData);
     }
-
+    
+    /**
+     * Sets the properties which are to be pasted on blocks. When properties are taken away from this list, they will
+     * not be applied to the block being pasted on- regardless if the source block that was copied has said property.
+     * @param clipboardProperties The list of properties that need to be pasted.
+     */
+    public void setClipboardProperties(List<IProperty<?, ?>> clipboardProperties) {
+        if (clipboardProperties == null) this.clipboardProperties = new ArrayList<>();
+        else this.clipboardProperties = clipboardProperties;
+    }
+    
     /**
      * Gets the current blockdata in the clipboard.
      *
@@ -48,7 +61,7 @@ public final class CopyDebugContext implements DebugContext {
     public BlockData getClipboard() {
         return clipboard;
     }
-
+    
     /**
      * Checks whether the clipboard has anything in it currently
      *
@@ -59,12 +72,13 @@ public final class CopyDebugContext implements DebugContext {
     }
 
     /**
-     * Gets a list of properties which the clipboard holds
+     * Gets a list of properties which the clipboard will paste to the block being pasted on. This will usually match
+     * the source block, however, can differ if an external plugin changes what properties are copied.
      *
      * @return The list of properties the clipboard has.
      */
     public List<IProperty<?, ?>> getClipboardProperties() {
-        return IProperty.getProperties(clipboard);
+        return clipboardProperties;
     }
 
     /**

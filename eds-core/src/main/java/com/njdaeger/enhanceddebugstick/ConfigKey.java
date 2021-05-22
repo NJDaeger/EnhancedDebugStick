@@ -4,7 +4,6 @@ import com.njdaeger.enhanceddebugstick.api.ShiftMode;
 import com.njdaeger.pdk.config.ConfigType;
 import com.njdaeger.pdk.config.SmartConfig;
 import com.njdaeger.pdk.config.impl.YmlConfig;
-import org.bukkit.Bukkit;
 
 public final class ConfigKey extends SmartConfig<YmlConfig> {
 
@@ -25,7 +24,17 @@ public final class ConfigKey extends SmartConfig<YmlConfig> {
      * Whether to enable users to set custom preferences
      */
     public final boolean ENABLE_PREFERENCES = get("enable-user-preferences", true);
-
+    
+    /**
+     * The material for the debug stick.
+     */
+    public final String STICK_MATERIAL = get("stick-material", "stick");
+    
+    /**
+     * Enables or disables bossbar timers
+     */
+    public final boolean ALLOW_BOSSBAR_TIMERS = get("allow-bossbar-timers", true);
+    
     /**
      * What default mode shifting preference to use
      */
