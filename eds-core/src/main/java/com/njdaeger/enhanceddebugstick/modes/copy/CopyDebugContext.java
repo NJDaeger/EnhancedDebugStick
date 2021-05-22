@@ -21,6 +21,7 @@ public final class CopyDebugContext implements DebugContext {
 
     CopyDebugContext(DebugSession session) {
         this.session = session;
+        this.clipboardProperties = new ArrayList<>();
     }
 
     @Override

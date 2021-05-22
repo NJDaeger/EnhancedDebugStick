@@ -54,7 +54,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
     }
 
     @Override
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
 
@@ -131,7 +131,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
     }
 
     @Override
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onMove(PlayerMoveEvent event) {
 
         //

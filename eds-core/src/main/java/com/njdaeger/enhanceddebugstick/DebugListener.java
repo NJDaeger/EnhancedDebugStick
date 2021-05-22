@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 public final class DebugListener implements Listener {
 
@@ -22,14 +23,14 @@ public final class DebugListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
         if (session == null) plugin.addDebugSession(event.getPlayer().getUniqueId());
         else session.resume();
     }
     
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
         if (session != null) {
@@ -38,13 +39,13 @@ public final class DebugListener implements Listener {
         }
     }
     
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         DebugSession session = plugin.getDebugSession(player.getUniqueId());
         ShiftMode mode = session.getPref(Preference.SHIFT_MODE);
         Shifter shifter = mode.getShifter();
-        if ((mode == ShiftMode.HOLD || mode == ShiftMode.DOUBLE) && shifter.canShift(session, event)) {
+        if ((mode == ShiftMode.HOLD || mode == ShiftMode.DOUBLE) && shifter.canShift(session, event) && event.getHand() == EquipmentSlot.HAND) {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
             event.setUseItemInHand(Event.Result.DENY);
@@ -52,7 +53,7 @@ public final class DebugListener implements Listener {
         }
     }
     
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
         ShiftMode mode = session.getPref(Preference.SHIFT_MODE);

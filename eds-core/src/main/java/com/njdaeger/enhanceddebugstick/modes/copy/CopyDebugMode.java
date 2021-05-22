@@ -51,10 +51,10 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
     }
 
     @Override
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
-
+        
         if (session.isUsing(this) && event.getHand() == EquipmentSlot.HAND) {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
@@ -75,7 +75,7 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
             //If we left click air, we're clearing the clipboard.
             //
             if (event.getAction() == Action.LEFT_CLICK_AIR) {
-
+                
                 //
                 //If the clipboard of the player is already empty, we should just tell them to stop trying to clear it.
                 //
@@ -159,7 +159,7 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
     }
 
     @Override
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onMove(PlayerMoveEvent event) {
 
         //
