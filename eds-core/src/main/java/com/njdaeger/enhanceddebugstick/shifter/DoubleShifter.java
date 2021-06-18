@@ -8,11 +8,8 @@ import com.njdaeger.enhanceddebugstick.util.BossBarTimer;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.event.Event;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-
-import static org.bukkit.event.block.Action.*;
 
 public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleSneakEvent> {
 

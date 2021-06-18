@@ -7,6 +7,7 @@ import com.njdaeger.enhanceddebugstick.shifter.Shifter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -23,14 +24,14 @@ public final class DebugListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onJoin(PlayerJoinEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
         if (session == null) plugin.addDebugSession(event.getPlayer().getUniqueId());
         else session.resume();
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onQuit(PlayerQuitEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
         if (session != null) {
@@ -43,6 +44,7 @@ public final class DebugListener implements Listener {
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         DebugSession session = plugin.getDebugSession(player.getUniqueId());
+        if (session == null) return;
         ShiftMode mode = session.getPref(Preference.SHIFT_MODE);
         Shifter shifter = mode.getShifter();
         if ((mode == ShiftMode.HOLD || mode == ShiftMode.DOUBLE) && shifter.canShift(session, event) && event.getHand() == EquipmentSlot.HAND) {
@@ -56,6 +58,7 @@ public final class DebugListener implements Listener {
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
+        if (session == null) return;
         ShiftMode mode = session.getPref(Preference.SHIFT_MODE);
         Shifter shifter = mode.getShifter();
         if (mode == ShiftMode.HOLD || mode == ShiftMode.DOUBLE) {

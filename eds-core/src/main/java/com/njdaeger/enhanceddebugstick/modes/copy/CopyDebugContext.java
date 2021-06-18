@@ -11,6 +11,7 @@ import org.bukkit.block.data.BlockData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public final class CopyDebugContext implements DebugContext {
@@ -50,8 +51,7 @@ public final class CopyDebugContext implements DebugContext {
      * @param clipboardProperties The list of properties that need to be pasted.
      */
     public void setClipboardProperties(List<IProperty<?, ?>> clipboardProperties) {
-        if (clipboardProperties == null) this.clipboardProperties = new ArrayList<>();
-        else this.clipboardProperties = clipboardProperties;
+        this.clipboardProperties = Objects.requireNonNullElseGet(clipboardProperties, ArrayList::new);
     }
     
     /**
@@ -138,13 +138,12 @@ public final class CopyDebugContext implements DebugContext {
                     } else builder.append(ChatColor.DARK_GREEN).append(ChatColor.BOLD).append(property.getNiceName()).append(": ");
 
                     builder.append(ChatColor.GRAY).append(ChatColor.BOLD).append(ChatColor.ITALIC).append(Util.format(property.getNiceCurrentValue(clipboard)));
-                    builder.append(ChatColor.RESET).append("    ");
                 } else {
                     if (!ConfigKey.get().COPY_DISPLAY_ALL) continue;
                     builder.append(ChatColor.RED).append(ChatColor.BOLD).append(property.getNiceName()).append(": ");
                     builder.append(ChatColor.GRAY).append(ChatColor.BOLD).append(Util.format(property.getNiceCurrentValue(block)));
-                    builder.append(ChatColor.RESET).append("    ");
                 }
+                builder.append(ChatColor.RESET).append("    ");
             }
         }
         session.sendBar(builder.toString().trim());

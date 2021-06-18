@@ -180,12 +180,11 @@ public final class ClassicDebugContext implements DebugContext {
                 if (getCurrentProperty(block) == property) {
                     builder.append(ChatColor.DARK_GREEN).append(ChatColor.BOLD).append(ChatColor.UNDERLINE).append(property.getNiceName()).append(": ");
                     builder.append(ChatColor.GRAY).append(ChatColor.BOLD).append(ChatColor.UNDERLINE).append(format(property.getNiceCurrentValue(block)));
-                    builder.append(ChatColor.RESET).append("    ");
                 } else {
                     builder.append(ChatColor.DARK_GREEN).append(property.getNiceName()).append(": ");
                     builder.append(ChatColor.GRAY).append(format(property.getNiceCurrentValue(block)));
-                    builder.append(ChatColor.RESET).append("    ");
                 }
+                builder.append(ChatColor.RESET).append("    ");
             }
         }
         session.sendBar(builder.toString().trim());

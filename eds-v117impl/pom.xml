@@ -7,9 +7,9 @@
         <groupId>com.njdaeger</groupId>
         <version>1.4.1</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>eds-v115impl</artifactId>
+
+    <artifactId>eds-v117impl</artifactId>
     <version>1.4.1</version>
 
     <repositories>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.17-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
