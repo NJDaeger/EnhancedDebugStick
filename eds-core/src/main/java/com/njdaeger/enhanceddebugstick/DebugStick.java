@@ -35,7 +35,8 @@ public final class DebugStick extends ItemStack {
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
-        if (obj instanceof ItemStack stack) {
+        if (obj instanceof ItemStack) {
+            ItemStack stack = (ItemStack)obj;
             ItemMeta objMeta = stack.getItemMeta();
             ItemMeta meta = getItemMeta();
             return stack.getType() == getType() &&

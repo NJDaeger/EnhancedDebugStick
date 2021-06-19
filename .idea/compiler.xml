@@ -20,6 +20,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="eds-plot-v5" target="1.8" />
+      <module name="eds-v117impl" target="16" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -33,21 +33,32 @@ public final class BlockHighlighter {
     private static Method world;
 
     private static Constructor<?> shulkerConstructor;
+    private static Constructor<?> shulkerConstructor113;
     private static Constructor<?> packetEntityLivingConstructor;
     private static Constructor<?> packetEntityMetadataConstructor;
     private static Constructor<?> packetEntityDestroyConstructor;
+    private static Constructor<?> packetEntityDestroyConstructor117;
 
     private static Class<?> entityLivingClass;
 
     static {
         try {
-            connection = Util.getNMSClass("EntityPlayer").getDeclaredField("playerConnection");
-            sendPacket = connection.getType().getDeclaredMethod("sendPacket", Util.getNMSClass("Packet"));
+            try {
+                connection = Util.getNMSClass("EntityPlayer", "net.minecraft.server.level.").getDeclaredField("playerConnection");
+            } catch (Exception e) {
+                connection = Util.getNMSClass("EntityPlayer", "net.minecraft.server.level.").getDeclaredField("b");
+            }
+            
+            sendPacket = connection.getType().getDeclaredMethod("sendPacket", Util.getNMSClass("Packet", "net.minecraft.network.protocol."));
 
-            Class<?> shulkerClass = Util.getNMSClass("EntityShulker");
-            Class<?> insentientClass = Util.getNMSClass("EntityInsentient");
-            Class<?> entityClass = Util.getNMSClass("Entity");
-            entityType = Util.getNMSClass("EntityTypes").getField("SHULKER");
+            Class<?> shulkerClass = Util.getNMSClass("EntityShulker", "net.minecraft.world.entity.monster.");
+            Class<?> insentientClass = Util.getNMSClass("EntityInsentient", "net.minecraft.world.entity.");
+            Class<?> entityClass = Util.getNMSClass("Entity", "net.minecraft.world.entity.");
+            try {
+                entityType = Util.getNMSClass("EntityTypes", "net.minecraft.world.entity.").getField("SHULKER");
+            } catch (Exception e) {
+                entityType = Util.getNMSClass("EntityTypes", "net.minecraft.world.entity.").getField("ay");
+            }
 
             invisible = entityClass.getDeclaredMethod("setInvisible", boolean.class);
             invulnerable = entityClass.getDeclaredMethod("setInvulnerable", boolean.class);
@@ -57,12 +68,20 @@ public final class BlockHighlighter {
             id = entityClass.getDeclaredMethod("getId");
             dataWatcher = entityClass.getDeclaredMethod("getDataWatcher");
 
-            entityLivingClass = Util.getNMSClass("EntityLiving");
+            entityLivingClass = Util.getNMSClass("EntityLiving", "net.minecraft.world.entity.");
             world = Util.getOBCClass("CraftWorld").getDeclaredMethod("getHandle");
-            shulkerConstructor = shulkerClass.getConstructor(Util.getNMSClass("EntityTypes"), Util.getNMSClass("World"));
-            packetEntityLivingConstructor = Util.getNMSClass("PacketPlayOutSpawnEntityLiving").getDeclaredConstructor(Util.getNMSClass("EntityLiving"));
-            packetEntityMetadataConstructor = Util.getNMSClass("PacketPlayOutEntityMetadata").getDeclaredConstructor(int.class, Util.getNMSClass("DataWatcher"), boolean.class);
-            packetEntityDestroyConstructor = Util.getNMSClass("PacketPlayOutEntityDestroy").getDeclaredConstructor(int[].class);
+            try {
+                shulkerConstructor = shulkerClass.getConstructor(Util.getNMSClass("EntityTypes", "net.minecraft.world.entity."), Util.getNMSClass("World", "net.minecraft.world.level."));
+            } catch (Exception e) {
+                shulkerConstructor113 = shulkerClass.getConstructor(Util.getNMSClass("World", "net.minecraft.world.level."));
+            }
+            packetEntityLivingConstructor = Util.getNMSClass("PacketPlayOutSpawnEntityLiving", "net.minecraft.network.protocol.game.").getDeclaredConstructor(Util.getNMSClass("EntityLiving", "net.minecraft.world.entity."));
+            packetEntityMetadataConstructor = Util.getNMSClass("PacketPlayOutEntityMetadata", "net.minecraft.network.protocol.game.").getDeclaredConstructor(int.class, Util.getNMSClass("DataWatcher", "net.minecraft.network.syncher."), boolean.class);
+            try {
+                packetEntityDestroyConstructor = Util.getNMSClass("PacketPlayOutEntityDestroy", "net.minecraft.network.protocol.game.").getDeclaredConstructor(int[].class);
+            } catch (Exception e) {
+                packetEntityDestroyConstructor117 = Util.getNMSClass("PacketPlayOutEntityDestroy", "net.minecraft.network.protocol.game.").getDeclaredConstructor(int.class);
+            }
 
         } catch (ClassNotFoundException | NoSuchMethodException | NoSuchFieldException e) {
             e.printStackTrace();
@@ -156,7 +175,9 @@ public final class BlockHighlighter {
          */
         public void addBlock(Block block) {
             try {
-                Object shulker = shulkerConstructor.newInstance(entityType.get(null), world.invoke(block.getWorld()));
+                Object shulker;
+                if (shulkerConstructor == null) shulker = shulkerConstructor113.newInstance(world.invoke(block.getWorld()));
+                else shulker = shulkerConstructor.newInstance(entityType.get(null), world.invoke(block.getWorld()));
 
                 invisible.invoke(shulker, true);
                 invulnerable.invoke(shulker, true);
@@ -183,7 +204,9 @@ public final class BlockHighlighter {
             Object shulker = shulkerMap.remove(block);
             if (shulker != null) {
                 try {
-                    Object destroy = packetEntityDestroyConstructor.newInstance(new int[]{(int)id.invoke(shulker)});
+                    Object destroy;
+                    if (packetEntityDestroyConstructor == null) destroy = packetEntityDestroyConstructor117.newInstance(id.invoke(shulker));
+                    else destroy = packetEntityDestroyConstructor.newInstance(new int[]{(int)id.invoke(shulker)});
                     sendPacket.invoke(connection.get(entityPlayer), destroy);
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();

@@ -130,7 +130,7 @@ public class Property_116<D extends BlockData, V> extends AbstractProperty<D, V>
      * Level property
      */
     static IProperty<Levelled, Integer> LEVEL = new Property_116<>("Level", Levelled.class, Integer.class, (level) -> {
-        level.setLevel(level.getMaximumLevel() == level.getLevel() ? 0 : level.getLevel() + 1);
+        level.setLevel(level.getMaximumLevel() == level.getLevel() ? 1 : level.getLevel() + 1);
         return level;
     }, Levelled::getLevel, (level, value) -> {
         level.setLevel(value);
@@ -184,27 +184,65 @@ public class Property_116<D extends BlockData, V> extends AbstractProperty<D, V>
         int x = 0;
         while (x < BlockFace.values().length) {
             try {
-                face = switch (face) {
-                    case NORTH -> NORTH_NORTH_EAST;
-                    case NORTH_NORTH_EAST -> NORTH_EAST;
-                    case NORTH_EAST -> EAST_NORTH_EAST;
-                    case EAST_NORTH_EAST -> EAST;
-                    case EAST -> EAST_SOUTH_EAST;
-                    case EAST_SOUTH_EAST -> SOUTH_EAST;
-                    case SOUTH_EAST -> SOUTH_SOUTH_EAST;
-                    case SOUTH_SOUTH_EAST -> SOUTH;
-                    case SOUTH -> SOUTH_SOUTH_WEST;
-                    case SOUTH_SOUTH_WEST -> SOUTH_WEST;
-                    case SOUTH_WEST -> WEST_SOUTH_WEST;
-                    case WEST_SOUTH_WEST -> WEST;
-                    case WEST -> WEST_NORTH_WEST;
-                    case WEST_NORTH_WEST -> NORTH_WEST;
-                    case NORTH_WEST -> NORTH_NORTH_WEST;
-                    case NORTH_NORTH_WEST -> UP;
-                    case UP -> DOWN;
-                    case DOWN -> SELF;
-                    case SELF -> NORTH;
-                };
+                switch (face) {
+                case NORTH:
+                    face = NORTH_NORTH_EAST;
+                    break;
+                case NORTH_NORTH_EAST:
+                    face = NORTH_EAST;
+                    break;
+                case NORTH_EAST:
+                    face = EAST_NORTH_EAST;
+                    break;
+                case EAST_NORTH_EAST:
+                    face = EAST;
+                    break;
+                case EAST:
+                    face = EAST_SOUTH_EAST;
+                    break;
+                case EAST_SOUTH_EAST:
+                    face = SOUTH_EAST;
+                    break;
+                case SOUTH_EAST:
+                    face = SOUTH_SOUTH_EAST;
+                    break;
+                case SOUTH_SOUTH_EAST:
+                    face = SOUTH;
+                    break;
+                case SOUTH:
+                    face = SOUTH_SOUTH_WEST;
+                    break;
+                case SOUTH_SOUTH_WEST:
+                    face = SOUTH_WEST;
+                    break;
+                case SOUTH_WEST:
+                    face = WEST_SOUTH_WEST;
+                    break;
+                case WEST_SOUTH_WEST:
+                    face = WEST;
+                    break;
+                case WEST:
+                    face = WEST_NORTH_WEST;
+                    break;
+                case WEST_NORTH_WEST:
+                    face = NORTH_WEST;
+                    break;
+                case NORTH_WEST:
+                    face = NORTH_NORTH_WEST;
+                    break;
+                case NORTH_NORTH_WEST:
+                    face = UP;
+                    break;
+                case UP:
+                    face = DOWN;
+                    break;
+                case DOWN:
+                    face = SELF;
+                    break;
+                case SELF:
+                    face = NORTH;
+                    break;
+                }
                 x++;
                 rotation.setRotation(face);
                 break;
@@ -991,25 +1029,63 @@ public class Property_116<D extends BlockData, V> extends AbstractProperty<D, V>
                         MultipleFacing facing = (MultipleFacing) data;
                         for (BlockFace face : facing.getAllowedFaces()) {
                             switch (face) {
-                            case NORTH -> properties.add(MULTI_NORTH);
-                            case EAST -> properties.add(MULTI_EAST);
-                            case SOUTH -> properties.add(MULTI_SOUTH);
-                            case WEST -> properties.add(MULTI_WEST);
-                            case UP -> properties.add(MULTI_UP);
-                            case DOWN -> properties.add(MULTI_DOWN);
-                            case NORTH_EAST -> properties.add(MULTI_NORTH_EAST);
-                            case NORTH_WEST -> properties.add(MULTI_NORTH_WEST);
-                            case SOUTH_EAST -> properties.add(MULTI_SOUTH_EAST);
-                            case SOUTH_WEST -> properties.add(MULTI_SOUTH_WEST);
-                            case WEST_NORTH_WEST -> properties.add(MULTI_WEST_NORTH_WEST);
-                            case NORTH_NORTH_WEST -> properties.add(MULTI_NORTH_NORTH_WEST);
-                            case NORTH_NORTH_EAST -> properties.add(MULTI_NORTH_NORTH_EAST);
-                            case EAST_NORTH_EAST -> properties.add(MULTI_EAST_NORTH_EAST);
-                            case EAST_SOUTH_EAST -> properties.add(MULTI_EAST_SOUTH_EAST);
-                            case SOUTH_SOUTH_EAST -> properties.add(MULTI_SOUTH_SOUTH_EAST);
-                            case SOUTH_SOUTH_WEST -> properties.add(MULTI_SOUTH_SOUTH_WEST);
-                            case WEST_SOUTH_WEST -> properties.add(MULTI_WEST_SOUTH_WEST);
-                            case SELF -> properties.add(MULTI_SELF);
+                            case NORTH:
+                                properties.add(MULTI_NORTH);
+                                break;
+                            case EAST:
+                                properties.add(MULTI_EAST);
+                                break;
+                            case SOUTH:
+                                properties.add(MULTI_SOUTH);
+                                break;
+                            case WEST:
+                                properties.add(MULTI_WEST);
+                                break;
+                            case UP:
+                                properties.add(MULTI_UP);
+                                break;
+                            case DOWN:
+                                properties.add(MULTI_DOWN);
+                                break;
+                            case NORTH_EAST:
+                                properties.add(MULTI_NORTH_EAST);
+                                break;
+                            case NORTH_WEST:
+                                properties.add(MULTI_NORTH_WEST);
+                                break;
+                            case SOUTH_EAST:
+                                properties.add(MULTI_SOUTH_EAST);
+                                break;
+                            case SOUTH_WEST:
+                                properties.add(MULTI_SOUTH_WEST);
+                                break;
+                            case WEST_NORTH_WEST:
+                                properties.add(MULTI_WEST_NORTH_WEST);
+                                break;
+                            case NORTH_NORTH_WEST:
+                                properties.add(MULTI_NORTH_NORTH_WEST);
+                                break;
+                            case NORTH_NORTH_EAST:
+                                properties.add(MULTI_NORTH_NORTH_EAST);
+                                break;
+                            case EAST_NORTH_EAST:
+                                properties.add(MULTI_EAST_NORTH_EAST);
+                                break;
+                            case EAST_SOUTH_EAST:
+                                properties.add(MULTI_EAST_SOUTH_EAST);
+                                break;
+                            case SOUTH_SOUTH_EAST:
+                                properties.add(MULTI_SOUTH_SOUTH_EAST);
+                                break;
+                            case SOUTH_SOUTH_WEST:
+                                properties.add(MULTI_SOUTH_SOUTH_WEST);
+                                break;
+                            case WEST_SOUTH_WEST:
+                                properties.add(MULTI_WEST_SOUTH_WEST);
+                                break;
+                            case SELF:
+                                properties.add(MULTI_SELF);
+                                break;
                             }
                         }
                     } else properties.add(prop);

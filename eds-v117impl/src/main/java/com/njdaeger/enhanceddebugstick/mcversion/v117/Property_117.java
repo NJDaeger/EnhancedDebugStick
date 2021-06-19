@@ -138,7 +138,7 @@ public class Property_117<D extends BlockData, V> extends AbstractProperty<D, V>
      * Level property
      */
     static IProperty<Levelled, Integer> LEVEL = new Property_117<>("Level", Levelled.class, Integer.class, (level) -> {
-        level.setLevel(level.getMaximumLevel() == level.getLevel() ? 0 : level.getLevel() + 1);
+        level.setLevel(level.getMaximumLevel() == level.getLevel() ? 1 : level.getLevel() + 1);
         return level;
     }, Levelled::getLevel, (level, value) -> {
         level.setLevel(value);

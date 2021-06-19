@@ -51,7 +51,8 @@ public final class CopyDebugContext implements DebugContext {
      * @param clipboardProperties The list of properties that need to be pasted.
      */
     public void setClipboardProperties(List<IProperty<?, ?>> clipboardProperties) {
-        this.clipboardProperties = Objects.requireNonNullElseGet(clipboardProperties, ArrayList::new);
+        if (clipboardProperties == null) this.clipboardProperties = new ArrayList<>();
+        else this.clipboardProperties = clipboardProperties;
     }
     
     /**

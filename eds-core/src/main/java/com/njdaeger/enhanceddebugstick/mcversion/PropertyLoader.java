@@ -7,7 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 public interface PropertyLoader {
     
     static void load(String versionNumber) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        var loader = (Class<PropertyLoader>)Class.forName("com.njdaeger.enhanceddebugstick.mcversion.v" + versionNumber + ".PropertyLoader_" + versionNumber);
+        Class<PropertyLoader> loader = (Class<PropertyLoader>)Class.forName("com.njdaeger.enhanceddebugstick.mcversion.v" + versionNumber + ".PropertyLoader_" + versionNumber);
         loader.getConstructor().newInstance().load();
     }
     

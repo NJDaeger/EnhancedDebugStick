@@ -65,7 +65,7 @@ final class DebugStickCommand {
         if (!context.hasPermission(Permissions.PREFERENCE_COMMAND)) context.noPermission();
 
         //Parse the preference given
-        var pref = (Preference<T, ? extends ParsedType<T>>) Preference.fromKey(context.argAt(1));
+        Preference<T, ? extends ParsedType<T>> pref = (Preference<T, ? extends ParsedType<T>>) Preference.fromKey(context.argAt(1));
         if (pref == null) {
             session.sendMessage(ChatColor.GRAY + "Unknown Preference.");
             return;
