@@ -5,12 +5,12 @@
     <parent>
         <artifactId>EnhancedDebugStick</artifactId>
         <groupId>com.njdaeger</groupId>
-        <version>1.4.1</version>
+        <version>1.4.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>eds-jar</artifactId>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
 
     <dependencies>
         <dependency>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.njdaeger</groupId>
             <artifactId>eds-core</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.2</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>com.njdaeger</groupId>
             <artifactId>eds-v113impl</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.2</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>com.njdaeger</groupId>
             <artifactId>eds-v114impl</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.2</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -58,7 +58,7 @@
         <dependency>
             <groupId>com.njdaeger</groupId>
             <artifactId>eds-v115impl</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.2</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -70,7 +70,7 @@
         <dependency>
             <groupId>com.njdaeger</groupId>
             <artifactId>eds-v116impl</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.2</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -82,7 +82,19 @@
         <dependency>
             <groupId>com.njdaeger</groupId>
             <artifactId>eds-v117impl</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.2</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.njdaeger</groupId>
+            <artifactId>eds-v118impl</artifactId>
+            <version>1.4.2</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -100,7 +112,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>

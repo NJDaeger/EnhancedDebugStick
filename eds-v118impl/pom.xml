@@ -7,9 +7,9 @@
         <groupId>com.njdaeger</groupId>
         <version>1.4.2</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>eds-v115impl</artifactId>
+
+    <artifactId>eds-v118impl</artifactId>
     <version>1.4.2</version>
 
     <repositories>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.18.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -39,5 +39,20 @@
             </exclusions>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+    </build>
 
 </project>

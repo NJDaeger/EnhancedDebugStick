@@ -5,7 +5,7 @@
     <parent>
         <artifactId>EnhancedDebugStick</artifactId>
         <groupId>com.njdaeger</groupId>
-        <version>1.4.1</version>
+        <version>1.4.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.njdaeger</groupId>
             <artifactId>eds-core</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.2</version>
             <scope>provided</scope>
         </dependency>
 

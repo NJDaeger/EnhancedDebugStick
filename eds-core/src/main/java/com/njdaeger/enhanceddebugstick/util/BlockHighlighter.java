@@ -49,24 +49,64 @@ public final class BlockHighlighter {
                 connection = Util.getNMSClass("EntityPlayer", "net.minecraft.server.level.").getDeclaredField("b");
             }
             
-            sendPacket = connection.getType().getDeclaredMethod("sendPacket", Util.getNMSClass("Packet", "net.minecraft.network.protocol."));
+            try {
+                sendPacket = connection.getType().getDeclaredMethod("sendPacket", Util.getNMSClass("Packet", "net.minecraft.network.protocol."));
+            } catch (Exception e) {
+                sendPacket = connection.getType().getDeclaredMethod("a", Util.getNMSClass("Packet", "net.minecraft.network.protocol."));
+            }
+            
 
             Class<?> shulkerClass = Util.getNMSClass("EntityShulker", "net.minecraft.world.entity.monster.");
             Class<?> insentientClass = Util.getNMSClass("EntityInsentient", "net.minecraft.world.entity.");
             Class<?> entityClass = Util.getNMSClass("Entity", "net.minecraft.world.entity.");
+            
             try {
                 entityType = Util.getNMSClass("EntityTypes", "net.minecraft.world.entity.").getField("SHULKER");
             } catch (Exception e) {
                 entityType = Util.getNMSClass("EntityTypes", "net.minecraft.world.entity.").getField("ay");
             }
 
-            invisible = entityClass.getDeclaredMethod("setInvisible", boolean.class);
-            invulnerable = entityClass.getDeclaredMethod("setInvulnerable", boolean.class);
-            noAi = insentientClass.getDeclaredMethod("setNoAI", boolean.class);
-            location = entityClass.getDeclaredMethod("setLocation", double.class, double.class, double.class, float.class, float.class);
-            flag = entityClass.getDeclaredMethod("setFlag", int.class, boolean.class);
-            id = entityClass.getDeclaredMethod("getId");
-            dataWatcher = entityClass.getDeclaredMethod("getDataWatcher");
+            try {
+                invisible = entityClass.getDeclaredMethod("setInvisible", boolean.class);
+            } catch (Exception e) {
+                invisible = entityClass.getDeclaredMethod("j", boolean.class);
+            }
+            
+            try {
+                invulnerable = entityClass.getDeclaredMethod("setInvulnerable", boolean.class);
+            } catch (Exception e) {
+                invulnerable = entityClass.getDeclaredMethod("m", boolean.class);
+            }
+            
+            try {
+                noAi = insentientClass.getDeclaredMethod("setNoAI", boolean.class);
+            } catch (Exception e) {
+                noAi = insentientClass.getDeclaredMethod("s", boolean.class);
+            }
+    
+            try {
+                location = entityClass.getDeclaredMethod("setLocation", double.class, double.class, double.class, float.class, float.class);
+            } catch (Exception e) {
+                location = entityClass.getDeclaredMethod("b", double.class, double.class, double.class, float.class, float.class);
+            }
+            
+            try {
+                flag = entityClass.getDeclaredMethod("setFlag", int.class, boolean.class);
+            } catch (Exception e) {
+                flag = entityClass.getDeclaredMethod("b", int.class, boolean.class);
+            }
+    
+            try {
+                id = entityClass.getDeclaredMethod("getId");
+            } catch (Exception e) {
+                id = entityClass.getDeclaredMethod("ae");
+            }
+    
+            try {
+                dataWatcher = entityClass.getDeclaredMethod("getDataWatcher");
+            } catch (Exception e) {
+                dataWatcher = entityClass.getDeclaredMethod("ai");
+            }
 
             entityLivingClass = Util.getNMSClass("EntityLiving", "net.minecraft.world.entity.");
             world = Util.getOBCClass("CraftWorld").getDeclaredMethod("getHandle");

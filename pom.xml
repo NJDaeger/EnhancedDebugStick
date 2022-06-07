@@ -7,7 +7,7 @@
     <groupId>com.njdaeger</groupId>
     <artifactId>EnhancedDebugStick</artifactId>
     <packaging>pom</packaging>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
 
     <modules>
         <module>eds-v113impl</module>
@@ -15,6 +15,7 @@
         <module>eds-v115impl</module>
         <module>eds-v116impl</module>
         <module>eds-v117impl</module>
+        <module>eds-v118impl</module>
         <module>eds-core</module>
         <module>eds-jar</module>
         <module>eds-coreprotect</module>
@@ -29,7 +30,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>

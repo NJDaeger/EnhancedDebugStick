@@ -5,12 +5,17 @@
     <parent>
         <artifactId>EnhancedDebugStick</artifactId>
         <groupId>com.njdaeger</groupId>
-        <version>1.4.1</version>
+        <version>1.4.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>eds-v117impl</artifactId>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
 
     <repositories>
         <repository>
@@ -23,13 +28,13 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.17-R0.1-SNAPSHOT</version>
+            <version>1.17.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.njdaeger</groupId>
             <artifactId>eds-core</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.2</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -44,7 +49,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>16</source>
                     <target>16</target>

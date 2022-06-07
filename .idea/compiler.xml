@@ -11,6 +11,7 @@
         <module name="eds-core" />
         <module name="eds-jar" />
         <module name="eds-v117impl" />
+        <module name="eds-v118impl" />
         <module name="eds-plotsquared" />
         <module name="eds-v113impl" />
         <module name="eds-v116impl" />
@@ -20,7 +21,6 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="eds-plot-v5" target="1.8" />
-      <module name="eds-v117impl" target="16" />
     </bytecodeTargetLevel>
   </component>
 </project>

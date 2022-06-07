@@ -1,18 +1,8 @@
 package com.njdaeger.enhanceddebugstick.worldguard;
 
-import com.njdaeger.enhanceddebugstick.api.IProperty;
-import com.njdaeger.pdk.config.ConfigType;
-import com.njdaeger.pdk.config.Configuration;
-import org.bukkit.Material;
-import org.bukkit.plugin.Plugin;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-public class WG_Config extends Configuration {
+public class WG_Config /*extends Configuration */{
     
-    private final List<Material> blacklistedMaterials = new ArrayList<>();
+/*    private final List<Material> blacklistedMaterials = new ArrayList<>();
     private final List<String> blacklistedProperties = new ArrayList<>();
     
     private final boolean ownerBypass;
@@ -49,5 +39,5 @@ public class WG_Config extends Configuration {
     
     public List<Material> getBlacklistedMaterials() {
         return blacklistedMaterials;
-    }
+    }*/
 }
