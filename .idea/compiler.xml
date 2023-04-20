@@ -8,14 +8,17 @@
         <outputRelativeToContentRoot value="true" />
         <module name="eds-coreprotect" />
         <module name="eds-worldguard" />
-        <module name="eds-core" />
+        <module name="eds-v119impl" />
+        <module name="eds-griefprevention" />
         <module name="eds-jar" />
-        <module name="eds-v117impl" />
         <module name="eds-v118impl" />
         <module name="eds-plotsquared" />
-        <module name="eds-v113impl" />
+        <module name="eds-blacklist" />
         <module name="eds-v116impl" />
         <module name="eds-v114impl" />
+        <module name="eds-core" />
+        <module name="eds-v117impl" />
+        <module name="eds-v113impl" />
         <module name="eds-v115impl" />
       </profile>
     </annotationProcessing>

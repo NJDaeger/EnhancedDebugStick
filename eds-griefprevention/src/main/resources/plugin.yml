@@ -1,0 +1,8 @@
+main: com.njdaeger.enhanceddebugstick.griefprevention.GP_Impl
+name: ${project.parent.artifactId}-GriefPrevention
+version: ${project.version}
+api-version: 1.13
+author: NJDaeger
+depend:
+  - ${project.parent.artifactId}
+  - GriefPrevention

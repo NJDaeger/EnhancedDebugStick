@@ -5,7 +5,11 @@ import com.njdaeger.enhanceddebugstick.api.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.Permissions;
 import com.njdaeger.enhanceddebugstick.event.FreezeBlockEvent;
 import com.njdaeger.enhanceddebugstick.event.UnfreezeBlockEvent;
+import com.njdaeger.enhanceddebugstick.mcversion.Version;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
+import com.njdaeger.enhanceddebugstick.util.highlighter.IBlockHighlighter;
+import com.njdaeger.enhanceddebugstick.util.highlighter.impl.GenericBlockHighlighter;
+import com.njdaeger.enhanceddebugstick.util.highlighter.impl.LegacyBlockHighlighter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -21,6 +25,18 @@ import java.util.Collections;
 
 public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugContext> {
 
+    private static final IBlockHighlighter highlighter;
+    
+    static {
+        int lastGenericImpl = Version.v1_19_3.getOrdinal();
+        if (Version.getCurrentVersion().getOrdinal() > lastGenericImpl) {
+            highlighter = new GenericBlockHighlighter();
+        }
+        else {
+            highlighter = new LegacyBlockHighlighter();
+        }
+    }
+    
     public FreezeDebugMode() {
         super("Freeze", FreezeDebugMode.class);
     }
@@ -49,7 +65,7 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
 
     @Override
     public FreezeDebugContext createContext(DebugSession session) {
-        return new FreezeDebugContext(session);
+        return new FreezeDebugContext(session, highlighter);
     }
 
     @Override

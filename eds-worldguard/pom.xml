@@ -7,11 +7,11 @@
     <parent>
         <artifactId>EnhancedDebugStick</artifactId>
         <groupId>com.njdaeger</groupId>
-        <version>1.4.2</version>
+        <version>1.4.3</version>
     </parent>
 
     <artifactId>eds-worldguard</artifactId>
-    <version>0.1.0</version>
+    <version>1.0</version>
 
     <repositories>
         <repository>
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.njdaeger</groupId>
             <artifactId>eds-core</artifactId>
-            <version>1.4.2</version>
+            <version>1.4.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

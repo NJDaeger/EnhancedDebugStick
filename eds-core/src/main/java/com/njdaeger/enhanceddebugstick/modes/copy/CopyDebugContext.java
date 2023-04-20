@@ -42,7 +42,7 @@ public final class CopyDebugContext implements DebugContext {
      */
     public void setClipboard(BlockData blockData) {
         this.clipboard = blockData;
-        this.clipboardProperties = IProperty.getProperties(blockData);
+        this.clipboardProperties = blockData == null ? null : IProperty.getProperties(blockData);
     }
     
     /**

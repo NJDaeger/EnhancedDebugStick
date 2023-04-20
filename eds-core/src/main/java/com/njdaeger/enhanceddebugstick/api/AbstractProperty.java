@@ -1,10 +1,12 @@
 package com.njdaeger.enhanceddebugstick.api;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -99,7 +101,14 @@ public abstract class AbstractProperty<D extends BlockData, V> implements IPrope
     public String getNiceCurrentValue(BlockData data) {
         if (!isApplicableTo(data)) throw new RuntimeException("Property \"" + getNiceName() + "\" is not applicable for block " + data.getMaterial().name());
         String property = niceName.replace(" ", "_").toLowerCase();
-        String split = data.getAsString().split(property + "=")[1];
+        String split;
+        try {
+            split = data.getAsString().split(property + "=")[1];
+        } catch (IllegalArgumentException e) {
+            Bukkit.getLogger().severe("Error when attempting to get the nice version of the current block data value. Property: " + property + " Blockdata: " + data.getAsString());
+            throw e;
+        }
+        
         return split.substring(0, !split.contains(",") ? split.length() - 1 : split.indexOf(","));
     }
     

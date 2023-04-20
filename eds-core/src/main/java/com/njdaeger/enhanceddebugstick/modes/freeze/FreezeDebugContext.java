@@ -3,7 +3,7 @@ package com.njdaeger.enhanceddebugstick.modes.freeze;
 import com.njdaeger.enhanceddebugstick.ConfigKey;
 import com.njdaeger.enhanceddebugstick.api.DebugContext;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
-import com.njdaeger.enhanceddebugstick.util.BlockHighlighter;
+import com.njdaeger.enhanceddebugstick.util.highlighter.IBlockHighlighter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,10 +23,12 @@ public final class FreezeDebugContext implements DebugContext {
     
     private final DebugSession session;
     private final Map<Location, BlockData> frozen;
+    private final IBlockHighlighter highlighter;
     
-    FreezeDebugContext(DebugSession session) {
+    FreezeDebugContext(DebugSession session, IBlockHighlighter highlighter) {
         this.session = session;
         this.frozen = new HashMap<>();
+        this.highlighter = highlighter;
     }
     
     @Override
@@ -59,7 +61,7 @@ public final class FreezeDebugContext implements DebugContext {
         if (session.isOnline()) {
             Player player = Bukkit.getPlayer(session.getSessionId());
             if (ConfigKey.get().FDM_OUTLINE) {
-                BlockHighlighter.lightBlock(block, player);
+                highlighter.lightBlock(block, player);
             }
             block.setType(Material.RED_WOOL, false);
         }
@@ -75,7 +77,7 @@ public final class FreezeDebugContext implements DebugContext {
         if (session.isOnline() && data != null) {
             Player player = Bukkit.getPlayer(session.getSessionId());
             if (ConfigKey.get().FDM_OUTLINE) {
-                BlockHighlighter.unLightBlock(block, player);
+                highlighter.unlightBlock(block, player);
             }
             block.setBlockData(data, false);
         }
@@ -107,7 +109,7 @@ public final class FreezeDebugContext implements DebugContext {
         Player player = Bukkit.getPlayer(session.getSessionId());
         frozen.forEach((location, data) -> {
             if (ConfigKey.get().FDM_OUTLINE) {
-                BlockHighlighter.lightBlock(location.getBlock(), player);
+                highlighter.lightBlock(location.getBlock(), player);
             }
             location.getBlock().setType(Material.RED_WOOL, false);
         });
@@ -119,7 +121,7 @@ public final class FreezeDebugContext implements DebugContext {
     public void unlightFrozen() {
         Player player = Bukkit.getPlayer(session.getSessionId());
         if (ConfigKey.get().FDM_OUTLINE) {
-            BlockHighlighter.removeTask(player);
+            highlighter.removeTask(player);
         }
         frozen.forEach((location, data) -> location.getBlock().setBlockData(data, false));
     }

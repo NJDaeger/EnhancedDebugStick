@@ -5,12 +5,12 @@
     <parent>
         <artifactId>EnhancedDebugStick</artifactId>
         <groupId>com.njdaeger</groupId>
-        <version>1.4.2</version>
+        <version>1.4.3</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>eds-core</artifactId>
-    <version>1.4.2</version>
+    <version>1.4.3</version>
 
     <repositories>
         <repository>
@@ -80,14 +80,14 @@
         <dependency>
             <groupId>com.njdaeger</groupId>
             <artifactId>PluginDevelopmentKit</artifactId>
-            <version>0.0.4</version>
+            <version>0.0.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.16.2-R0.1-SNAPSHOT</version>
+            <version>1.19-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 

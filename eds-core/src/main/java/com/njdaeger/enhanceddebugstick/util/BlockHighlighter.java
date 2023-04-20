@@ -1,5 +1,6 @@
 package com.njdaeger.enhanceddebugstick.util;
 
+import com.njdaeger.enhanceddebugstick.mcversion.Version;
 import com.njdaeger.pdk.utils.Util;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -43,70 +44,42 @@ public final class BlockHighlighter {
 
     static {
         try {
-            try {
-                connection = Util.getNMSClass("EntityPlayer", "net.minecraft.server.level.").getDeclaredField("playerConnection");
-            } catch (Exception e) {
-                connection = Util.getNMSClass("EntityPlayer", "net.minecraft.server.level.").getDeclaredField("b");
-            }
-            
-            try {
-                sendPacket = connection.getType().getDeclaredMethod("sendPacket", Util.getNMSClass("Packet", "net.minecraft.network.protocol."));
-            } catch (Exception e) {
-                sendPacket = connection.getType().getDeclaredMethod("a", Util.getNMSClass("Packet", "net.minecraft.network.protocol."));
-            }
+            Class<?> entityPlayer = Util.getNMSClass("EntityPlayer", "net.minecraft.server.level.");
+            connection = Util.tryField(entityPlayer, "playerConnection", "b", "connection");
+            if (connection == null) throw new RuntimeException("Unable to find the player connection field in EntityPlayer");
+
+            sendPacket = Util.tryMethod(connection.getType(), new Class<?>[]{Util.getNMSClass("Packet", "net.minecraft.network.protocol.")}, "sendPacket", "a", "send");
+            if (sendPacket == null) throw new RuntimeException("Unable to find the send packet method in " + connection.getType().getName());
             
 
             Class<?> shulkerClass = Util.getNMSClass("EntityShulker", "net.minecraft.world.entity.monster.");
             Class<?> insentientClass = Util.getNMSClass("EntityInsentient", "net.minecraft.world.entity.");
             Class<?> entityClass = Util.getNMSClass("Entity", "net.minecraft.world.entity.");
-            
-            try {
-                entityType = Util.getNMSClass("EntityTypes", "net.minecraft.world.entity.").getField("SHULKER");
-            } catch (Exception e) {
-                entityType = Util.getNMSClass("EntityTypes", "net.minecraft.world.entity.").getField("ay");
-            }
+            entityType = Util.tryField(Util.getNMSClass("EntityTypes", "net.minecraft.world.entity."), getShulkerEntityTypeArray());
+            if (entityType == null) throw new RuntimeException("Unable to find the Shulker field in EntityTypes class");
 
-            try {
-                invisible = entityClass.getDeclaredMethod("setInvisible", boolean.class);
-            } catch (Exception e) {
-                invisible = entityClass.getDeclaredMethod("j", boolean.class);
-            }
-            
-            try {
-                invulnerable = entityClass.getDeclaredMethod("setInvulnerable", boolean.class);
-            } catch (Exception e) {
-                invulnerable = entityClass.getDeclaredMethod("m", boolean.class);
-            }
-            
-            try {
-                noAi = insentientClass.getDeclaredMethod("setNoAI", boolean.class);
-            } catch (Exception e) {
-                noAi = insentientClass.getDeclaredMethod("s", boolean.class);
-            }
+            invisible = Util.tryMethod(entityClass, new Class<?>[]{boolean.class}, "setInvisible", "j");
+            if (invisible == null) throw new RuntimeException("Unable to find the setInvisible method in the Entity class");
     
-            try {
-                location = entityClass.getDeclaredMethod("setLocation", double.class, double.class, double.class, float.class, float.class);
-            } catch (Exception e) {
-                location = entityClass.getDeclaredMethod("b", double.class, double.class, double.class, float.class, float.class);
-            }
+            invulnerable = Util.tryMethod(entityClass, new Class<?>[]{boolean.class}, "setInvulnerable", "m");
+            if (invulnerable == null) throw new RuntimeException("Unable to find the setInvulnerable method in the Entity class");
             
-            try {
-                flag = entityClass.getDeclaredMethod("setFlag", int.class, boolean.class);
-            } catch (Exception e) {
-                flag = entityClass.getDeclaredMethod("b", int.class, boolean.class);
-            }
+            noAi = Util.tryMethod(insentientClass, new Class<?>[]{boolean.class}, "setNoAI", "s");
+            if (noAi == null) throw new RuntimeException("Unable to find the setNoAI method in the EntityInsentient class");
     
-            try {
-                id = entityClass.getDeclaredMethod("getId");
-            } catch (Exception e) {
-                id = entityClass.getDeclaredMethod("ae");
-            }
-    
-            try {
-                dataWatcher = entityClass.getDeclaredMethod("getDataWatcher");
-            } catch (Exception e) {
-                dataWatcher = entityClass.getDeclaredMethod("ai");
-            }
+            location = Util.tryMethod(entityClass, new Class<?>[]{double.class, double.class, double.class, float.class, float.class}, "setLocation", "b");
+            if (location == null) throw new RuntimeException("Unable to find the setLocation method in the Entity class");
+            
+            flag = Util.tryMethod(entityClass, new Class<?>[]{int.class, boolean.class}, "setFlag", "b");
+            if (flag == null) throw new RuntimeException("Unable to find the setFlag method in the Entity class");
+            
+            id = Util.tryMethod(entityClass, new Class<?>[]{}, "getId", "ae");
+            if (Version.getCurrentVersion() == Version.v1_19_3) id = Util.tryMethod(entityClass,  null, "ah");
+            if (id == null) throw new RuntimeException("Unable to find the getId method in the Entity class");
+
+            dataWatcher = Util.tryMethod(entityClass, new Class<?>[]{}, "getDataWatcher", "ai");
+            if (Version.getCurrentVersion() == Version.v1_19_3) dataWatcher = Util.tryMethod(entityClass,  null, "al");
+            if (dataWatcher == null) throw new RuntimeException("Unable to find the getDataWatcher method in the Entity class");
 
             entityLivingClass = Util.getNMSClass("EntityLiving", "net.minecraft.world.entity.");
             world = Util.getOBCClass("CraftWorld").getDeclaredMethod("getHandle");
@@ -115,20 +88,35 @@ public final class BlockHighlighter {
             } catch (Exception e) {
                 shulkerConstructor113 = shulkerClass.getConstructor(Util.getNMSClass("World", "net.minecraft.world.level."));
             }
-            packetEntityLivingConstructor = Util.getNMSClass("PacketPlayOutSpawnEntityLiving", "net.minecraft.network.protocol.game.").getDeclaredConstructor(Util.getNMSClass("EntityLiving", "net.minecraft.world.entity."));
-            packetEntityMetadataConstructor = Util.getNMSClass("PacketPlayOutEntityMetadata", "net.minecraft.network.protocol.game.").getDeclaredConstructor(int.class, Util.getNMSClass("DataWatcher", "net.minecraft.network.syncher."), boolean.class);
+            
+            Class<?> spawnEntityPacketClass = Util.tryNMSClass("net.minecraft.network.protocol.game.", "PacketPlayOutSpawnEntityLiving", "PacketPlayOutSpawnEntity");
+            if (spawnEntityPacketClass == null) throw new RuntimeException("Unable to find the PacketPlayOutSpawnEntity class");
+            
+            Class<?> spawnEntityConstructorEntity;
+            if (Version.getCurrentVersion() == Version.v1_19_3) spawnEntityConstructorEntity = entityClass;
+            else spawnEntityConstructorEntity = Util.getNMSClass("EntityLiving", "net.minecraft.world.entity.");
+            packetEntityLivingConstructor = spawnEntityPacketClass.getDeclaredConstructor(spawnEntityConstructorEntity);
+            
+            if (Version.getCurrentVersion() == Version.v1_19_3) packetEntityMetadataConstructor = Util.getNMSClass("PacketPlayOutEntityMetadata", "net.minecraft.network.protocol.game.").getDeclaredConstructor(int.class, List.class);
+            else packetEntityMetadataConstructor = Util.getNMSClass("PacketPlayOutEntityMetadata", "net.minecraft.network.protocol.game.").getDeclaredConstructor(int.class, Util.getNMSClass("DataWatcher", "net.minecraft.network.syncher."), boolean.class);
+            
             try {
                 packetEntityDestroyConstructor = Util.getNMSClass("PacketPlayOutEntityDestroy", "net.minecraft.network.protocol.game.").getDeclaredConstructor(int[].class);
             } catch (Exception e) {
                 packetEntityDestroyConstructor117 = Util.getNMSClass("PacketPlayOutEntityDestroy", "net.minecraft.network.protocol.game.").getDeclaredConstructor(int.class);
             }
 
-        } catch (ClassNotFoundException | NoSuchMethodException | NoSuchFieldException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
             e.printStackTrace();
         }
-
     }
 
+    private static String[] getShulkerEntityTypeArray() {
+        if (Version.getCurrentVersion() == Version.v1_18) return new String[]{"ay", "SHULKER", "aB"};
+        else if (Version.getCurrentVersion() == Version.v1_19_3) return new String[]{"aC"};
+        else return new String[]{"aB", "SHULKER", "ay"};
+    }
+    
     private BlockHighlighter() {}
 
     /**
@@ -200,11 +188,20 @@ public final class BlockHighlighter {
             for (Object shulker : shulkerMap.values()) {
                 try {
                     Object spawn = packetEntityLivingConstructor.newInstance(entityLivingClass.cast(shulker));
-                    Object effect = packetEntityMetadataConstructor.newInstance(id.invoke(shulker), dataWatcher.invoke(shulker), true);
+                    Object effect;
+                    if (Version.getCurrentVersion() == Version.v1_19_3) {
+                        Object watcher = dataWatcher.invoke(shulker);
+                        Method defVals = watcher.getClass().getDeclaredMethod("c", null);
+                        effect = packetEntityMetadataConstructor.newInstance(id.invoke(shulker), defVals.invoke(watcher));
+                    }
+                    else effect = packetEntityMetadataConstructor.newInstance(id.invoke(shulker), dataWatcher.invoke(shulker), true);
                     sendPacket.invoke(connection.get(entityPlayer), spawn);
                     sendPacket.invoke(connection.get(entityPlayer), effect);
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
+                }
+                catch (NoSuchMethodException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -228,11 +225,20 @@ public final class BlockHighlighter {
                 shulkerMap.put(block, shulker);
 
                 Object spawn = packetEntityLivingConstructor.newInstance(entityLivingClass.cast(shulker));
-                Object effect = packetEntityMetadataConstructor.newInstance(id.invoke(shulker), dataWatcher.invoke(shulker), true);
+                Object effect;
+                if (Version.getCurrentVersion() == Version.v1_19_3) {
+                    Object watcher = dataWatcher.invoke(shulker);
+                    Method defVals = watcher.getClass().getDeclaredMethod("c", null);
+                    effect = packetEntityMetadataConstructor.newInstance(id.invoke(shulker), defVals.invoke(watcher));
+                }
+                else effect = packetEntityMetadataConstructor.newInstance(id.invoke(shulker), dataWatcher.invoke(shulker), true);
                 sendPacket.invoke(connection.get(entityPlayer), spawn);
                 sendPacket.invoke(connection.get(entityPlayer), effect);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
+            }
+            catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
             }
         }
 
