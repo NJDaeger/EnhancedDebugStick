@@ -1,9 +1,9 @@
 package com.njdaeger.enhanceddebugstick.coreprotect;
 
-import com.njdaeger.enhanceddebugstick.event.FreezeBlockEvent;
-import com.njdaeger.enhanceddebugstick.event.PastePropertyEvent;
-import com.njdaeger.enhanceddebugstick.event.UnfreezeBlockEvent;
-import com.njdaeger.enhanceddebugstick.event.ValueChangeEvent;
+import com.njdaeger.enhanceddebugstick.api.event.FreezeBlockEvent;
+import com.njdaeger.enhanceddebugstick.api.event.PastePropertyEvent;
+import com.njdaeger.enhanceddebugstick.api.event.UnfreezeBlockEvent;
+import com.njdaeger.enhanceddebugstick.api.event.ValueChangeEvent;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.Bukkit;

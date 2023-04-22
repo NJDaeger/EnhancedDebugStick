@@ -1,12 +1,13 @@
 package com.njdaeger.enhanceddebugstick.modes.copy;
 
-import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.api.DebugModeType;
+import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
+import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
+import com.njdaeger.enhanceddebugstick.api.mode.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
-import com.njdaeger.enhanceddebugstick.api.Permissions;
-import com.njdaeger.enhanceddebugstick.event.CopyPropertyEvent;
-import com.njdaeger.enhanceddebugstick.event.PastePropertyEvent;
-import com.njdaeger.enhanceddebugstick.session.DebugSession;
+import com.njdaeger.enhanceddebugstick.Permissions;
+import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
+import com.njdaeger.enhanceddebugstick.api.event.CopyPropertyEvent;
+import com.njdaeger.enhanceddebugstick.api.event.PastePropertyEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -21,12 +22,12 @@ import org.bukkit.util.RayTraceResult;
 
 public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext> {
 
-    public CopyDebugMode() {
-        super("Copy", CopyDebugMode.class);
+    public CopyDebugMode(EnhancedDebugStickApi plugin) {
+        super("Copy", CopyDebugMode.class, plugin);
     }
 
     @Override
-    public CopyDebugContext createContext(DebugSession session) {
+    public CopyDebugContext createContext(IDebugSession session) {
         return new CopyDebugContext(session);
     }
 
@@ -36,24 +37,19 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
     }
 
     @Override
-    public CopyDebugMode getModeType() {
-        return DebugModeType.COPY;
-    }
-
-    @Override
-    public void pauseSession(DebugSession session) {
+    public void pauseSession(IDebugSession session) {
         paused.add(session.getSessionId());
     }
 
     @Override
-    public void resumeSession(DebugSession session) {
+    public void resumeSession(IDebugSession session) {
         paused.remove(session.getSessionId());
     }
 
     @Override
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
+        IDebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
         
         if (session.isUsing(this) && event.getHand() == EquipmentSlot.HAND) {
             event.setCancelled(true);
@@ -165,7 +161,7 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
         //
         //Check if the configuration allows data viewing
         //
-        DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
+        IDebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
 
         if (ConfigKey.get().COPY_DISPLAY_ON_LOOK && session.isUsing(this) && session.hasPermission(this)) {
             CopyDebugContext context = session.toDebugContext(this);

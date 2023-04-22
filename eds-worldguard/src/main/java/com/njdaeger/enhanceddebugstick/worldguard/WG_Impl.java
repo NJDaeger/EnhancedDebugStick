@@ -1,8 +1,8 @@
 package com.njdaeger.enhanceddebugstick.worldguard;
 
-import com.njdaeger.enhanceddebugstick.event.FreezeBlockEvent;
-import com.njdaeger.enhanceddebugstick.event.PastePropertyEvent;
-import com.njdaeger.enhanceddebugstick.event.ValueChangeEvent;
+import com.njdaeger.enhanceddebugstick.api.event.FreezeBlockEvent;
+import com.njdaeger.enhanceddebugstick.api.event.PastePropertyEvent;
+import com.njdaeger.enhanceddebugstick.api.event.ValueChangeEvent;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
@@ -50,7 +50,7 @@ public final class WG_Impl extends JavaPlugin implements Listener {
     public void onFreezeEvent(FreezeBlockEvent event) {
         if (!canUse(event.getPlayer(), event.getFrozenBlock().getLocation())) {
             event.setCancelled(true);
-            event.getDebugContext().getDebugSession().sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "You are not an owner or a member of the location being frozen.");
+            event.getDebugContext().getDebugSession().sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "You must have 'block_break' *and* 'block_place' OR 'build' flag permissions to freeze a block here.");
         }
         
     }
@@ -59,7 +59,7 @@ public final class WG_Impl extends JavaPlugin implements Listener {
     public void onValueChangeEvent(ValueChangeEvent event) {
         if (!canUse(event.getPlayer(), event.getLocation())) {
             event.setCancelled(true);
-            event.getDebugContext().getDebugSession().sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "You are not an owner or a member of the location being frozen.");
+            event.getDebugContext().getDebugSession().sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "You must have 'block_break' *and* 'block_place' OR 'build' permissions to change a block's property here.");
         }
     }
     
@@ -67,7 +67,7 @@ public final class WG_Impl extends JavaPlugin implements Listener {
     public void onPasteEvent(PastePropertyEvent event) {
         if (!canUse(event.getPlayer(), event.getBefore().getLocation())) {
             event.setCancelled(true);
-            event.getDebugContext().getDebugSession().sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "You are not an owner or a member of the location being frozen.");
+            event.getDebugContext().getDebugSession().sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "You must have 'block_break' *and* 'block_place' OR 'build' flag permissions to paste properties here.");
         }
     }
 }

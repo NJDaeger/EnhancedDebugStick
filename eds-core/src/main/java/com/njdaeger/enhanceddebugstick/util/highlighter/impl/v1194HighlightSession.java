@@ -1,6 +1,5 @@
 package com.njdaeger.enhanceddebugstick.util.highlighter.impl;
 
-import com.njdaeger.enhanceddebugstick.mcversion.Version;
 import com.njdaeger.enhanceddebugstick.util.highlighter.IHighlightSession;
 import com.njdaeger.pdk.utils.Util;
 import org.bukkit.block.Block;

@@ -1,4 +1,4 @@
-package com.njdaeger.enhanceddebugstick.api;
+package com.njdaeger.enhanceddebugstick;
 
 public interface Permissions {
 

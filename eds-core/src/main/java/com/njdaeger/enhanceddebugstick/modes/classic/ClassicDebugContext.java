@@ -1,7 +1,8 @@
 package com.njdaeger.enhanceddebugstick.modes.classic;
 
-import com.njdaeger.enhanceddebugstick.api.DebugContext;
+import com.njdaeger.enhanceddebugstick.api.mode.IClassicDebugContext;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
+import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,12 +16,12 @@ import static com.njdaeger.enhanceddebugstick.api.IProperty.getProperties;
 import static com.njdaeger.enhanceddebugstick.api.IProperty.hasProperties;
 import static com.njdaeger.enhanceddebugstick.util.Util.format;
 
-public final class ClassicDebugContext implements DebugContext {
+public final class ClassicDebugContext implements IClassicDebugContext {
     
     private final Map<Material, Integer> currentProperty;
-    private final DebugSession session;
+    private final IDebugSession session;
     
-    ClassicDebugContext(DebugSession session) {
+    ClassicDebugContext(IDebugSession session) {
         this.currentProperty = new HashMap<>();
         this.session = session;
         
@@ -35,7 +36,7 @@ public final class ClassicDebugContext implements DebugContext {
     }
     
     @Override
-    public DebugSession getDebugSession() {
+    public IDebugSession getDebugSession() {
         return session;
     }
     
@@ -103,8 +104,8 @@ public final class ClassicDebugContext implements DebugContext {
      * @param property The property to change the block's selection to.
      * @throws RuntimeException if the property given is not applicable to the specified block.
      */
-    public void setCurrent(Block block, IProperty<?, ?> property) {
-        setCurrent(block.getType(), property);
+    public void setCurrentProperty(Block block, IProperty<?, ?> property) {
+        setCurrentProperty(block.getType(), property);
     }
     
     /**
@@ -114,7 +115,7 @@ public final class ClassicDebugContext implements DebugContext {
      * @param property The property to change the material's selection to.
      * @throws RuntimeException if the property given is not applicable to the specified material.
      */
-    public void setCurrent(Material material, IProperty<?, ?> property) {
+    public void setCurrentProperty(Material material, IProperty<?, ?> property) {
         if (!property.isApplicableTo(material)) {
             throw new RuntimeException("Property \"" + property.getNiceName() + "\" is not applicable for material " + material.name());
         }

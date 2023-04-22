@@ -1,6 +1,6 @@
-package com.njdaeger.enhanceddebugstick.api;
+package com.njdaeger.enhanceddebugstick.api.mode;
 
-import com.njdaeger.enhanceddebugstick.session.DebugSession;
+import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
 
 import java.util.UUID;
 
@@ -9,20 +9,22 @@ import java.util.UUID;
  * joins the world they are automatically set on the "Classic" debug mode- so they are given a ClassicDebugContext to
  * store information about that given debug mode. Other contexts include FreezeDebugContext and CopyDebugContext
  */
-public interface DebugContext {
+public interface IDebugContext {
 
     /**
      * Gets the owning session ID
      *
      * @return The owning session ID
      */
-    UUID getOwner();
+    default UUID getOwner() {
+        return getDebugSession().getSessionId();
+    }
 
     /**
      * Gets the owning debug session
      *
      * @return The owning debug session.
      */
-    DebugSession getDebugSession();
+    IDebugSession getDebugSession();
 
 }

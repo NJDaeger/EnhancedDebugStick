@@ -24,6 +24,7 @@
         <module>eds-worldguard</module>
         <module>eds-griefprevention</module>
         <module>eds-blacklist</module>
+        <module>eds-api</module>
     </modules>
 
     <build>

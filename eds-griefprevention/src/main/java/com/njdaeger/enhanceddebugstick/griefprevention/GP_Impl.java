@@ -1,13 +1,12 @@
 package com.njdaeger.enhanceddebugstick.griefprevention;
 
-import com.njdaeger.enhanceddebugstick.event.FreezeBlockEvent;
-import com.njdaeger.enhanceddebugstick.event.PastePropertyEvent;
-import com.njdaeger.enhanceddebugstick.event.ValueChangeEvent;
+import com.njdaeger.enhanceddebugstick.api.event.FreezeBlockEvent;
+import com.njdaeger.enhanceddebugstick.api.event.PastePropertyEvent;
+import com.njdaeger.enhanceddebugstick.api.event.ValueChangeEvent;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

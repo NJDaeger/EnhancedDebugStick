@@ -1,12 +1,15 @@
-package com.njdaeger.enhanceddebugstick;
+package com.njdaeger.enhanceddebugstick.api.config;
 
-import com.njdaeger.enhanceddebugstick.api.ShiftMode;
+import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
+import com.njdaeger.enhanceddebugstick.api.mode.ShiftMode;
 import com.njdaeger.pdk.config.ConfigType;
 import com.njdaeger.pdk.config.SmartConfig;
 import com.njdaeger.pdk.config.impl.YmlConfig;
 
 public final class ConfigKey extends SmartConfig<YmlConfig> {
 
+    private static EnhancedDebugStickApi instance;
+    
     /**
      * Whether the user allows the sending of basic data to bstats.org
      */
@@ -109,13 +112,14 @@ public final class ConfigKey extends SmartConfig<YmlConfig> {
 
     public final boolean COPY_CLEAR_SOUND = get("copy-debug-mode.clear-sound", true);
 
-    ConfigKey(EnhancedDebugStick plugin) {
+    public ConfigKey(EnhancedDebugStickApi plugin) {
         super(plugin, ConfigType.YML, "config");
+        instance = plugin;
     }
 
     public static ConfigKey get() {
-        if (EnhancedDebugStick.KEYS == null) throw new IllegalStateException("Configuration has not been initialized.");
-        else return EnhancedDebugStick.KEYS;
+        if (instance.getConfigKeys() == null) throw new IllegalStateException("Configuration has not been initialized.");
+        else return instance.getConfigKeys();
     }
 
 }

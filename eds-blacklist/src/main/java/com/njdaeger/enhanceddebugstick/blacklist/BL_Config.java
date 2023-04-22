@@ -15,7 +15,7 @@ public class BL_Config extends Configuration {
     public BL_Config(Plugin plugin) {
         super(plugin, ConfigType.YML, "config");
         
-        setEntry("material-blacklist", Arrays.asList("potatoes", "carrots"));
+        addEntry("material-blacklist", Arrays.asList("potatoes", "carrots"));
         
         save();
     

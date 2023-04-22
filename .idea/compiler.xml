@@ -10,6 +10,7 @@
         <module name="eds-worldguard" />
         <module name="eds-v119impl" />
         <module name="eds-griefprevention" />
+        <module name="eds-api" />
         <module name="eds-jar" />
         <module name="eds-v118impl" />
         <module name="eds-plotsquared" />

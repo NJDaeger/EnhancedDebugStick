@@ -1,12 +1,13 @@
 package com.njdaeger.enhanceddebugstick.modes.classic;
 
-import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.api.DebugModeType;
+import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
+import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
+import com.njdaeger.enhanceddebugstick.api.mode.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
-import com.njdaeger.enhanceddebugstick.api.Permissions;
-import com.njdaeger.enhanceddebugstick.event.PropertyChangeEvent;
-import com.njdaeger.enhanceddebugstick.event.ValueChangeEvent;
-import com.njdaeger.enhanceddebugstick.session.DebugSession;
+import com.njdaeger.enhanceddebugstick.Permissions;
+import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
+import com.njdaeger.enhanceddebugstick.api.event.PropertyChangeEvent;
+import com.njdaeger.enhanceddebugstick.api.event.ValueChangeEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -24,8 +25,8 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
     /**
      * The Classic Debug Mode
      */
-    public ClassicDebugMode() {
-        super("Classic", ClassicDebugMode.class);
+    public ClassicDebugMode(EnhancedDebugStickApi plugin) {
+        super("Classic", ClassicDebugMode.class, plugin);
     }
 
     @Override
@@ -34,29 +35,24 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
     }
 
     @Override
-    public ClassicDebugMode getModeType() {
-        return DebugModeType.CLASSIC;
-    }
-
-    @Override
-    public void pauseSession(DebugSession session) {
+    public void pauseSession(IDebugSession session) {
         paused.add(session.getSessionId());
     }
 
     @Override
-    public void resumeSession(DebugSession session) {
+    public void resumeSession(IDebugSession session) {
         paused.remove(session.getSessionId());
     }
 
     @Override
-    public ClassicDebugContext createContext(DebugSession session) {
+    public ClassicDebugContext createContext(IDebugSession session) {
         return new ClassicDebugContext(session);
     }
 
     @Override
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
+        IDebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
 
         //We check if this Debug Mode contains the players session, we also check if the player is holding the debug stick
         if (session.isUsing(this) && event.getHand() == EquipmentSlot.HAND) {
@@ -96,7 +92,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
                 }
                 
                 if (ConfigKey.get().CDM_PROPERTY) session.sendSound(Sound.UI_BUTTON_CLICK);
-                context.setCurrent(propEvent.getBlock(), propEvent.getNextProperty());
+                context.setCurrentProperty(propEvent.getBlock(), propEvent.getNextProperty());
                 context.sendPropertiesOf(propEvent.getBlock());
                 return;
             }
@@ -137,7 +133,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
         //
         //Check if the configuration allows data viewing
         //
-        DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
+        IDebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
 
         if (ConfigKey.get().CDM_DISPLAY_ON_LOOK && session.isUsing(this) && session.hasPermission(this)) {
             ClassicDebugContext context = session.toDebugContext(this);

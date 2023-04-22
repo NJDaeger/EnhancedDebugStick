@@ -1,6 +1,6 @@
-package com.njdaeger.enhanceddebugstick.event;
+package com.njdaeger.enhanceddebugstick.api.event;
 
-import com.njdaeger.enhanceddebugstick.modes.freeze.FreezeDebugContext;
+import com.njdaeger.enhanceddebugstick.api.mode.IFreezeDebugContext;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -14,11 +14,11 @@ public class FreezeBlockEvent extends PlayerEvent implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    private final FreezeDebugContext debugContext;
+    private final IFreezeDebugContext debugContext;
     private boolean cancelled;
     private Block toFreeze;
 
-    public FreezeBlockEvent(Player who, Block toFreeze, FreezeDebugContext debugContext) {
+    public FreezeBlockEvent(Player who, Block toFreeze, IFreezeDebugContext debugContext) {
         super(who);
         this.cancelled = false;
         this.toFreeze = toFreeze;
@@ -67,7 +67,7 @@ public class FreezeBlockEvent extends PlayerEvent implements Cancellable {
      *
      * @return The Freeze Debug context which is using the Enhanced Debug Stick
      */
-    public FreezeDebugContext getDebugContext() {
+    public IFreezeDebugContext getDebugContext() {
         return debugContext;
     }
 

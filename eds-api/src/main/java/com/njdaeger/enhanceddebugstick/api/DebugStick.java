@@ -1,5 +1,7 @@
-package com.njdaeger.enhanceddebugstick;
+package com.njdaeger.enhanceddebugstick.api;
 
+import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -16,7 +18,7 @@ public final class DebugStick extends ItemStack {
         
         Material mat = Material.matchMaterial(ConfigKey.get().STICK_MATERIAL);
         if (mat == null || !mat.isItem()) {
-            EnhancedDebugStick.getInstance().getLogger().severe("Unable to bind '" + ConfigKey.get().STICK_MATERIAL + "' to the debug stick. Is it an item? Defaulting to minecraft:stick");
+            Bukkit.getLogger().severe("Unable to bind '" + ConfigKey.get().STICK_MATERIAL + "' to the debug stick. Is it an item? Defaulting to minecraft:stick");
             mat = Material.STICK;
         }
         

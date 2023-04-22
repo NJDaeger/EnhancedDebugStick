@@ -1,6 +1,6 @@
-package com.njdaeger.enhanceddebugstick.session;
+package com.njdaeger.enhanceddebugstick.util;
 
-import com.njdaeger.enhanceddebugstick.api.ShiftMode;
+import com.njdaeger.enhanceddebugstick.api.mode.ShiftMode;
 import com.njdaeger.pdk.command.exception.ArgumentParseException;
 import com.njdaeger.pdk.command.exception.PDKCommandException;
 import com.njdaeger.pdk.types.ParsedType;

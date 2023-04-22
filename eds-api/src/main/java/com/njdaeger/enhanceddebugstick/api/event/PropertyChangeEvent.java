@@ -1,7 +1,7 @@
-package com.njdaeger.enhanceddebugstick.event;
+package com.njdaeger.enhanceddebugstick.api.event;
 
 import com.njdaeger.enhanceddebugstick.api.IProperty;
-import com.njdaeger.enhanceddebugstick.modes.classic.ClassicDebugContext;
+import com.njdaeger.enhanceddebugstick.api.mode.IClassicDebugContext;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -17,9 +17,9 @@ public class PropertyChangeEvent extends PlayerEvent implements Cancellable {
     private Block block;
     private final IProperty lastProperty;
     private IProperty nextProperty;
-    private final ClassicDebugContext context;
+    private final IClassicDebugContext context;
 
-    public PropertyChangeEvent(Player who, Block block, IProperty lastProperty, IProperty nextProperty, ClassicDebugContext context) {
+    public PropertyChangeEvent(Player who, Block block, IProperty lastProperty, IProperty nextProperty, IClassicDebugContext context) {
         super(who);
         this.lastProperty = lastProperty;
         this.nextProperty = nextProperty;
@@ -74,7 +74,7 @@ public class PropertyChangeEvent extends PlayerEvent implements Cancellable {
         return block.getLocation();
     }
     
-    public ClassicDebugContext getDebugContext() {
+    public IClassicDebugContext getDebugContext() {
         return context;
     }
     

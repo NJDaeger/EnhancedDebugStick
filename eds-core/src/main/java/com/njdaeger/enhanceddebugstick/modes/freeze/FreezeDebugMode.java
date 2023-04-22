@@ -1,12 +1,13 @@
 package com.njdaeger.enhanceddebugstick.modes.freeze;
 
-import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.api.DebugModeType;
-import com.njdaeger.enhanceddebugstick.api.Permissions;
-import com.njdaeger.enhanceddebugstick.event.FreezeBlockEvent;
-import com.njdaeger.enhanceddebugstick.event.UnfreezeBlockEvent;
+import com.njdaeger.enhanceddebugstick.Permissions;
+import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
+import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
+import com.njdaeger.enhanceddebugstick.api.mode.DebugModeType;
+import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
+import com.njdaeger.enhanceddebugstick.api.event.FreezeBlockEvent;
+import com.njdaeger.enhanceddebugstick.api.event.UnfreezeBlockEvent;
 import com.njdaeger.enhanceddebugstick.mcversion.Version;
-import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.util.highlighter.IBlockHighlighter;
 import com.njdaeger.enhanceddebugstick.util.highlighter.impl.GenericBlockHighlighter;
 import com.njdaeger.enhanceddebugstick.util.highlighter.impl.LegacyBlockHighlighter;
@@ -37,8 +38,8 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
         }
     }
     
-    public FreezeDebugMode() {
-        super("Freeze", FreezeDebugMode.class);
+    public FreezeDebugMode(EnhancedDebugStickApi plugin) {
+        super("Freeze", FreezeDebugMode.class, plugin);
     }
 
     @Override
@@ -47,31 +48,26 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
     }
 
     @Override
-    public FreezeDebugMode getModeType() {
-        return DebugModeType.FREEZE;
-    }
-
-    @Override
-    public void pauseSession(DebugSession session) {
+    public void pauseSession(IDebugSession session) {
         session.toDebugContext(this).unlightFrozen();
         paused.add(session.getSessionId());
     }
 
     @Override
-    public void resumeSession(DebugSession session) {
+    public void resumeSession(IDebugSession session) {
         session.toDebugContext(this).lightFrozen();
         paused.remove(session.getSessionId());
     }
 
     @Override
-    public FreezeDebugContext createContext(DebugSession session) {
+    public FreezeDebugContext createContext(IDebugSession session) {
         return new FreezeDebugContext(session, highlighter);
     }
 
     @Override
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
+        IDebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
 
         if (session.isUsing(this) && event.getHand() == EquipmentSlot.HAND) {
             event.setCancelled(true);

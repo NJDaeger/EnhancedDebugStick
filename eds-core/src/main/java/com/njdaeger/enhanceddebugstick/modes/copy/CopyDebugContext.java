@@ -1,9 +1,9 @@
 package com.njdaeger.enhanceddebugstick.modes.copy;
 
-import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.api.DebugContext;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
-import com.njdaeger.enhanceddebugstick.session.DebugSession;
+import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
+import com.njdaeger.enhanceddebugstick.api.mode.ICopyDebugContext;
+import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
 import com.njdaeger.enhanceddebugstick.util.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -11,16 +11,15 @@ import org.bukkit.block.data.BlockData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
-public final class CopyDebugContext implements DebugContext {
+public final class CopyDebugContext implements ICopyDebugContext {
     
-    private final DebugSession session;
+    private final IDebugSession session;
     private List<IProperty<?, ?>> clipboardProperties;
     private BlockData clipboard;
 
-    CopyDebugContext(DebugSession session) {
+    CopyDebugContext(IDebugSession session) {
         this.session = session;
         this.clipboardProperties = new ArrayList<>();
     }
@@ -31,7 +30,7 @@ public final class CopyDebugContext implements DebugContext {
     }
 
     @Override
-    public DebugSession getDebugSession() {
+    public IDebugSession getDebugSession() {
         return session;
     }
 

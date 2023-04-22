@@ -1,7 +1,6 @@
 package com.njdaeger.enhanceddebugstick.mcversion.v119;
 
-import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
-import com.njdaeger.enhanceddebugstick.api.DebugStickAPI;
+import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
 import com.njdaeger.enhanceddebugstick.mcversion.PropertyLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,9 +13,9 @@ public class PropertyLoader_119 implements PropertyLoader, Listener {
     
     
     @Override
-    public void load() {
+    public void load(EnhancedDebugStickApi plugin) {
         Property_119.registerProperties();
-        Bukkit.getPluginManager().registerEvents(this, EnhancedDebugStick.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
     
     @EventHandler
@@ -24,7 +23,7 @@ public class PropertyLoader_119 implements PropertyLoader, Listener {
         Block block = e.getClickedBlock();
         
         if (block != null && e.getClickedBlock().getType() == Material.RESPAWN_ANCHOR) {
-            if (DebugStickAPI.DEBUG_STICK.equals(e.getPlayer().getInventory().getItemInMainHand())) e.setCancelled(true);
+            if (EnhancedDebugStickApi.DEBUG_STICK.equals(e.getPlayer().getInventory().getItemInMainHand())) e.setCancelled(true);
         }
     }
     

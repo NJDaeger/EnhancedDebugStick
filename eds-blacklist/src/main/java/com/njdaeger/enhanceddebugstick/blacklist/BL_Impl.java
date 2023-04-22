@@ -1,8 +1,8 @@
 package com.njdaeger.enhanceddebugstick.blacklist;
 
-import com.njdaeger.enhanceddebugstick.event.FreezeBlockEvent;
-import com.njdaeger.enhanceddebugstick.event.PastePropertyEvent;
-import com.njdaeger.enhanceddebugstick.event.ValueChangeEvent;
+import com.njdaeger.enhanceddebugstick.api.event.FreezeBlockEvent;
+import com.njdaeger.enhanceddebugstick.api.event.PastePropertyEvent;
+import com.njdaeger.enhanceddebugstick.api.event.ValueChangeEvent;
 import com.njdaeger.pdk.command.CommandBuilder;
 import com.njdaeger.pdk.command.CommandContext;
 import org.bukkit.Bukkit;
@@ -30,7 +30,8 @@ public class BL_Impl extends JavaPlugin implements Listener {
     }
     
     private void reloadCommand(CommandContext context) {
-        config.reloadBlacklist();
+        this.config = new BL_Config(this);
+//        config.reloadBlacklist();
         context.send(ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Reloaded the material blacklist");
     }
     
@@ -53,7 +54,7 @@ public class BL_Impl extends JavaPlugin implements Listener {
     @EventHandler
     public void onPasteEvent(PastePropertyEvent e) {
         if (config.getBlacklistedMaterials().contains(e.getBefore().getType()) || config.getBlacklistedMaterials().contains(e.getAfter().getMaterial())) {
-            e.getPlayer().sendMessage(ChatColor.RED + "You cannot paste a blacklisted material.");
+            e.getPlayer().sendMessage(ChatColor.RED + "You cannot paste on a blacklisted material.");
             e.setCancelled(true);
         }
     }

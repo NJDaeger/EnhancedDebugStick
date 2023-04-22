@@ -1,8 +1,8 @@
 package com.njdaeger.enhanceddebugstick.plotsquared;
 
-import com.njdaeger.enhanceddebugstick.event.FreezeBlockEvent;
-import com.njdaeger.enhanceddebugstick.event.PastePropertyEvent;
-import com.njdaeger.enhanceddebugstick.event.ValueChangeEvent;
+import com.njdaeger.enhanceddebugstick.api.event.FreezeBlockEvent;
+import com.njdaeger.enhanceddebugstick.api.event.PastePropertyEvent;
+import com.njdaeger.enhanceddebugstick.api.event.ValueChangeEvent;
 import com.plotsquared.core.api.PlotAPI;
 import com.plotsquared.core.location.Location;
 import com.plotsquared.core.plot.Plot;

@@ -157,7 +157,7 @@ public final class BossBarTimer {
                 bossBar.setProgress(fill ? getFillProgress() : getEmptyProgress());
             }
 
-        }.runTaskTimer(EnhancedDebugStick.getInstance(), 0, updateInterval);
+        }.runTaskTimer(EnhancedDebugStick.getPlugin(EnhancedDebugStick.class), 0, updateInterval);
     }
 
     private double getFillProgress() {

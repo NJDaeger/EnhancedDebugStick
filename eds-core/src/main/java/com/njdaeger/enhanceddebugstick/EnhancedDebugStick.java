@@ -1,9 +1,11 @@
 package com.njdaeger.enhanceddebugstick;
 
-import com.njdaeger.enhanceddebugstick.api.DebugStickAPI;
+import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
+import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
+import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
 import com.njdaeger.enhanceddebugstick.mcversion.PropertyLoader;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
-import com.njdaeger.enhanceddebugstick.session.Preference;
+import com.njdaeger.enhanceddebugstick.session.DefaultPreferences;
 import com.njdaeger.enhanceddebugstick.util.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -15,12 +17,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAPI {
+public final class EnhancedDebugStick extends JavaPlugin implements EnhancedDebugStickApi {
 
     private static EnhancedDebugStick PLUGIN;
     static ConfigKey KEYS;
     private ConfigurationFile configuration;
-    private final Map<UUID, DebugSession> debugSessions = new HashMap<>();
+    private final Map<UUID, IDebugSession> debugSessions = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -39,11 +41,8 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
         KEYS = new ConfigKey(this);
 
         if (!reload) {
-            PropertyLoader.loadVersion();
-            Preference.registerPreferences();
-        }
-
-        if (!reload) {
+            PropertyLoader.loadVersion(this);
+            DefaultPreferences.registerPreferences();
             new DebugStickCommand(this);
             new DebugListener(this);
         }
@@ -75,13 +74,14 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
             getDebugSession(player.getUniqueId()).pause();
         }
     }
-
-    public static EnhancedDebugStick getInstance() {
-        return PLUGIN;
+    
+    @Override
+    public ConfigKey getConfigKeys() {
+        return KEYS;
     }
     
     @Override
-    public DebugSession getDebugSession(UUID uuid) {
+    public IDebugSession getDebugSession(UUID uuid) {
         return debugSessions.get(uuid);
     }
 
@@ -91,7 +91,7 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
             getDebugSession(uuid).resume();
             return false;
         }
-        debugSessions.put(uuid, new DebugSession(uuid));
+        debugSessions.put(uuid, new DebugSession(uuid, this));
         return true;
     }
 
@@ -108,7 +108,7 @@ public final class EnhancedDebugStick extends JavaPlugin implements DebugStickAP
     }
 
     @Override
-    public Collection<DebugSession> getDebugSessions() {
+    public Collection<IDebugSession> getDebugSessions() {
         return debugSessions.values();
     }
 

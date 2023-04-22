@@ -1,6 +1,6 @@
 package com.njdaeger.enhanceddebugstick;
 
-import com.njdaeger.enhanceddebugstick.api.ShiftMode;
+import com.njdaeger.enhanceddebugstick.api.mode.ShiftMode;
 import com.njdaeger.pdk.config.ConfigType;
 import com.njdaeger.pdk.config.Configuration;
 import org.bukkit.Material;

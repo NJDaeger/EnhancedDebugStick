@@ -1,4 +1,4 @@
-package com.njdaeger.enhanceddebugstick.session;
+package com.njdaeger.enhanceddebugstick.util;
 
 import com.njdaeger.pdk.command.exception.ArgumentParseException;
 import com.njdaeger.pdk.command.exception.PDKCommandException;

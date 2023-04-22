@@ -1,7 +1,7 @@
-package com.njdaeger.enhanceddebugstick.event;
+package com.njdaeger.enhanceddebugstick.api.event;
 
 import com.njdaeger.enhanceddebugstick.api.IProperty;
-import com.njdaeger.enhanceddebugstick.modes.copy.CopyDebugContext;
+import com.njdaeger.enhanceddebugstick.api.mode.ICopyDebugContext;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
@@ -13,11 +13,11 @@ public class PastePropertyEvent extends PlayerEvent implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    private final CopyDebugContext debugContext;
+    private final ICopyDebugContext debugContext;
     private Block before;
     private boolean cancelled;
 
-    public PastePropertyEvent(Player who, Block before, CopyDebugContext debugContext) {
+    public PastePropertyEvent(Player who, Block before, ICopyDebugContext debugContext) {
         super(who);
         this.before = before;
         this.cancelled = false;
@@ -43,7 +43,7 @@ public class PastePropertyEvent extends PlayerEvent implements Cancellable {
         this.cancelled = b;
     }
 
-    public CopyDebugContext getDebugContext() {
+    public ICopyDebugContext getDebugContext() {
         return debugContext;
     }
 
