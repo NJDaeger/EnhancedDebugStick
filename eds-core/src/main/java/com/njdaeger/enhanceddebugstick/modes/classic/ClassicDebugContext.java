@@ -1,9 +1,11 @@
 package com.njdaeger.enhanceddebugstick.modes.classic;
 
+import com.njdaeger.enhanceddebugstick.api.event.PropertySendEvent;
 import com.njdaeger.enhanceddebugstick.api.mode.IClassicDebugContext;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
 import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -177,7 +179,12 @@ public final class ClassicDebugContext implements IClassicDebugContext {
     public void sendPropertiesOf(Block block) {
         StringBuilder builder = new StringBuilder();
         if (block != null) {
-            for (IProperty<?, ?> property : getProperties(block)) {
+            var event = new PropertySendEvent(Bukkit.getPlayer(session.getSessionId()), block, getProperties(block));
+            Bukkit.getPluginManager().callEvent(event);
+            
+            if (event.isCancelled()) return;
+            
+            for (IProperty<?, ?> property : event.getProperties()) {
                 if (getCurrentProperty(block) == property) {
                     builder.append(ChatColor.DARK_GREEN).append(ChatColor.BOLD).append(ChatColor.UNDERLINE).append(property.getNiceName()).append(": ");
                     builder.append(ChatColor.GRAY).append(ChatColor.BOLD).append(ChatColor.UNDERLINE).append(format(property.getNiceCurrentValue(block)));

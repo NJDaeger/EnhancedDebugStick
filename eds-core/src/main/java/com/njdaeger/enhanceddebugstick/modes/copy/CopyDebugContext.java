@@ -2,9 +2,12 @@ package com.njdaeger.enhanceddebugstick.modes.copy;
 
 import com.njdaeger.enhanceddebugstick.api.IProperty;
 import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
+import com.njdaeger.enhanceddebugstick.api.event.MeshedPropertySendEvent;
+import com.njdaeger.enhanceddebugstick.api.event.PropertySendEvent;
 import com.njdaeger.enhanceddebugstick.api.mode.ICopyDebugContext;
 import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
 import com.njdaeger.enhanceddebugstick.util.Util;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -104,9 +107,15 @@ public final class CopyDebugContext implements ICopyDebugContext {
      * @param block The block to get and send the properties of.
      */
     public void sendPropertiesOf(Block block) {
+        if (!session.isOnline()) return;
         StringBuilder builder = new StringBuilder();
         if (block != null) {
-            for (IProperty<?, ?> property : IProperty.getProperties(block)) {
+            var event = new PropertySendEvent(Bukkit.getPlayer(session.getSessionId()), block, IProperty.getProperties(block));
+            Bukkit.getPluginManager().callEvent(event);
+            
+            if (event.isCancelled()) return;
+            
+            for (IProperty<?, ?> property : event.getProperties()) {
                 builder.append(ChatColor.DARK_GREEN).append(ChatColor.BOLD).append(property.getNiceName()).append(": ");
                 builder.append(ChatColor.GRAY).append(ChatColor.BOLD).append(Util.format(property.getNiceCurrentValue(block))).append("    ");
             }
@@ -124,12 +133,18 @@ public final class CopyDebugContext implements ICopyDebugContext {
      * @param block The block to compare to the clipboard properties.
      */
     public void sendMeshedPropertiesOf(Block block) {
+        if (!session.isOnline()) return;
         StringBuilder builder = new StringBuilder();
         if (block != null && hasClipboard()) {
+            
+            var event = new MeshedPropertySendEvent(Bukkit.getPlayer(session.getSessionId()), block, IProperty.getProperties(block), getClipboardProperties());
+            Bukkit.getPluginManager().callEvent(event);
+            
+            if (event.isCancelled()) return;
+            
+            List<IProperty<?, ?>> clipboardProperties = event.getClipboardProperties();
 
-            List<IProperty<?, ?>> clipboardProperties = getClipboardProperties();
-
-            for (IProperty<?, ?> property : IProperty.getProperties(block)) {
+            for (IProperty<?, ?> property : event.getProperties()) {
                 if (clipboardProperties.contains(property)) {
                     //If the property value of both match, just set the property color to dark gray.
                     if (property.getCurrentValue(clipboard).equals(property.getCurrentValue(block))) {
