@@ -3,6 +3,7 @@ package com.njdaeger.enhanceddebugstick.shifter;
 import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
 import com.njdaeger.enhanceddebugstick.api.mode.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
+import com.njdaeger.enhanceddebugstick.i18n.Translation;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.session.DefaultPreferences;
 import com.njdaeger.enhanceddebugstick.util.BossBarTimer;
@@ -25,10 +26,10 @@ public class HoldShifter implements Shifter<PlayerInteractEvent, PlayerToggleSne
             session.setSelectingStart(System.currentTimeMillis());
             long max = session.getPreference(DefaultPreferences.SNEAK_MAXIMUM);
             if (ConfigKey.get().ALLOW_BOSSBAR_TIMERS) BossBarTimer.create(event.getPlayer(), false, session.getPreference(DefaultPreferences.SNEAK_MINIMUM), 2,
-                    (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Hold Time: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.),
+                    (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + Translation.SHIFT_HOLD_HOLD_TIME.get().apply(((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.),
                     (p) -> !p.isSneaking(), max <= 0 ? null :
                     () -> BossBarTimer.create(event.getPlayer(), true, max, 2,
-                            (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Time Remaining: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.),
+                            (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + Translation.SHIFT_HOLD_TIME_REMAINING.get().apply(((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.),
                             (p) -> !p.isSneaking(), () -> {
                                 if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                             }).start()).start();

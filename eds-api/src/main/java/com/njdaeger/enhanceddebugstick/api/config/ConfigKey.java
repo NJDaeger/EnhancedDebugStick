@@ -34,6 +34,11 @@ public final class ConfigKey extends SmartConfig<YmlConfig> {
     public final String STICK_MATERIAL = get("stick-material", "stick");
     
     /**
+     * The language file to use for all messages
+     */
+    public final String LANG_FILE = get("lang-file", "en_us");
+    
+    /**
      * Enables or disables bossbar timers
      */
     public final boolean ALLOW_BOSSBAR_TIMERS = get("allow-bossbar-timers", true);

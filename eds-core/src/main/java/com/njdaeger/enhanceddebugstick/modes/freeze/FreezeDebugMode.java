@@ -7,6 +7,7 @@ import com.njdaeger.enhanceddebugstick.api.mode.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
 import com.njdaeger.enhanceddebugstick.api.event.FreezeBlockEvent;
 import com.njdaeger.enhanceddebugstick.api.event.UnfreezeBlockEvent;
+import com.njdaeger.enhanceddebugstick.i18n.Translation;
 import com.njdaeger.enhanceddebugstick.mcversion.Version;
 import com.njdaeger.enhanceddebugstick.util.highlighter.IBlockHighlighter;
 import com.njdaeger.enhanceddebugstick.util.highlighter.impl.GenericBlockHighlighter;
@@ -75,7 +76,7 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
             event.setUseItemInHand(Event.Result.DENY);
 
             if (!session.hasPermission(this)) {
-                session.sendMessage(ChatColor.RED + "You do not have permission to use the Freeze Debug Mode");
+                session.sendMessage(Translation.FREEZE_NO_PERM.get().apply());
                 return;
             }
 
@@ -90,17 +91,17 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
                 if (unfreezeEvent.isCancelled()) return;
                 
                 if (!context.hasFrozenBlocks()) {
-                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "You do not have any frozen blocks");
+                    session.sendForcedBar(Translation.FREEZE_NO_FROZEN_BLOCKS.get().apply());
                     if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
                 if (ConfigKey.get().FDM_UNFREEZE_ALL) session.sendSound(Sound.ITEM_TRIDENT_RETURN);
                 
-                long unfreezeAmount = unfreezeEvent.getUnfrozenBlocks().stream().filter(context::isFrozen).count();
+                int unfreezeAmount = (int) unfreezeEvent.getUnfrozenBlocks().stream().filter(context::isFrozen).count();
                 int currentlyFrozen = context.getFrozen().size();
                 
                 context.unfreezeBlocks(unfreezeEvent.getUnfrozenBlocks());
-                session.sendMessage(String.format(ChatColor.GRAY + "Unfroze %d/%d blocks.", unfreezeAmount, currentlyFrozen));
+                session.sendMessage(Translation.FREEZE_UNFROZE_BLOCKS.get().apply(unfreezeAmount, currentlyFrozen));
                 return;
             }
 

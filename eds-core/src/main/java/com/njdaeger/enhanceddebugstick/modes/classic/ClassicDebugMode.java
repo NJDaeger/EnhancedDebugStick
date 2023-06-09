@@ -8,6 +8,7 @@ import com.njdaeger.enhanceddebugstick.Permissions;
 import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
 import com.njdaeger.enhanceddebugstick.api.event.PropertyChangeEvent;
 import com.njdaeger.enhanceddebugstick.api.event.ValueChangeEvent;
+import com.njdaeger.enhanceddebugstick.i18n.Translation;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -62,7 +63,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
 
             //Check for the use permission
             if (!session.hasPermission(this)) {
-                session.sendMessage(ChatColor.RED + "You do not have permission to use the Classic Debug Mode");
+                session.sendMessage(Translation.CLASSIC_NO_PERM.get().apply());
                 return;
             }
 
@@ -80,13 +81,13 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
                 if (propEvent.isCancelled()) return;
                 
                 if (!IProperty.hasProperties(propEvent.getBlock())) {
-                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "This block has no properties");
+                    session.sendForcedBar(Translation.CLASSIC_NO_PROPS.get().apply(propEvent.getBlock()));
                     if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 
                 if (!propEvent.isPropertyApplicable()) {
-                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "You cannot apply that property to that block");
+                    session.sendForcedBar(Translation.CLASSIC_NOT_APPL.get().apply(propEvent.getNextProperty(), propEvent.getBlock()));
                     if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
@@ -103,7 +104,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
                 IProperty<?, ?> property = context.getCurrentProperty(block);
     
                 if (property == null) {
-                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "This block has no properties");
+                    session.sendForcedBar(Translation.CLASSIC_NO_PROPS.get().apply(block));
                     if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
@@ -114,7 +115,7 @@ public class ClassicDebugMode extends DebugModeType<ClassicDebugMode, ClassicDeb
                 if (valEvent.isCancelled()) return;
     
                 if (!valEvent.isValueApplicable()) {
-                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "You cannot apply that property to that block");
+                    session.sendForcedBar(Translation.CLASSIC_NOT_APPL.get().apply(valEvent.getProperty(), valEvent.getBefore()));
                     if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }

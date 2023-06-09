@@ -3,7 +3,11 @@ package com.njdaeger.enhanceddebugstick;
 import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
 import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
 import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
+import com.njdaeger.enhanceddebugstick.i18n.TranslationProvider;
 import com.njdaeger.enhanceddebugstick.mcversion.PropertyLoader;
+import com.njdaeger.enhanceddebugstick.modes.classic.ClassicDebugMode;
+import com.njdaeger.enhanceddebugstick.modes.copy.CopyDebugMode;
+import com.njdaeger.enhanceddebugstick.modes.freeze.FreezeDebugMode;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.session.DefaultPreferences;
 import com.njdaeger.enhanceddebugstick.util.Metrics;
@@ -39,12 +43,20 @@ public final class EnhancedDebugStick extends JavaPlugin implements EnhancedDebu
         }
         this.configuration = new ConfigurationFile(this);
         KEYS = new ConfigKey(this);
-
+    
+        //we always want to overwrite the original yml file so it has all the latest messages.
+        saveResource("en_US.yml", true);
+        
+        new TranslationProvider(this, KEYS.LANG_FILE);
         if (!reload) {
             PropertyLoader.loadVersion(this);
             DefaultPreferences.registerPreferences();
             new DebugStickCommand(this);
             new DebugListener(this);
+    
+            new ClassicDebugMode(this);
+            new FreezeDebugMode(this);
+            new CopyDebugMode(this);
         }
 
         if (KEYS.BSTATS_INTEGRATION) {//Need to wait for custom bar charts

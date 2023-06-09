@@ -7,6 +7,7 @@ import com.njdaeger.enhanceddebugstick.api.mode.IDebugContext;
 import com.njdaeger.enhanceddebugstick.api.mode.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
 import com.njdaeger.enhanceddebugstick.api.session.Preference;
+import com.njdaeger.enhanceddebugstick.i18n.Translation;
 import com.njdaeger.enhanceddebugstick.modes.classic.ClassicDebugMode;
 import com.njdaeger.pdk.types.ParsedType;
 import com.njdaeger.pdk.utils.ActionBar;
@@ -124,7 +125,7 @@ public final class DebugSession implements IDebugSession {
     public <C extends IDebugContext> C toDebugContext(DebugModeType<?, C> debugMode) {
         if (debugMode.hasSession(uuid)) return debugMode.getDebugContext(uuid);
         else {
-            if (isOnline()) Bukkit.getPlayer(uuid).sendMessage(ChatColor.RED + "Cannot bind DebugSession to DebugContext.");
+            if (isOnline()) Bukkit.getPlayer(uuid).sendMessage(Translation.ERROR_CANNOT_BIND_DEBUG_SESSION.get().apply());
             throw new RuntimeException("Cannot bind DebugSession to " + debugMode.getNiceName() + "'s DebugContext. Please create a ticket and send your latest.log to https://github.com/NJDaeger/Bug-Reports! Sorry for this issue.");
         }
     }
