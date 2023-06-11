@@ -170,7 +170,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>EnhancedDebugStick-${project.parent.version}</finalName>
+                    <finalName>EnhancedDebugStick-v${project.parent.version}</finalName>
                     <outputDirectory>${project.parent.basedir}/jars</outputDirectory>
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
