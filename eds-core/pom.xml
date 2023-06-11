@@ -50,14 +50,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <relocations>
-                        <relocation>
-                            <pattern>com.njdaeger.pdk</pattern>
-                            <shadedPattern>com.njdaeger.enhanceddebugstick.libs.pdk</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
             </plugin>
 
         </plugins>
@@ -80,9 +72,9 @@
 
         <dependency>
             <groupId>com.njdaeger</groupId>
-            <artifactId>PluginDevelopmentKit</artifactId>
-            <version>0.0.7</version>
-            <scope>compile</scope>
+            <artifactId>plugin-development-kit</artifactId>
+            <version>0.0.8</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

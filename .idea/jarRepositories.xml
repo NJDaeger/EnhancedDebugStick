@@ -7,11 +7,6 @@
       <option name="url" value="https://repo.maven.apache.org/maven2" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="plotsquared" />
-      <option name="name" value="plotsquared" />
-      <option name="url" value="https://plotsquared.com/mvn/" />
-    </remote-repository>
-    <remote-repository>
       <option name="id" value="jitpack.io" />
       <option name="name" value="jitpack.io" />
       <option name="url" value="https://jitpack.io" />
@@ -22,6 +17,31 @@
       <option name="url" value="https://oss.sonatype.org/content/groups/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="spigotmc" />
+      <option name="name" value="spigotmc" />
+      <option name="url" value="https://hub.spigotmc.org/nexus/content/groups/public/org/spigotmc/spigot-api/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="plotsquared" />
+      <option name="name" value="plotsquared" />
+      <option name="url" value="https://plotsquared.com/mvn/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="spigot-repo" />
+      <option name="name" value="spigot-repo" />
+      <option name="url" value="https://hub.spigotmc.org/nexus/content/repositories/snapshots/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="github" />
+      <option name="name" value="GitHub Packages" />
+      <option name="url" value="https://maven.pkg.github.com/NJDaeger/PluginDevelopmentKit" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="spigot" />
       <option name="name" value="spigot" />
       <option name="url" value="https://hub.spigotmc.org/nexus/content/groups/public/org/spigotmc/spigot-api/" />
@@ -30,11 +50,6 @@
       <option name="id" value="spigotmc-repo" />
       <option name="name" value="spigotmc-repo" />
       <option name="url" value="https://hub.spigotmc.org/nexus/content/repositories/snapshots/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="central" />
-      <option name="name" value="Maven Central repository" />
-      <option name="url" value="https://repo1.maven.org/maven2" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="github" />
@@ -55,11 +70,6 @@
       <option name="id" value="enginehub" />
       <option name="name" value="enginehub" />
       <option name="url" value="https://maven.enginehub.org/repo/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="spigotmc" />
-      <option name="name" value="spigotmc" />
-      <option name="url" value="https://hub.spigotmc.org/nexus/content/groups/public/org/spigotmc/spigot-api/" />
     </remote-repository>
   </component>
 </project>

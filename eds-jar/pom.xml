@@ -127,6 +127,18 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>com.njdaeger</groupId>
+            <artifactId>eds-v120impl</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <build>
@@ -165,17 +177,6 @@
             </plugin>
 
         </plugins>
-
-<!--        <resources>
-            <resource>
-                <directory>core/src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>plugin.yml</include>
-                    <include>config.yml</include>
-                </includes>
-            </resource>
-        </resources>-->
 
     </build>
 

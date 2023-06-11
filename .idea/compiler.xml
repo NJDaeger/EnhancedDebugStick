@@ -6,15 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="eds-coreprotect" />
-        <module name="eds-worldguard" />
         <module name="eds-v119impl" />
-        <module name="eds-griefprevention" />
-        <module name="eds-api" />
         <module name="eds-jar" />
+        <module name="eds-v120impl" />
         <module name="eds-v118impl" />
-        <module name="eds-plotsquared" />
-        <module name="eds-blacklist" />
         <module name="eds-v116impl" />
         <module name="eds-v114impl" />
         <module name="eds-core" />
@@ -24,7 +19,13 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="eds-api" target="1.8" />
+      <module name="eds-blacklist" target="17" />
+      <module name="eds-coreprotect" target="1.8" />
+      <module name="eds-griefprevention" target="1.8" />
       <module name="eds-plot-v5" target="1.8" />
+      <module name="eds-plotsquared" target="1.8" />
+      <module name="eds-worldguard" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,8 +1,0 @@
-main: com.njdaeger.enhanceddebugstick.coreprotect.CP_Impl
-name: ${project.parent.artifactId}-CoreProtect
-version: ${project.version}
-api-version: 1.13
-author: NJDaeger
-depend:
-  - ${project.parent.artifactId}
-  - CoreProtect

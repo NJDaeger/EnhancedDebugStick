@@ -19,7 +19,13 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/eds-api/pom.xml" />
+        <option value="$PROJECT_DIR$/eds-blacklist/pom.xml" />
+        <option value="$PROJECT_DIR$/eds-coreprotect/pom.xml" />
+        <option value="$PROJECT_DIR$/eds-griefprevention/pom.xml" />
         <option value="$PROJECT_DIR$/eds-plot-v5/pom.xml" />
+        <option value="$PROJECT_DIR$/eds-plotsquared/pom.xml" />
+        <option value="$PROJECT_DIR$/eds-worldguard/pom.xml" />
       </set>
     </option>
   </component>

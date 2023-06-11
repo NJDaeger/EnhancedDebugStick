@@ -40,7 +40,7 @@ public final class DebugSession implements IDebugSession {
     public DebugSession(UUID uuid, EnhancedDebugStickApi plugin) {
         this.uuid = uuid;
         if (ConfigKey.get().ENABLE_PREFERENCES) this.prefs = new PreferenceTrack(uuid, plugin);
-        setDebugMode(new ClassicDebugMode(plugin));
+        setDebugMode(DebugModeType.getDebugMode("classic"));
     }
 
     /**

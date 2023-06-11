@@ -17,14 +17,9 @@
         <module>eds-v117impl</module>
         <module>eds-v118impl</module>
         <module>eds-v119impl</module>
+        <module>eds-v120impl</module>
         <module>eds-core</module>
         <module>eds-jar</module>
-        <module>eds-coreprotect</module>
-        <module>eds-plotsquared</module>
-        <module>eds-worldguard</module>
-        <module>eds-griefprevention</module>
-        <module>eds-blacklist</module>
-        <module>eds-api</module>
     </modules>
 
     <build>

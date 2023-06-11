@@ -37,7 +37,7 @@ shifter:
     # Available replacements %timeRemaining%
     timeRemaining: "&7Timeout: %timeRemaining%"
     # Available replacements %timeRemaining%
-    cooldown: "$7Cooldown: %timeRemaining%"
+    cooldown: "&7Cooldown: %timeRemaining%"
   hold:
     # Available replacements %timeRemaining%
     holdTime: "&7Hold Time: %timeRemaining%"
