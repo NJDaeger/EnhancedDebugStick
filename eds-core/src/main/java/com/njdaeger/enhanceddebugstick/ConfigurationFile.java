@@ -38,8 +38,8 @@ public final class ConfigurationFile extends Configuration {
         addEntry("stick-material", Material.STICK.name().toLowerCase());
         addComment("stick-material", "\nWhat material should the debug stick be? Defaults to a minecraft stick, but can be changed in case of plugin clashes.");
         
-        addEntry("lang-file", "en_us");
-        addComment("lang-file", "\nWhat language file should be used? Defaults to en_us (English). You can make a custom language file and put it in the plugin's data folder.");
+        addEntry("lang-file", "en_US");
+        addComment("lang-file", "\nWhat language file should be used? Defaults to en_US (English). You can make a custom language file and put it in the plugin's data folder. NOTE: THIS IS CASE SENSITIVE");
         
         addEntry("allow-bossbar-timers", true);
         addComment("allow-bossbar-timers", "\nBossbars are used to show how quickly you need to shift to move to the next mode. With them enabled, it may override and affect some other custom bossbars that are currently in use. When this is set to true, the Enhanced Debug Stick WILL show bossbars that show the time left to do certain actions. Otherwise, no bossbar will be shown.");
