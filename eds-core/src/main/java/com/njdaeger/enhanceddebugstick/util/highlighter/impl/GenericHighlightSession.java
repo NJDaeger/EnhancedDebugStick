@@ -18,7 +18,7 @@ public class GenericHighlightSession implements IHighlightSession {
         shulker.setInvulnerable(true);
         shulker.setSilent(true);
         shulker.setCollidable(false);
-        shulker.setInvisible(true);
+//        shulker.setInvisible(true);
         shulker.setGravity(false);
         shulker.setGlowing(true);
         shulkerMap.put(block, shulker);

@@ -113,6 +113,7 @@ public final class BlockHighlighter {
 
     private static String[] getShulkerEntityTypeArray() {
         if (Version.getCurrentVersion() == Version.v1_18) return new String[]{"ay", "SHULKER", "aB"};
+        else if (Version.getCurrentVersion() == Version.v1_17) return new String[]{"ay"};
         else if (Version.getCurrentVersion() == Version.v1_19_3) return new String[]{"aC"};
         else return new String[]{"aB", "SHULKER", "ay"};
     }
