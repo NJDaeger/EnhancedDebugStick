@@ -1,10 +1,14 @@
 package com.njdaeger.enhanceddebugstick.session;
 
-import com.njdaeger.enhanceddebugstick.ConfigKey;
+import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
+import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
-import com.njdaeger.enhanceddebugstick.api.DebugContext;
-import com.njdaeger.enhanceddebugstick.api.DebugModeType;
-import com.njdaeger.enhanceddebugstick.api.DebugStickAPI;
+import com.njdaeger.enhanceddebugstick.api.mode.IDebugContext;
+import com.njdaeger.enhanceddebugstick.api.mode.DebugModeType;
+import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
+import com.njdaeger.enhanceddebugstick.api.session.Preference;
+import com.njdaeger.enhanceddebugstick.i18n.Translation;
+import com.njdaeger.enhanceddebugstick.modes.classic.ClassicDebugMode;
 import com.njdaeger.pdk.types.ParsedType;
 import com.njdaeger.pdk.utils.ActionBar;
 import org.apache.commons.lang.Validate;
@@ -19,7 +23,7 @@ import java.util.UUID;
  * The debug session is meant to store information about the user for things like enabling the mode shifter and storing
  * the type of mode currently selected.
  */
-public final class DebugSession {
+public final class DebugSession implements IDebugSession {
 
     //These are used for the mode changes.
     private long lastStart;
@@ -33,10 +37,10 @@ public final class DebugSession {
     private DebugModeType debugMode;
     private PreferenceTrack prefs;
 
-    public DebugSession(UUID uuid) {
+    public DebugSession(UUID uuid, EnhancedDebugStickApi plugin) {
         this.uuid = uuid;
-        if (ConfigKey.get().ENABLE_PREFERENCES) this.prefs = new PreferenceTrack(uuid);
-        setDebugMode(DebugModeType.CLASSIC);
+        if (ConfigKey.get().ENABLE_PREFERENCES) this.prefs = new PreferenceTrack(uuid, plugin);
+        setDebugMode(DebugModeType.getDebugMode("classic"));
     }
 
     /**
@@ -46,11 +50,11 @@ public final class DebugSession {
      * @param <T> The data type of the preference
      * @return The preference from the user, or the default config value if preferences arent enabled.
      */
-    public <T, P extends ParsedType<T>> T getPref(Preference<T, P> preference) {
+    public <T, P extends ParsedType<T>> T getPreference(Preference<T, P> preference) {
         return prefs == null ? preference.getDefault() : prefs.get(preference);
     }
 
-    public <T, P extends ParsedType<T>> void setPref(Preference<T, P> preference, T value) {
+    public <T, P extends ParsedType<T>> void setPreference(Preference<T, P> preference, T value) {
         if (prefs != null) prefs.set(preference, value == null ? preference.getDefault() : value);
     }
 
@@ -105,7 +109,7 @@ public final class DebugSession {
         if (!isOnline()) return false;
         else {
             Player player = Bukkit.getPlayer(uuid);
-            return DebugStickAPI.hasDebugStick(player) && DebugStickAPI.DEBUG_STICK.equals(player.getInventory().getItemInMainHand());
+            return EnhancedDebugStickApi.hasDebugStick(player) && EnhancedDebugStickApi.DEBUG_STICK.equals(player.getInventory().getItemInMainHand());
         }
     }
 
@@ -118,10 +122,10 @@ public final class DebugSession {
      *         session in it yet.
      * @throws RuntimeException if the session could not be bound to a debug mode type.
      */
-    public <C extends DebugContext> C toDebugContext(DebugModeType<?, C> debugMode) {
+    public <C extends IDebugContext> C toDebugContext(DebugModeType<?, C> debugMode) {
         if (debugMode.hasSession(uuid)) return debugMode.getDebugContext(uuid);
         else {
-            if (isOnline()) Bukkit.getPlayer(uuid).sendMessage(ChatColor.RED + "Cannot bind DebugSession to DebugContext.");
+            if (isOnline()) Bukkit.getPlayer(uuid).sendMessage(Translation.ERROR_CANNOT_BIND_DEBUG_SESSION.get().apply());
             throw new RuntimeException("Cannot bind DebugSession to " + debugMode.getNiceName() + "'s DebugContext. Please create a ticket and send your latest.log to https://github.com/NJDaeger/Bug-Reports! Sorry for this issue.");
         }
     }

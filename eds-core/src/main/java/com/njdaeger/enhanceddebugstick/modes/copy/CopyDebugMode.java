@@ -1,12 +1,14 @@
 package com.njdaeger.enhanceddebugstick.modes.copy;
 
-import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.api.DebugModeType;
+import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
+import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
+import com.njdaeger.enhanceddebugstick.api.mode.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
-import com.njdaeger.enhanceddebugstick.api.Permissions;
-import com.njdaeger.enhanceddebugstick.event.CopyPropertyEvent;
-import com.njdaeger.enhanceddebugstick.event.PastePropertyEvent;
-import com.njdaeger.enhanceddebugstick.session.DebugSession;
+import com.njdaeger.enhanceddebugstick.Permissions;
+import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
+import com.njdaeger.enhanceddebugstick.api.event.CopyPropertyEvent;
+import com.njdaeger.enhanceddebugstick.api.event.PastePropertyEvent;
+import com.njdaeger.enhanceddebugstick.i18n.Translation;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -21,12 +23,12 @@ import org.bukkit.util.RayTraceResult;
 
 public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext> {
 
-    public CopyDebugMode() {
-        super("Copy", CopyDebugMode.class);
+    public CopyDebugMode(EnhancedDebugStickApi plugin) {
+        super("Copy", CopyDebugMode.class, plugin);
     }
 
     @Override
-    public CopyDebugContext createContext(DebugSession session) {
+    public CopyDebugContext createContext(IDebugSession session) {
         return new CopyDebugContext(session);
     }
 
@@ -36,24 +38,19 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
     }
 
     @Override
-    public CopyDebugMode getModeType() {
-        return DebugModeType.COPY;
-    }
-
-    @Override
-    public void pauseSession(DebugSession session) {
+    public void pauseSession(IDebugSession session) {
         paused.add(session.getSessionId());
     }
 
     @Override
-    public void resumeSession(DebugSession session) {
+    public void resumeSession(IDebugSession session) {
         paused.remove(session.getSessionId());
     }
 
     @Override
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
+        IDebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
         
         if (session.isUsing(this) && event.getHand() == EquipmentSlot.HAND) {
             event.setCancelled(true);
@@ -64,7 +61,7 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
             //Check if the player has the correct permission first
             //
             if (!session.hasPermission(this)) {
-                session.sendMessage(ChatColor.RED + "You do not have permission to use the Copy Debug Mode");
+                session.sendMessage(Translation.COPY_NO_PERM.get().apply());
                 return;
             }
 
@@ -80,13 +77,13 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
                 //If the clipboard of the player is already empty, we should just tell them to stop trying to clear it.
                 //
                 if (!context.hasClipboard()) {
-                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "Your clipboard is clear");
+                    session.sendForcedBar(Translation.COPY_EMPTY_CLIPBOARD.get().apply());
                     if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 
                 context.setClipboard(null);
-                session.sendMessage(ChatColor.GRAY + "Clipboard Cleared");
+                session.sendMessage(Translation.COPY_CLEARED_CLIPBOARD.get().apply());
                 //todo clear clipboard event
                 if (ConfigKey.get().COPY_CLEAR_SOUND) session.sendSound(Sound.ENTITY_SHULKER_BULLET_HIT);
                 return;
@@ -99,25 +96,31 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
                 if (e.isCancelled()) return;
 
                 if (e.getCopiedBlock() == null) {
-                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "There is no block to copy");
+                    session.sendForcedBar(Translation.COPY_NO_BLOCK_TO_COPY.get().apply());
                     if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 
                 if (!IProperty.hasProperties(e.getCopiedBlock())) {
-                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "This block has no properties");
+                    session.sendForcedBar(Translation.COPY_NO_PROPS.get().apply(e.getCopiedBlock()));
                     if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 
                 context.setClipboard(e.getCopiedBlock().getBlockData());
                 context.sendMeshedPropertiesOf(e.getCopiedBlock());
-                session.sendMessage(ChatColor.GRAY + "Copied all properties");
+                session.sendMessage(Translation.COPIED_ALL_PROPS.get().apply(e.getCopiedBlock()));
                 if (ConfigKey.get().COPY_COPY_SOUND) session.sendSound(Sound.ENTITY_SHEEP_SHEAR);
                 return;
             }
 
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+
+                if (!context.hasClipboard()) {
+                    session.sendForcedBar(Translation.COPY_EMPTY_CLIPBOARD.get().apply());
+                    if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
+                    return;
+                }
 
                 PastePropertyEvent e = new PastePropertyEvent(event.getPlayer(), block, context);
                 Bukkit.getPluginManager().callEvent(e);
@@ -125,35 +128,27 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
                 if (e.isCancelled()) return;
 
                 if (e.getBefore() == null) {
-                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "There is no block to paste onto");
-                    if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
-                    return;
-                }
-
-                //if (plot(event.getPlayer(), block)) {
-                if (!context.hasClipboard()) {
-                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "Your clipboard is empty");
+                    session.sendForcedBar(Translation.COPY_NO_BLOCK_TO_PASTE.get().apply());
                     if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 
                 if (!IProperty.hasProperties(e.getBefore())) {
-                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "This block has no properties");
+                    session.sendForcedBar(Translation.COPY_NO_PROPS.get().apply(e.getBefore()));
                     if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 
                 if (IProperty.getProperties(e.getBefore()).stream().noneMatch(pr -> context.getClipboardProperties().contains(pr))) {
-                    session.sendForcedBar(ChatColor.RED.toString() + ChatColor.BOLD + "There are no applicable properties to apply to this block");
+                    session.sendForcedBar(Translation.COPY_NO_APPL_PROPS.get().apply(e.getBefore()));
                     if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
 
                 context.applyClipboardFor(e.getBefore());
                 context.sendMeshedPropertiesOf(e.getBefore());
-                session.sendMessage(ChatColor.GRAY + "Pasted applicable properties");
+                session.sendMessage(Translation.COPY_PASTED_PROPS.get().apply(e.getBefore()));
                 if (ConfigKey.get().COPY_PASTE_SOUND) session.sendSound(Sound.ENTITY_TROPICAL_FISH_FLOP);
-                //} else session.sendForcedBar(RED.toString() + BOLD + "You are not an owner or a member of the location pasted at.");
             }
         }
     }
@@ -165,7 +160,7 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
         //
         //Check if the configuration allows data viewing
         //
-        DebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
+        IDebugSession session = plugin.getDebugSession(event.getPlayer().getUniqueId());
 
         if (ConfigKey.get().COPY_DISPLAY_ON_LOOK && session.isUsing(this) && session.hasPermission(this)) {
             CopyDebugContext context = session.toDebugContext(this);

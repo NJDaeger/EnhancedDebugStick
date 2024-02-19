@@ -1,8 +1,8 @@
 package com.njdaeger.enhanceddebugstick.modes.freeze;
 
-import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.api.DebugContext;
-import com.njdaeger.enhanceddebugstick.session.DebugSession;
+import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
+import com.njdaeger.enhanceddebugstick.api.mode.IFreezeDebugContext;
+import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
 import com.njdaeger.enhanceddebugstick.util.highlighter.IBlockHighlighter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -19,13 +19,13 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public final class FreezeDebugContext implements DebugContext {
+public final class FreezeDebugContext implements IFreezeDebugContext {
     
-    private final DebugSession session;
+    private final IDebugSession session;
     private final Map<Location, BlockData> frozen;
     private final IBlockHighlighter highlighter;
     
-    FreezeDebugContext(DebugSession session, IBlockHighlighter highlighter) {
+    FreezeDebugContext(IDebugSession session, IBlockHighlighter highlighter) {
         this.session = session;
         this.frozen = new HashMap<>();
         this.highlighter = highlighter;
@@ -37,7 +37,7 @@ public final class FreezeDebugContext implements DebugContext {
     }
     
     @Override
-    public DebugSession getDebugSession() {
+    public IDebugSession getDebugSession() {
         return session;
     }
     

@@ -1,9 +1,11 @@
 package com.njdaeger.enhanceddebugstick.shifter;
 
-import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.api.DebugModeType;
+import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
+import com.njdaeger.enhanceddebugstick.api.mode.DebugModeType;
+import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
+import com.njdaeger.enhanceddebugstick.i18n.Translation;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
-import com.njdaeger.enhanceddebugstick.session.Preference;
+import com.njdaeger.enhanceddebugstick.session.DefaultPreferences;
 import com.njdaeger.enhanceddebugstick.util.BossBarTimer;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -14,12 +16,13 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleSneakEvent> {
 
     @Override
-    public void runEnable(DebugSession session, PlayerToggleSneakEvent event) {
-        long timeout = session.getPref(Preference.SNEAK_TIMEOUT);
+    public void runEnable(IDebugSession iSession, PlayerToggleSneakEvent event) {
+        var session = (DebugSession)iSession; //only have one implementation of IDebugSession, just cast until its a problem
+        long timeout = session.getPreference(DefaultPreferences.SNEAK_TIMEOUT);
         if (session.getSelectingStart() == 0) {
             session.setSelectingStart(System.currentTimeMillis());
             if (ConfigKey.get().ALLOW_BOSSBAR_TIMERS) BossBarTimer.create(event.getPlayer(), false, timeout, 2,
-                    (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Timeout: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.), (p) -> session.isSelectingMode(), () -> {
+                    (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + Translation.SHIFT_DOUBLE_TIME_REMAINING.get().apply((((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.)), (p) -> session.isSelectingMode(), () -> {
                         if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     }).start();
         }
@@ -37,17 +40,19 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
     }
 
     @Override
-    public boolean canEnable(DebugSession session, PlayerToggleSneakEvent event) {
+    public boolean canEnable(IDebugSession iSession, PlayerToggleSneakEvent event) {
+        var session = (DebugSession)iSession; //only have one implementation of IDebugSession, just cast until its a problem
         return session.isHoldingDebugStick() && !session.isSelectingMode() && event.isSneaking() && ((System.currentTimeMillis() - session.getLastStop()) > ConfigKey.get().MS_CHANGE_COOLDOWN);
     }
 
     @Override
-    public void runDisable(DebugSession session, PlayerToggleSneakEvent event) {
-        long timeout = session.getPref(Preference.SNEAK_TIMEOUT);
+    public void runDisable(IDebugSession iSession, PlayerToggleSneakEvent event) {
+        var session = (DebugSession)iSession; //only have one implementation of IDebugSession, just cast until its a problem
+        long timeout = session.getPreference(DefaultPreferences.SNEAK_TIMEOUT);
         if (session.getSelectingStart() == 0) {
             session.setSelectingStart(System.currentTimeMillis());
             if (ConfigKey.get().ALLOW_BOSSBAR_TIMERS) BossBarTimer.create(event.getPlayer(), false, timeout, 2,
-                    (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Timeout: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.), (p) -> !session.isSelectingMode(), () -> {
+                    (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + Translation.SHIFT_DOUBLE_TIME_REMAINING.get().apply(((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.), (p) -> !session.isSelectingMode(), () -> {
                         if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     }).start();
         }
@@ -60,19 +65,21 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
                 if (ConfigKey.get().MS_START_STOP_SOUND) session.sendSound(Sound.BLOCK_NOTE_BLOCK_PLING);
                 session.setSelectingMode(false);
                 session.resume();
-                if (ConfigKey.get().ALLOW_BOSSBAR_TIMERS) BossBarTimer.create(event.getPlayer(), false, session.getPref(Preference.CHANGE_COOLDOWN), 2,
-                        (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Cooldown: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.)).start();
+                if (ConfigKey.get().ALLOW_BOSSBAR_TIMERS) BossBarTimer.create(event.getPlayer(), false, session.getPreference(DefaultPreferences.CHANGE_COOLDOWN), 2,
+                        (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + Translation.SHIFT_DOUBLE_COOLDOWN.get().apply(((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.)).start();
             }
         }
     }
 
     @Override
-    public boolean canDisable(DebugSession session, PlayerToggleSneakEvent event) {
+    public boolean canDisable(IDebugSession iSession, PlayerToggleSneakEvent event) {
+        var session = (DebugSession)iSession; //only have one implementation of IDebugSession, just cast until its a problem
         return session.isHoldingDebugStick() && !event.isSneaking() && session.isSelectingMode() && (System.currentTimeMillis() - session.getLastStart()) > 1000;
     }
 
     @Override
-    public void runShift(DebugSession session, PlayerInteractEvent event) {
+    public void runShift(IDebugSession iSession, PlayerInteractEvent event) {
+        var session = (DebugSession)iSession; //only have one implementation of IDebugSession, just cast until its a problem
         event.setCancelled(true);
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
@@ -98,7 +105,7 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
     }
 
     @Override
-    public boolean canShift(DebugSession session, PlayerInteractEvent event) {
+    public boolean canShift(IDebugSession session, PlayerInteractEvent event) {
         return session.isHoldingDebugStick() && session.isSelectingMode();
     }
 }

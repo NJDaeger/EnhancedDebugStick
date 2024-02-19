@@ -1,4 +1,4 @@
-package com.njdaeger.enhanceddebugstick.mcversion.v117;
+package com.njdaeger.enhanceddebugstick.mcversion.v120;
 
 import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
 import com.njdaeger.enhanceddebugstick.mcversion.PropertyLoader;
@@ -9,11 +9,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class PropertyLoader_117 implements PropertyLoader, Listener {
+public class PropertyLoader_120 implements PropertyLoader, Listener {
+    
     
     @Override
     public void load(EnhancedDebugStickApi plugin) {
-        Property_117.registerProperties();
+        Property_120.registerProperties();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
     

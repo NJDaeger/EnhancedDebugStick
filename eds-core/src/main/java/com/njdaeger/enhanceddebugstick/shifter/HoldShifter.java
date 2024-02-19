@@ -1,9 +1,11 @@
 package com.njdaeger.enhanceddebugstick.shifter;
 
-import com.njdaeger.enhanceddebugstick.ConfigKey;
-import com.njdaeger.enhanceddebugstick.api.DebugModeType;
+import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
+import com.njdaeger.enhanceddebugstick.api.mode.DebugModeType;
+import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
+import com.njdaeger.enhanceddebugstick.i18n.Translation;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
-import com.njdaeger.enhanceddebugstick.session.Preference;
+import com.njdaeger.enhanceddebugstick.session.DefaultPreferences;
 import com.njdaeger.enhanceddebugstick.util.BossBarTimer;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -14,18 +16,20 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 public class HoldShifter implements Shifter<PlayerInteractEvent, PlayerToggleSneakEvent> {
 
     @Override
-    public void runEnable(DebugSession session, PlayerToggleSneakEvent event) {
+    public void runEnable(IDebugSession iSession, PlayerToggleSneakEvent event) {
         //Since the selecting start is 0, we want to set it to the current time. Then when the user lets go of the shift
         //key, we check to see if the unshift time minus the shift time is > the min and less than the max hold shift time
 
+        var session = (DebugSession) iSession;
+        
         if (session.getSelectingStart() == 0 && !session.getDebugMode().isPaused(session)) {
             session.setSelectingStart(System.currentTimeMillis());
-            long max = session.getPref(Preference.SNEAK_MAXIMUM);
-            if (ConfigKey.get().ALLOW_BOSSBAR_TIMERS) BossBarTimer.create(event.getPlayer(), false, session.getPref(Preference.SNEAK_MINIMUM), 2,
-                    (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Hold Time: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.),
+            long max = session.getPreference(DefaultPreferences.SNEAK_MAXIMUM);
+            if (ConfigKey.get().ALLOW_BOSSBAR_TIMERS) BossBarTimer.create(event.getPlayer(), false, session.getPreference(DefaultPreferences.SNEAK_MINIMUM), 2,
+                    (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + Translation.SHIFT_HOLD_HOLD_TIME.get().apply(((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.),
                     (p) -> !p.isSneaking(), max <= 0 ? null :
                     () -> BossBarTimer.create(event.getPlayer(), true, max, 2,
-                            (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Time Remaining: " + (((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.),
+                            (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + Translation.SHIFT_HOLD_TIME_REMAINING.get().apply(((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.),
                             (p) -> !p.isSneaking(), () -> {
                                 if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                             }).start()).start();
@@ -38,15 +42,17 @@ public class HoldShifter implements Shifter<PlayerInteractEvent, PlayerToggleSne
     }
 
     @Override
-    public boolean canEnable(DebugSession session, PlayerToggleSneakEvent event) {
+    public boolean canEnable(IDebugSession iSession, PlayerToggleSneakEvent event) {
+        var session = (DebugSession) iSession;
         return session.isHoldingDebugStick() && !session.isSelectingMode() && !event.getPlayer().isSneaking() && session.getSelectingStart() == 0;
     }
 
     @Override
-    public void runDisable(DebugSession session, PlayerToggleSneakEvent event) {
+    public void runDisable(IDebugSession iSession, PlayerToggleSneakEvent event) {
+        var session = (DebugSession) iSession;
         long millis = (System.currentTimeMillis() - session.getSelectingStart());
-        long min = session.getPref(Preference.SNEAK_MINIMUM);
-        long max = session.getPref(Preference.SNEAK_MAXIMUM);//We need to offset for the amount of time which it was held for
+        long min = session.getPreference(DefaultPreferences.SNEAK_MINIMUM);
+        long max = session.getPreference(DefaultPreferences.SNEAK_MAXIMUM);//We need to offset for the amount of time which it was held for
         if (!session.isSelectingMode() && millis > min && (max <= 0 || millis < max + min)) {
             session.setSelectingStart(-1);
             runEnable(session, event);
@@ -59,12 +65,13 @@ public class HoldShifter implements Shifter<PlayerInteractEvent, PlayerToggleSne
     }
 
     @Override
-    public boolean canDisable(DebugSession session, PlayerToggleSneakEvent event) {
+    public boolean canDisable(IDebugSession session, PlayerToggleSneakEvent event) {
         return session.isHoldingDebugStick() && event.getPlayer().isSneaking();
     }
 
     @Override
-    public void runShift(DebugSession session, PlayerInteractEvent event) {
+    public void runShift(IDebugSession iSession, PlayerInteractEvent event) {
+        var session = (DebugSession) iSession;
         event.setCancelled(true);
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
@@ -90,7 +97,7 @@ public class HoldShifter implements Shifter<PlayerInteractEvent, PlayerToggleSne
     }
 
     @Override
-    public boolean canShift(DebugSession session, PlayerInteractEvent event) {
+    public boolean canShift(IDebugSession session, PlayerInteractEvent event) {
         return session.isHoldingDebugStick() && session.isSelectingMode();
     }
 }

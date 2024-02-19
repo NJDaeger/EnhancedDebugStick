@@ -1,6 +1,7 @@
 package com.njdaeger.enhanceddebugstick.session;
 
-import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
+import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
+import com.njdaeger.enhanceddebugstick.api.session.Preference;
 import com.njdaeger.pdk.config.ConfigType;
 import com.njdaeger.pdk.config.Configuration;
 import com.njdaeger.pdk.types.ParsedType;
@@ -14,8 +15,8 @@ public final class PreferenceTrack extends Configuration {
 
     private Map<Preference<?, ?>, Object> preferences;
 
-    public PreferenceTrack(UUID userId) {
-        super(EnhancedDebugStick.getInstance(), ConfigType.YML, "preferences" + File.separator + userId.toString());
+    public PreferenceTrack(UUID userId, EnhancedDebugStickApi plugin) {
+        super(plugin, ConfigType.YML, "preferences" + File.separator + userId.toString());
         this.preferences = new HashMap<>();
 
         Preference.getPreferences().forEach(p -> {
