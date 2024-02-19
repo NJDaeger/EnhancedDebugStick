@@ -116,6 +116,12 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
 
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
+                if (!context.hasClipboard()) {
+                    session.sendForcedBar(Translation.COPY_EMPTY_CLIPBOARD.get().apply());
+                    if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
+                    return;
+                }
+
                 PastePropertyEvent e = new PastePropertyEvent(event.getPlayer(), block, context);
                 Bukkit.getPluginManager().callEvent(e);
                 
@@ -123,13 +129,6 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
 
                 if (e.getBefore() == null) {
                     session.sendForcedBar(Translation.COPY_NO_BLOCK_TO_PASTE.get().apply());
-                    if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
-                    return;
-                }
-
-                //if (plot(event.getPlayer(), block)) {
-                if (!context.hasClipboard()) {
-                    session.sendForcedBar(Translation.COPY_EMPTY_CLIPBOARD.get().apply());
                     if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     return;
                 }
@@ -150,7 +149,6 @@ public class CopyDebugMode extends DebugModeType<CopyDebugMode, CopyDebugContext
                 context.sendMeshedPropertiesOf(e.getBefore());
                 session.sendMessage(Translation.COPY_PASTED_PROPS.get().apply(e.getBefore()));
                 if (ConfigKey.get().COPY_PASTE_SOUND) session.sendSound(Sound.ENTITY_TROPICAL_FISH_FLOP);
-                //} else session.sendForcedBar(RED.toString() + BOLD + "You are not an owner or a member of the location pasted at.");
             }
         }
     }
