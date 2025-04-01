@@ -4,7 +4,6 @@ import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
 import com.njdaeger.enhanceddebugstick.api.session.Preference;
 import com.njdaeger.pdk.config.ConfigType;
 import com.njdaeger.pdk.config.Configuration;
-import com.njdaeger.pdk.types.ParsedType;
 
 import java.io.File;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.UUID;
 
 public final class PreferenceTrack extends Configuration {
 
-    private Map<Preference<?, ?>, Object> preferences;
+    private Map<Preference<?>, Object> preferences;
 
     public PreferenceTrack(UUID userId, EnhancedDebugStickApi plugin) {
         super(plugin, ConfigType.YML, "preferences" + File.separator + userId.toString());
@@ -28,11 +27,11 @@ public final class PreferenceTrack extends Configuration {
 
     }
 
-    public <T, P extends ParsedType<T>> T get(Preference<T, P> preference) {
+    public <T> T get(Preference<T> preference) {
         return (T) preferences.get(preference);
     }
 
-    public <T, P extends ParsedType<T>> void set(Preference<T, P> pref, T val) {
+    public <T> void set(Preference<T> pref, T val) {
         preferences.put(pref, val);
         setEntry(pref.getKey(), val instanceof Enum ? ((Enum) val).name() : val);
     }

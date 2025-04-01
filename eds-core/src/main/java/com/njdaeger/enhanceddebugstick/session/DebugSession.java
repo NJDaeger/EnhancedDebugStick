@@ -8,16 +8,19 @@ import com.njdaeger.enhanceddebugstick.api.mode.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
 import com.njdaeger.enhanceddebugstick.api.session.Preference;
 import com.njdaeger.enhanceddebugstick.i18n.Translation;
-import com.njdaeger.enhanceddebugstick.modes.classic.ClassicDebugMode;
-import com.njdaeger.pdk.types.ParsedType;
-import com.njdaeger.pdk.utils.ActionBar;
-import org.apache.commons.lang.Validate;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
+
+import static com.njdaeger.enhanceddebugstick.util.Util.LEGACY_COMPONENT_SERIALIZER;
 
 /**
  * The debug session is meant to store information about the user for things like enabling the mode shifter and storing
@@ -50,11 +53,11 @@ public final class DebugSession implements IDebugSession {
      * @param <T> The data type of the preference
      * @return The preference from the user, or the default config value if preferences arent enabled.
      */
-    public <T, P extends ParsedType<T>> T getPreference(Preference<T, P> preference) {
+    public <T> T getPreference(Preference<T> preference) {
         return prefs == null ? preference.getDefault() : prefs.get(preference);
     }
 
-    public <T, P extends ParsedType<T>> void setPreference(Preference<T, P> preference, T value) {
+    public <T> void setPreference(Preference<T> preference, T value) {
         if (prefs != null) prefs.set(preference, value == null ? preference.getDefault() : value);
     }
 
@@ -180,7 +183,13 @@ public final class DebugSession implements IDebugSession {
      */
     public void sendBar(String message) {
         if (isOnline() && (System.currentTimeMillis() - lastForced) > 3000)
-            ActionBar.of(message).sendTo(Bukkit.getPlayer(uuid));
+            Bukkit.getPlayer(uuid).sendActionBar(LEGACY_COMPONENT_SERIALIZER.deserialize(message));
+    }
+
+    @Override
+    public void sendBar(TextComponent message) {
+        if (isOnline() && (System.currentTimeMillis() - lastForced) > 3000)
+            Bukkit.getPlayer(uuid).sendActionBar(message);
     }
 
     /**
@@ -192,7 +201,15 @@ public final class DebugSession implements IDebugSession {
     public void sendForcedBar(String message) {
         if (isOnline() && (System.currentTimeMillis() - lastForced) > 3000) {
             this.lastForced = System.currentTimeMillis();
-            ActionBar.of(message).sendTo(Bukkit.getPlayer(uuid));
+            Bukkit.getPlayer(uuid).sendActionBar(LEGACY_COMPONENT_SERIALIZER.deserialize(message));
+        }
+    }
+
+    @Override
+    public void sendForcedBar(TextComponent message) {
+        if (isOnline() && (System.currentTimeMillis() - lastForced) > 3000) {
+            this.lastForced = System.currentTimeMillis();
+            Bukkit.getPlayer(uuid).sendActionBar(message);
         }
     }
 
@@ -203,7 +220,23 @@ public final class DebugSession implements IDebugSession {
      */
     public void sendMessage(String message) {
         if (isOnline())
-            Bukkit.getPlayer(uuid).sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + message);
+            Bukkit.getPlayer(uuid).sendMessage(
+                    Component.text("[", NamedTextColor.DARK_GRAY)
+                    .append(Component.text("EDS", NamedTextColor.BLUE))
+                    .append(Component.text("] ", NamedTextColor.DARK_GRAY))
+                    .append(LEGACY_COMPONENT_SERIALIZER.deserialize(message))
+            );
+    }
+
+    @Override
+    public void sendMessage(TextComponent message) {
+        if (isOnline())
+            Bukkit.getPlayer(uuid).sendMessage(
+                    Component.text("[", NamedTextColor.DARK_GRAY)
+                    .append(Component.text("EDS", NamedTextColor.BLUE))
+                    .append(Component.text("] ", NamedTextColor.DARK_GRAY))
+                    .append(message)
+            );
     }
 
     /**
@@ -242,7 +275,7 @@ public final class DebugSession implements IDebugSession {
             this.lastStop = System.currentTimeMillis();
             Bukkit.getScheduler().cancelTask(taskNumber);
             this.taskNumber = 0;
-            ActionBar.of("").sendTo(Bukkit.getPlayer(uuid));
+            Bukkit.getPlayer(uuid).sendActionBar(Component.empty());
         }
     }
 
@@ -265,14 +298,14 @@ public final class DebugSession implements IDebugSession {
     public Runnable getSelectingTask() {
         return () -> {
             Player player = Bukkit.getPlayer(uuid);
-            StringBuilder builder = new StringBuilder();
+            var component = Component.text();
             DebugModeType.getDebugModes().forEach(type -> {
                 if (isDebugMode(type))
-                    builder.append(ChatColor.DARK_GREEN).append(ChatColor.BOLD).append(ChatColor.UNDERLINE).append(type.getNiceName()).append(ChatColor.RESET);
-                else builder.append(ChatColor.DARK_GREEN).append(type.getNiceName()).append(ChatColor.RESET);
-                builder.append("    ");
+                    component.append(Component.text(type.getNiceName(), NamedTextColor.DARK_GREEN, TextDecoration.BOLD, TextDecoration.UNDERLINED)).resetStyle();
+                else component.append(Component.text(type.getNiceName(), NamedTextColor.DARK_GREEN)).resetStyle();
+                component.appendSpace().appendSpace().appendSpace().appendSpace();
             });
-            ActionBar.of(builder.toString().trim()).sendTo(player);
+            player.sendActionBar(component);
         };
     }
 

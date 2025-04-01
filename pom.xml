@@ -10,11 +10,6 @@
     <version>2.1.0</version>
 
     <modules>
-        <module>eds-v116impl</module>
-        <module>eds-v117impl</module>
-        <module>eds-v118impl</module>
-        <module>eds-v119impl</module>
-        <module>eds-v120impl</module>
         <module>eds-v121impl</module>
         <module>eds-core</module>
         <module>eds-jar</module>

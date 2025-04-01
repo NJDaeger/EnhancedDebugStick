@@ -1,10 +1,13 @@
 package com.njdaeger.enhanceddebugstick.i18n;
 
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.ChatColor;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import static com.njdaeger.enhanceddebugstick.util.Util.LEGACY_COMPONENT_SERIALIZER;
 
 public abstract class AbstractVariable {
     
@@ -39,7 +42,7 @@ public abstract class AbstractVariable {
     
     protected String translate(Object... values) {
         if (values.length == 0 && replacements.length == 0) {
-            return ChatColor.translateAlternateColorCodes('&', message);
+            return message;
         }
         if (values.length != variables.size()) {
             throw new IllegalArgumentException("Too many or too few values specified. Make sure the amount of values equals the amount of functions specified.");
@@ -49,6 +52,6 @@ public abstract class AbstractVariable {
             var obj = values[i];
             msg = msg.replaceAll("%" + replacements[i] + "%", variables.get(replacements[i]).apply(obj));
         }
-        return ChatColor.translateAlternateColorCodes('&', msg);
+        return msg;
     }
 }
