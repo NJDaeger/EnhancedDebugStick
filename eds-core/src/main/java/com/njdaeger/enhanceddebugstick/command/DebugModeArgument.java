@@ -36,9 +36,9 @@ public class DebugModeArgument extends AbstractStringTypedArgument<DebugModeType
         if (!commandContext.isPlayer()) return List.of();
 
         var session = plugin.getDebugSession(commandContext.asPlayerOrNull().getUniqueId());
-        if (session != null && session.getPreference(DefaultPreferences.SHIFT_MODE) == ShiftMode.COMMAND)
+        if (session != null && session.getPreference(DefaultPreferences.SHIFT_MODE) == ShiftMode.COMMAND) {
             return debugModes.stream().filter(mode -> commandContext.hasPermission(mode.getBasePermission())).toList();
-
+        }
         return List.of();
     }
 

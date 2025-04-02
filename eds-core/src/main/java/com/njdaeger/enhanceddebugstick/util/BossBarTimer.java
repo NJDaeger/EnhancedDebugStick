@@ -1,6 +1,8 @@
 package com.njdaeger.enhanceddebugstick.util;
 
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -14,13 +16,15 @@ import java.util.function.Predicate;
 
 public final class BossBarTimer {
 
+    public static final LegacyComponentSerializer LEGACY_COMPONENT_SERIALIZER = LegacyComponentSerializer.builder().character('§').build();
+
     private final Runnable onFinish;
     private long startTime;
     private final long totalTime;
     private final Player player;
     private final boolean fill;
     private final long updateInterval;
-    private final Function<BossBarTimer, String> title;
+    private final Function<BossBarTimer, TextComponent> title;
     private final Predicate<Player> cancel;
 
     /**
@@ -37,7 +41,7 @@ public final class BossBarTimer {
      * @param onFinish What to perform when the timer completes. (This will not trigger on a cancel)
      * @return The new bossbar timer.
      */
-    public static BossBarTimer create(Player player, boolean fill, long time, long updateInterval, Function<BossBarTimer, String> title, Predicate<Player> cancel, Runnable onFinish) {
+    public static BossBarTimer create(Player player, boolean fill, long time, long updateInterval, Function<BossBarTimer, TextComponent> title, Predicate<Player> cancel, Runnable onFinish) {
         return new BossBarTimer(player, fill, time, updateInterval, title, cancel, onFinish);
     }
 
@@ -54,7 +58,7 @@ public final class BossBarTimer {
      *         where it is and remove it)
      * @return The new bossbar timer.
      */
-    public static BossBarTimer create(Player player, boolean fill, long time, long updateInterval, Function<BossBarTimer, String> title, Predicate<Player> cancel) {
+    public static BossBarTimer create(Player player, boolean fill, long time, long updateInterval, Function<BossBarTimer, TextComponent> title, Predicate<Player> cancel) {
         return create(player, fill, time, updateInterval, title, cancel, null);
     }
 
@@ -69,7 +73,7 @@ public final class BossBarTimer {
      * @param title The title of this timer (updated every update interval)
      * @return The new bossbar timer.
      */
-    public static BossBarTimer create(Player player, boolean fill, long time, long updateInterval, Function<BossBarTimer, String> title) {
+    public static BossBarTimer create(Player player, boolean fill, long time, long updateInterval, Function<BossBarTimer, TextComponent> title) {
         return create(player, fill, time, updateInterval, title, null);
     }
 
@@ -100,7 +104,7 @@ public final class BossBarTimer {
         return create(player, fill, time, 5);
     }
 
-    private BossBarTimer(Player player, boolean fill, long time, long updateInterval, Function<BossBarTimer, String> title, Predicate<Player> cancel, Runnable onFinish) {
+    private BossBarTimer(Player player, boolean fill, long time, long updateInterval, Function<BossBarTimer, TextComponent> title, Predicate<Player> cancel, Runnable onFinish) {
         this.fill = fill;
         this.updateInterval = updateInterval;
         this.title = title;
@@ -139,7 +143,7 @@ public final class BossBarTimer {
      */
     public void start() {
         this.startTime = System.currentTimeMillis();
-        BossBar bossBar = Bukkit.createBossBar(title != null ? title.apply(this) : "", BarColor.BLUE, BarStyle.SOLID, BarFlag.CREATE_FOG);
+        BossBar bossBar = Bukkit.createBossBar(title != null ? LEGACY_COMPONENT_SERIALIZER.serialize(title.apply(this))  : "", BarColor.BLUE, BarStyle.SOLID, BarFlag.CREATE_FOG);
         bossBar.setProgress(fill ? 0 : 1);
         bossBar.addPlayer(player);
         bossBar.setVisible(true);
@@ -153,7 +157,7 @@ public final class BossBarTimer {
                     if (cancel != null && !cancel.test(player) && onFinish != null) onFinish.run();
                     return;
                 }
-                if (title != null) bossBar.setTitle(title.apply(BossBarTimer.this));
+                if (title != null) bossBar.setTitle(LEGACY_COMPONENT_SERIALIZER.serialize(title.apply(BossBarTimer.this)));
                 bossBar.setProgress(fill ? getFillProgress() : getEmptyProgress());
             }
 

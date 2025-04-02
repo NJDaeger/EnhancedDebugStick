@@ -91,8 +91,8 @@ public class Translation<V extends AbstractVariable> {
     public static final Translation<StringVar0> COMMAND_HELP_PREF_VALUE = new Translation<>("command.messages.helpCommand.preference.value", new StringVar0());
     
     public static final Translation<Var0> COMMAND_ABOUT_HEADER = new Translation<>("command.messages.aboutCommand.header");
-    public static final Translation<Var1<Integer>> COMMAND_ABOUT_API_VERSION = new Translation<>("command.messages.aboutCommand.apiVersion");
-    public static final Translation<Var1<String>> COMMAND_ABOUT_PLUGIN_VERSION = new Translation<>("command.messages.aboutCommand.pluginVersion");
+    public static final Translation<Var1<Integer>> COMMAND_ABOUT_API_VERSION = new Translation<>("command.messages.aboutCommand.apiVersion", new Var1<>(String::valueOf, "apiVersion"));
+    public static final Translation<Var1<String>> COMMAND_ABOUT_PLUGIN_VERSION = new Translation<>("command.messages.aboutCommand.pluginVersion", new Var1<>(String::valueOf, "pluginVersion"));
     public static final Translation<StringVar0> COMMAND_ABOUT_PERM_IF_ENABLED = new Translation<>("command.messages.aboutCommand.permissions.ifEnabled", new StringVar0());
     public static final Translation<Var0> COMMAND_ABOUT_PERM_HEADER = new Translation<>("command.messages.aboutCommand.permissions.header");
     public static final Translation<StringVar0> COMMAND_ABOUT_PERM_DBS = new Translation<>("command.messages.aboutCommand.permissions.dbs", new StringVar0());

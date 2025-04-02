@@ -104,11 +104,11 @@ public final class DebugStickCommand {
 
     private void preference(ICommandContext ctx) throws CommandSenderTypeException {
         var session = plugin.getDebugSession(ctx.asPlayer().getUniqueId());
-        var pref = ctx.getTyped("preference", Preference.class);
-        if (pref.getKey().equalsIgnoreCase(DefaultPreferences.SHIFT_MODE.getKey())) {
+        var pref = ctx.getTyped("preference", Preference.class, null);
+        if (pref == null) {
             var mode = ctx.getTyped("shiftMode", ShiftMode.class);
             session.setPreference(DefaultPreferences.SHIFT_MODE, mode);
-            session.sendMessage(Translation.COMMAND_MESSAGES_PREFERENCE_SET.get().apply(pref, mode));
+            session.sendMessage(Translation.COMMAND_MESSAGES_PREFERENCE_SET.get().apply(DefaultPreferences.SHIFT_MODE, mode));
         } else {
             var value = ctx.getTyped("value", long.class, (long) pref.getDefault());
             session.setPreference(pref, value);

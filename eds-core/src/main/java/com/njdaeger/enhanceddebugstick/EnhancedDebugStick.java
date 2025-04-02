@@ -52,22 +52,15 @@ public final class EnhancedDebugStick extends JavaPlugin implements EnhancedDebu
         if (!reload) {
             PropertyLoader.loadVersion(this);
             DefaultPreferences.registerPreferences();
-            new DebugStickCommand(this);
-            new DebugListener(this);
-    
             new ClassicDebugMode(this);
             new FreezeDebugMode(this);
             new CopyDebugMode(this);
+            new DebugStickCommand(this);
+            new DebugListener(this);
         }
 
         if (KEYS.BSTATS_INTEGRATION) {//Need to wait for custom bar charts
-            /*Metrics metrics = */new Metrics(this);
-            /*metrics.addCustomChart(new Metrics.SimpleBarChart("used_addons", () -> {
-                Map<String, Integer> values = new HashMap<>();
-                values.put("CoreProtect", Bukkit.getPluginManager().getPlugin("EnhancedDebugStick-CoreProtect") != null ? 1 : 0);
-                values.put("PlotSquared", Bukkit.getPluginManager().getPlugin("EnhancedDebugStick-PlotSquared") != null ? 1 : 0);
-                return values;
-            }));*/
+            new Metrics(this);
             getLogger().info("BStats Metrics enabled.");
         } else getLogger().info("BStats Metrics disabled.");
 

@@ -4,6 +4,7 @@ import com.njdaeger.enhanceddebugstick.util.highlighter.IHighlightSession;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.BlockDisplay;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -27,10 +28,10 @@ public class DisplayBlockHighlightSession implements IHighlightSession {
     @Override
     public void addBlock(Block block) {
         var location = block.getLocation().clone();
-        location.add(0.5, 0.5, 0.5);
         var display = (BlockDisplay) location.getWorld().spawnEntity(location, EntityType.BLOCK_DISPLAY);
         display.setBlock(block.getBlockData());
         display.setGlowing(true);
+        display.setBrightness(new Display.Brightness(15, 15));
         display.setVisibleByDefault(false);
 
         entities.put(block.getLocation(), display.getUniqueId());
