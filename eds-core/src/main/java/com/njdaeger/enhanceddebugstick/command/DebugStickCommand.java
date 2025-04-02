@@ -1,12 +1,13 @@
-package com.njdaeger.enhanceddebugstick;
+package com.njdaeger.enhanceddebugstick.command;
 
+import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
+import com.njdaeger.enhanceddebugstick.Permissions;
+import com.njdaeger.enhanceddebugstick.api.DebugStick;
 import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
 import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
 import com.njdaeger.enhanceddebugstick.api.mode.DebugModeType;
 import com.njdaeger.enhanceddebugstick.api.mode.ShiftMode;
 import com.njdaeger.enhanceddebugstick.api.session.Preference;
-import com.njdaeger.enhanceddebugstick.command.DebugModeArgument;
-import com.njdaeger.enhanceddebugstick.command.PreferenceArgument;
 import com.njdaeger.enhanceddebugstick.i18n.Translation;
 import com.njdaeger.enhanceddebugstick.session.DefaultPreferences;
 import com.njdaeger.pdk.command.brigadier.ICommandContext;
@@ -19,11 +20,11 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Sound;
 
-final class DebugStickCommand {
+public final class DebugStickCommand {
 
     private EnhancedDebugStickApi plugin;
     
-    DebugStickCommand(EnhancedDebugStick plugin) {
+    public DebugStickCommand(EnhancedDebugStick plugin) {
         this.plugin = plugin;
 
         CommandBuilder.of("debugstick", "dbs", "dbstick")
@@ -49,7 +50,7 @@ final class DebugStickCommand {
         var player = ctx.asPlayer();
         var session = plugin.getDebugSession(player.getUniqueId());
         session.sendMessage(Translation.COMMAND_MESSAGES_GIVEN_DEBUG_STICK.get().apply());
-        player.getInventory().addItem(EnhancedDebugStickApi.DEBUG_STICK);
+        player.getInventory().addItem(DebugStick.DEBUG_STICK);
     }
 
     private void modeChange(ICommandContext ctx) throws CommandSenderTypeException {

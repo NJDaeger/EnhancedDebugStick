@@ -3,6 +3,7 @@ package com.njdaeger.enhanceddebugstick;
 import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
 import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
 import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
+import com.njdaeger.enhanceddebugstick.command.DebugStickCommand;
 import com.njdaeger.enhanceddebugstick.i18n.TranslationProvider;
 import com.njdaeger.enhanceddebugstick.mcversion.PropertyLoader;
 import com.njdaeger.enhanceddebugstick.modes.classic.ClassicDebugMode;

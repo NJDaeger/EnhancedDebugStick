@@ -15,11 +15,11 @@ public interface PropertyLoader {
     static void loadVersion(EnhancedDebugStickApi plugin) {
         Version version = Version.getCurrentVersion();
         try {
-            PropertyLoader.load(version.pkg, plugin);
-            Bukkit.getLogger().info("Using property support for " + version.niceName);
+            PropertyLoader.load(version.getPackageName(), plugin);
+            Bukkit.getLogger().info("Using property support for " + version.getMessageString());
         }
         catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            Bukkit.getLogger().severe("Could not load property support for " + version.niceName);
+            Bukkit.getLogger().severe("Could not load property support for " + version.getMessageString());
             e.printStackTrace();
         }
         

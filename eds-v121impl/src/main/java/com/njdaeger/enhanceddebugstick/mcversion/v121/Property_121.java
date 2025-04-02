@@ -28,7 +28,59 @@ import org.bukkit.block.data.Rail;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.data.Snowable;
 import org.bukkit.block.data.Waterlogged;
-import org.bukkit.block.data.type.*;
+import org.bukkit.block.data.type.Bamboo;
+import org.bukkit.block.data.type.Bed;
+import org.bukkit.block.data.type.Beehive;
+import org.bukkit.block.data.type.Bell;
+import org.bukkit.block.data.type.BigDripleaf;
+import org.bukkit.block.data.type.BrewingStand;
+import org.bukkit.block.data.type.BubbleColumn;
+import org.bukkit.block.data.type.Cake;
+import org.bukkit.block.data.type.Campfire;
+import org.bukkit.block.data.type.Candle;
+import org.bukkit.block.data.type.CaveVinesPlant;
+import org.bukkit.block.data.type.Chest;
+import org.bukkit.block.data.type.ChiseledBookshelf;
+import org.bukkit.block.data.type.CommandBlock;
+import org.bukkit.block.data.type.Comparator;
+import org.bukkit.block.data.type.Crafter;
+import org.bukkit.block.data.type.CreakingHeart;
+import org.bukkit.block.data.type.DaylightDetector;
+import org.bukkit.block.data.type.Dispenser;
+import org.bukkit.block.data.type.Door;
+import org.bukkit.block.data.type.EndPortalFrame;
+import org.bukkit.block.data.type.Farmland;
+import org.bukkit.block.data.type.FlowerBed;
+import org.bukkit.block.data.type.Gate;
+import org.bukkit.block.data.type.HangingMoss;
+import org.bukkit.block.data.type.Hopper;
+import org.bukkit.block.data.type.Jigsaw;
+import org.bukkit.block.data.type.LeafLitter;
+import org.bukkit.block.data.type.Leaves;
+import org.bukkit.block.data.type.MossyCarpet;
+import org.bukkit.block.data.type.NoteBlock;
+import org.bukkit.block.data.type.Piston;
+import org.bukkit.block.data.type.PistonHead;
+import org.bukkit.block.data.type.PointedDripstone;
+import org.bukkit.block.data.type.RedstoneWire;
+import org.bukkit.block.data.type.Repeater;
+import org.bukkit.block.data.type.RespawnAnchor;
+import org.bukkit.block.data.type.Sapling;
+import org.bukkit.block.data.type.Scaffolding;
+import org.bukkit.block.data.type.SculkCatalyst;
+import org.bukkit.block.data.type.SculkSensor;
+import org.bukkit.block.data.type.SculkShrieker;
+import org.bukkit.block.data.type.SeaPickle;
+import org.bukkit.block.data.type.Slab;
+import org.bukkit.block.data.type.Snow;
+import org.bukkit.block.data.type.Stairs;
+import org.bukkit.block.data.type.StructureBlock;
+import org.bukkit.block.data.type.TNT;
+import org.bukkit.block.data.type.TechnicalPiston;
+import org.bukkit.block.data.type.TestBlock;
+import org.bukkit.block.data.type.Tripwire;
+import org.bukkit.block.data.type.TurtleEgg;
+import org.bukkit.block.data.type.Wall;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -1085,7 +1137,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     });
 
     //from pink petals to FlowerBed as of 1.21.5
-    static IProperty<FlowerBed, Integer> FLOWER_AMOUNT = new Property_121<>("Flowers", FlowerBed.class, Integer.class, (petals) -> {
+    static IProperty<FlowerBed, Integer> FLOWER_AMOUNT = new Property_121<>("Flower Amount", FlowerBed.class, Integer.class, (petals) -> {
         petals.setFlowerAmount(petals.getMaximumFlowerAmount() == petals.getFlowerAmount() ? 0 : petals.getFlowerAmount() + 1);
         return petals;
     }, FlowerBed::getFlowerAmount, (petals, amount) -> {
@@ -1139,7 +1191,85 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return crafter;
     });
 
+    static IProperty<CreakingHeart, Boolean> CREAKING_NATURAL = new Property_121<>("Natural", CreakingHeart.class, Boolean.class, (creaking) -> {
+        creaking.setNatural(!creaking.isNatural());
+        return creaking;
+    }, CreakingHeart::isNatural, (creaking, natural) -> {
+        creaking.setNatural(natural);
+        return creaking;
+    });
 
+    static IProperty<CreakingHeart, CreakingHeart.State> CREAKING_STATE = new Property_121<>("Creaking Heart State", CreakingHeart.class, CreakingHeart.State.class, (creaking) -> {
+        creaking.setCreakingHeartState(nextEnumOption(creaking.getCreakingHeartState()));
+        return creaking;
+    }, CreakingHeart::getCreakingHeartState, (creaking, state) -> {
+        creaking.setCreakingHeartState(state);
+        return creaking;
+    });
+
+    static IProperty<HangingMoss, Boolean> MOSS_IS_TIP = new Property_121<>("Tip", HangingMoss.class, Boolean.class, (moss) -> {
+        moss.setTip(!moss.isTip());
+        return moss;
+    }, HangingMoss::isTip, (moss, tip) -> {
+        moss.setTip(tip);
+        return moss;
+    });
+
+    static IProperty<LeafLitter, Integer> LEAF_SEGMENT_AMOUNT = new Property_121<>("Segments", LeafLitter.class, Integer.class, (litter) -> {
+        litter.setSegmentAmount(litter.getMaximumSegmentAmount() == litter.getSegmentAmount() ? 0 : litter.getSegmentAmount() + 1);
+        return litter;
+    }, LeafLitter::getSegmentAmount, (litter, amount) -> {
+        litter.setSegmentAmount(amount);
+        return litter;
+    });
+
+    static IProperty<MossyCarpet, Boolean> MOSSY_CARPET_IS_BOTTOM = new Property_121<>("Bottom", MossyCarpet.class, Boolean.class, (carpet) -> {
+        carpet.setBottom(!carpet.isBottom());
+        return carpet;
+    }, MossyCarpet::isBottom, (carpet, bottom) -> {
+        carpet.setBottom(bottom);
+        return carpet;
+    });
+
+    static IProperty<MossyCarpet, Wall.Height> MOSSY_CARPET_NORTH = new Property_121<>("North", MossyCarpet.class, Wall.Height.class, (carpet) -> {
+        carpet.setHeight(NORTH, nextEnumOption(carpet.getHeight(NORTH)));
+        return carpet;
+    }, (carpet) -> carpet.getHeight(NORTH), (carpet, height) -> {
+        carpet.setHeight(NORTH, height);
+        return carpet;
+    });
+
+    static IProperty<MossyCarpet, Wall.Height> MOSSY_CARPET_SOUTH = new Property_121<>("South", MossyCarpet.class, Wall.Height.class, (carpet) -> {
+        carpet.setHeight(SOUTH, nextEnumOption(carpet.getHeight(SOUTH)));
+        return carpet;
+    }, (carpet) -> carpet.getHeight(SOUTH), (carpet, height) -> {
+        carpet.setHeight(SOUTH, height);
+        return carpet;
+    });
+
+    static IProperty<MossyCarpet, Wall.Height> MOSSY_CARPET_EAST = new Property_121<>("East", MossyCarpet.class, Wall.Height.class, (carpet) -> {
+        carpet.setHeight(EAST, nextEnumOption(carpet.getHeight(EAST)));
+        return carpet;
+    }, (carpet) -> carpet.getHeight(EAST), (carpet, height) -> {
+        carpet.setHeight(EAST, height);
+        return carpet;
+    });
+
+    static IProperty<MossyCarpet, Wall.Height> MOSSY_CARPET_WEST = new Property_121<>("West", MossyCarpet.class, Wall.Height.class, (carpet) -> {
+        carpet.setHeight(WEST, nextEnumOption(carpet.getHeight(WEST)));
+        return carpet;
+    }, (carpet) -> carpet.getHeight(WEST), (carpet, height) -> {
+        carpet.setHeight(WEST, height);
+        return carpet;
+    });
+
+    static IProperty<TestBlock, TestBlock.Mode> TEST_BLOCK_MODE = new Property_121<>("Mode", TestBlock.class, TestBlock.Mode.class, (testBlock) -> {
+        testBlock.setMode(nextEnumOption(testBlock.getMode()));
+        return testBlock;
+    }, TestBlock::getMode, (testBlock, mode) -> {
+        testBlock.setMode(mode);
+        return testBlock;
+    });
 
     public static void registerProperties() {
         if (registered)

@@ -2,55 +2,82 @@ package com.njdaeger.enhanceddebugstick.mcversion;
 
 import org.bukkit.Bukkit;
 
-import java.util.function.Function;
-
 public enum Version {
 
-    v1_13("113", "Minecraft 1.13.x", (s) -> s.contains("v1_13"), false, 0),
-    v1_14("114", "Minecraft 1.14.x", (s) -> s.contains("v1_14"), false, 1),
-    v1_15("115", "Minecraft 1.15.x", (s) -> s.contains("v1_15"), false, 2),
-    v1_16("116", "Minecraft 1.16.x", (s) -> s.contains("v1_16"), false, 3),
-    v1_17("117", "Minecraft 1.17.x", (s) -> s.contains("v1_17"), false, 4),
-    v1_18("118", "Minecraft 1.18.x", (s) -> s.contains("v1_18"), false, 5),
-    v1_19_4("119", "Minecraft 1.19.4", (s) -> s.contains("v1_19_R3"), false, 8),
-    v1_19_3("119", "Minecraft 1.19.3", (s) -> s.contains("v1_19_R2"), false, 7),
-    v1_19("119", "Minecraft 1.19.x", (s) -> s.contains("v1_19"), false, 6),
-    v1_20("120", "Minecraft 1.20.x", (s) -> s.contains("v1_20"), true, 9);
-    
-    protected final String pkg;
-    private final boolean latest;
-    protected final String niceName;
-    private final Function<String, Boolean> isVersion;
-    private final int number;
-    
-    Version(String pkg, String niceName, Function<String, Boolean> isVersion, boolean latest, int number) {
-        this.pkg = pkg;
-        this.latest = latest;
-        this.number = number;
-        this.niceName = niceName;
-        this.isVersion = isVersion;
+    vUNKNOWN(-1, "unknown", "NOT SUPPORTED", "not supported"),
+    v1_21_4(0, "121","Minecraft 1.21.4 - 1.21.x", "1.21.4", "1.21.5");
+
+    private final String packageName;
+    private final String messageString;
+    private final String[] versions;
+    private final int versionOrder;
+
+    Version(int versionOrder, String packageName, String messageString, String... safeVersions) {
+        this.versions = safeVersions;
+        this.versionOrder = versionOrder;
+        this.messageString = messageString;
+        this.packageName = packageName;
     }
-    
-    private static Version getLatest() {
-        for (Version version : values()) {
-            if (version.latest) return version;
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public boolean isCurrentVersion() {
+        String currentVersion = Bukkit.getServer().getMinecraftVersion();
+        for (String version : versions) {
+            if (currentVersion.equalsIgnoreCase(version)) {
+                return true;
+            }
         }
-        return null;
+        return false;
     }
-    
-    public int getOrdinal() {
-        return number;
+
+    public String getMessageString() {
+        return messageString;
     }
-    
+
+    public String[] getVersions() {
+        return versions;
+    }
+
+    public int getVersionOrder() {
+        return versionOrder;
+    }
+
     public static Version getCurrentVersion() {
-        String path = Bukkit.getServer().getClass().getPackage().getName();
-        String versionString = path.substring(path.lastIndexOf('.') + 1);
-    
-        for (Version version : values()) {
-            if (version.isVersion.apply(versionString))
-                return version;
+        String currentVersion = Bukkit.getServer().getMinecraftVersion();
+        for (Version version : Version.values()) {
+            for (String versionName : version.getVersions()) {
+                if (currentVersion.equalsIgnoreCase(versionName)) {
+                    return version;
+                }
+            }
         }
-        return getLatest();
+        return vUNKNOWN;
     }
-    
+
+    public static Version getVersion(String versionString) {
+        for (Version version : Version.values()) {
+            for (String versionName : version.getVersions()) {
+                if (versionName.equalsIgnoreCase(versionString)) {
+                    return version;
+                }
+            }
+        }
+        return vUNKNOWN;
+    }
+
+    public static boolean isServerVersionSupported() {
+        var currentVersion = Bukkit.getServer().getMinecraftVersion();
+        for (var version : Version.values()) {
+            for (var versionName : version.getVersions()) {
+                if (versionName.equalsIgnoreCase(currentVersion)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

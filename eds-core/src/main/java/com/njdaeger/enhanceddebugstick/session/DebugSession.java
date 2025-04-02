@@ -1,5 +1,6 @@
 package com.njdaeger.enhanceddebugstick.session;
 
+import com.njdaeger.enhanceddebugstick.api.DebugStick;
 import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
 import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
 import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
@@ -112,7 +113,7 @@ public final class DebugSession implements IDebugSession {
         if (!isOnline()) return false;
         else {
             Player player = Bukkit.getPlayer(uuid);
-            return EnhancedDebugStickApi.hasDebugStick(player) && EnhancedDebugStickApi.DEBUG_STICK.equals(player.getInventory().getItemInMainHand());
+            return EnhancedDebugStickApi.hasDebugStick(player) && DebugStick.DEBUG_STICK.equals(player.getInventory().getItemInMainHand());
         }
     }
 
