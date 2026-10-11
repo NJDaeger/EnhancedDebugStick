@@ -5,7 +5,8 @@ import org.bukkit.Bukkit;
 public enum Version {
 
     vUNKNOWN(-1, "unknown", "NOT SUPPORTED", "not supported"),
-    v1_21_4(0, "121","Minecraft 1.21.4 - 1.21.x", "1.21.4", "1.21.5");
+    v1_21_5(0, "1215","Minecraft 1.21.5", "1.21.5"),
+    v1_21_6(1, "1216", "Minecraft 1.21.6 - 1.21.8", "1.21.6", "1.21.7", "1.21.8");
 
     private final String packageName;
     private final String messageString;

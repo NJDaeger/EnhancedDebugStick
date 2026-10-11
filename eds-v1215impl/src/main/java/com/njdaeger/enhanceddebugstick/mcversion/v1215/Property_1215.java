@@ -1,4 +1,4 @@
-package com.njdaeger.enhanceddebugstick.mcversion.v121;
+package com.njdaeger.enhanceddebugstick.mcversion.v1215;
 
 import com.njdaeger.enhanceddebugstick.api.AbstractProperty;
 import com.njdaeger.enhanceddebugstick.api.IProperty;
@@ -92,12 +92,12 @@ import java.util.function.Function;
 import static org.bukkit.block.BlockFace.*;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V> {
+public class Property_1215<D extends BlockData, V> extends AbstractProperty<D, V> {
 
     /**
      * Age property
      */
-    static IProperty<Ageable, Integer> AGE = new Property_121<>("Age", Ageable.class, Integer.class, (age) -> {
+    static IProperty<Ageable, Integer> AGE = new Property_1215<>("Age", Ageable.class, Integer.class, (age) -> {
         age.setAge(age.getMaximumAge() == age.getAge() ? 0 : age.getAge() + 1);
         return age;
     }, Ageable::getAge, (age, value) -> {
@@ -107,7 +107,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Power property
      */
-    static IProperty<AnaloguePowerable, Integer> POWER = new Property_121<>("Power", AnaloguePowerable.class, Integer.class, (power) -> {
+    static IProperty<AnaloguePowerable, Integer> POWER = new Property_1215<>("Power", AnaloguePowerable.class, Integer.class, (power) -> {
         power.setPower(power.getMaximumPower() == power.getPower() ? 0 : power.getPower() + 1);
         return power;
     }, AnaloguePowerable::getPower, (power, value) -> {
@@ -117,7 +117,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Attached property
      */
-    static IProperty<Attachable, Boolean> ATTACHED = new Property_121<>("Attached", Attachable.class, Boolean.class, (attachable) -> {
+    static IProperty<Attachable, Boolean> ATTACHED = new Property_1215<>("Attached", Attachable.class, Boolean.class, (attachable) -> {
         attachable.setAttached(!attachable.isAttached());
         return attachable;
     }, Attachable::isAttached, ((attachable, value) -> {
@@ -127,7 +127,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Half property
      */
-    static IProperty<Bisected, Bisected.Half> HALF = new Property_121<>("Half", Bisected.class, Bisected.Half.class, (bisected) -> {
+    static IProperty<Bisected, Bisected.Half> HALF = new Property_1215<>("Half", Bisected.class, Bisected.Half.class, (bisected) -> {
         bisected.setHalf(nextEnumOption(bisected.getHalf()));
         return bisected;
     }, Bisected::getHalf, (bisected, value) -> {
@@ -137,7 +137,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Facing property
      */
-    static IProperty<Directional, BlockFace> FACING = new Property_121<>("Facing", Directional.class, BlockFace.class, (directional) -> {
+    static IProperty<Directional, BlockFace> FACING = new Property_1215<>("Facing", Directional.class, BlockFace.class, (directional) -> {
         directional.setFacing(nextEnumOption(directional.getFacing(), directional.getFaces()));
         return directional;
     }, Directional::getFacing, (directional, value) -> {
@@ -147,7 +147,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Level property
      */
-    static IProperty<Levelled, Integer> LEVEL = new Property_121<>("Level", Levelled.class, Integer.class, (level) -> {
+    static IProperty<Levelled, Integer> LEVEL = new Property_1215<>("Level", Levelled.class, Integer.class, (level) -> {
         level.setLevel(level.getMaximumLevel() == level.getLevel() ? 1 : level.getLevel() + 1);
         return level;
     }, Levelled::getLevel, (level, value) -> {
@@ -157,7 +157,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Lit property
      */
-    static IProperty<Lightable, Boolean> LIT = new Property_121<>("Lit", Lightable.class, Boolean.class, (lit) -> {
+    static IProperty<Lightable, Boolean> LIT = new Property_1215<>("Lit", Lightable.class, Boolean.class, (lit) -> {
         lit.setLit(!lit.isLit());
         return lit;
     }, Lightable::isLit, (lit, value) -> {
@@ -167,7 +167,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Open property
      */
-    static IProperty<Openable, Boolean> OPEN = new Property_121<>("Open", Openable.class, Boolean.class, (open) -> {
+    static IProperty<Openable, Boolean> OPEN = new Property_1215<>("Open", Openable.class, Boolean.class, (open) -> {
         open.setOpen(!open.isOpen());
         return open;
     }, Openable::isOpen, (open, value) -> {
@@ -177,7 +177,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Axis property
      */
-    static IProperty<Orientable, Axis> AXIS = new Property_121<>("Axis", Orientable.class, Axis.class, (axis) -> {
+    static IProperty<Orientable, Axis> AXIS = new Property_1215<>("Axis", Orientable.class, Axis.class, (axis) -> {
         axis.setAxis(nextEnumOption(axis.getAxis(), axis.getAxes()));
         return axis;
     }, Orientable::getAxis, (axis, value) -> {
@@ -187,7 +187,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Powered property
      */
-    static IProperty<Powerable, Boolean> POWERED = new Property_121<>("Powered", Powerable.class, Boolean.class, (powered) -> {
+    static IProperty<Powerable, Boolean> POWERED = new Property_1215<>("Powered", Powerable.class, Boolean.class, (powered) -> {
         powered.setPowered(!powered.isPowered());
         return powered;
     }, Powerable::isPowered, (powered, value) -> {
@@ -197,7 +197,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Rotation property
      */
-    static IProperty<Rotatable, BlockFace> ROTATION = new Property_121<>("Rotation", Rotatable.class, BlockFace.class, (rotation) -> {
+    static IProperty<Rotatable, BlockFace> ROTATION = new Property_1215<>("Rotation", Rotatable.class, BlockFace.class, (rotation) -> {
         BlockFace face = rotation.getRotation();
         int x = 0;
         while (x < BlockFace.values().length) {
@@ -238,7 +238,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Snowy property
      */
-    static IProperty<Snowable, Boolean> SNOWY = new Property_121<>("Snowy", Snowable.class, Boolean.class, (snowable) -> {
+    static IProperty<Snowable, Boolean> SNOWY = new Property_1215<>("Snowy", Snowable.class, Boolean.class, (snowable) -> {
         snowable.setSnowy(!snowable.isSnowy());
         return snowable;
     }, Snowable::isSnowy, (snowable, value) -> {
@@ -248,7 +248,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Waterlogged property
      */
-    static IProperty<Waterlogged, Boolean> WATERLOGGED = new Property_121<>("Waterlogged", Waterlogged.class, Boolean.class, (waterlogged) -> {
+    static IProperty<Waterlogged, Boolean> WATERLOGGED = new Property_1215<>("Waterlogged", Waterlogged.class, Boolean.class, (waterlogged) -> {
         waterlogged.setWaterlogged(!waterlogged.isWaterlogged());
         return waterlogged;
     }, Waterlogged::isWaterlogged, (waterlogged, value) -> {
@@ -260,7 +260,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * East connection property. (Redstone Wire)
      */
-    static IProperty<RedstoneWire, RedstoneWire.Connection> REDSTONE_EAST = new Property_121<>("East", RedstoneWire.class, RedstoneWire.Connection.class, (wire) -> {
+    static IProperty<RedstoneWire, RedstoneWire.Connection> REDSTONE_EAST = new Property_1215<>("East", RedstoneWire.class, RedstoneWire.Connection.class, (wire) -> {
         wire.setFace(EAST, nextEnumOption(wire.getFace(EAST)));
         return wire;
     }, (wire) -> wire.getFace(EAST), (wire, value) -> {
@@ -270,7 +270,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * North connection property. (Redstone Wire)
      */
-    static IProperty<RedstoneWire, RedstoneWire.Connection> REDSTONE_NORTH = new Property_121<>("North", RedstoneWire.class, RedstoneWire.Connection.class, (wire) -> {
+    static IProperty<RedstoneWire, RedstoneWire.Connection> REDSTONE_NORTH = new Property_1215<>("North", RedstoneWire.class, RedstoneWire.Connection.class, (wire) -> {
         wire.setFace(NORTH, nextEnumOption(wire.getFace(NORTH)));
         return wire;
     }, (wire) -> wire.getFace(NORTH), (wire, value) -> {
@@ -280,7 +280,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * South connection property. (Redstone Wire)
      */
-    static IProperty<RedstoneWire, RedstoneWire.Connection> REDSTONE_SOUTH = new Property_121<>("South", RedstoneWire.class, RedstoneWire.Connection.class, (wire) -> {
+    static IProperty<RedstoneWire, RedstoneWire.Connection> REDSTONE_SOUTH = new Property_1215<>("South", RedstoneWire.class, RedstoneWire.Connection.class, (wire) -> {
         wire.setFace(SOUTH, nextEnumOption(wire.getFace(SOUTH)));
         return wire;
     }, (wire) -> wire.getFace(SOUTH), (wire, value) -> {
@@ -290,7 +290,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * West connection property. (Redstone Wire)
      */
-    static IProperty<RedstoneWire, RedstoneWire.Connection> REDSTONE_WEST = new Property_121<>("West", RedstoneWire.class, RedstoneWire.Connection.class, (wire) -> {
+    static IProperty<RedstoneWire, RedstoneWire.Connection> REDSTONE_WEST = new Property_1215<>("West", RedstoneWire.class, RedstoneWire.Connection.class, (wire) -> {
         wire.setFace(WEST, nextEnumOption(wire.getFace(WEST)));
         return wire;
     }, (wire) -> wire.getFace(WEST), (wire, value) -> {
@@ -300,7 +300,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Inverted property. (Daylight Detector)
      */
-    static IProperty<DaylightDetector, Boolean> DETECTOR_INVERTED = new Property_121<>("Inverted", DaylightDetector.class, Boolean.class, (detector) -> {
+    static IProperty<DaylightDetector, Boolean> DETECTOR_INVERTED = new Property_1215<>("Inverted", DaylightDetector.class, Boolean.class, (detector) -> {
         detector.setInverted(!detector.isInverted());
         return detector;
     }, DaylightDetector::isInverted, (detector, value) -> {
@@ -310,7 +310,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Disarmed property. (Tripwire)
      */
-    static IProperty<Tripwire, Boolean> TRIPWIRE_DISARMED = new Property_121<>("Disarmed", Tripwire.class, Boolean.class, (tripwire) -> {
+    static IProperty<Tripwire, Boolean> TRIPWIRE_DISARMED = new Property_1215<>("Disarmed", Tripwire.class, Boolean.class, (tripwire) -> {
         tripwire.setDisarmed(!tripwire.isDisarmed());
         return tripwire;
     }, Tripwire::isDisarmed, (tripwire, value) -> {
@@ -320,7 +320,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Hinge property. (Door)
      */
-    static IProperty<Door, Door.Hinge> DOOR_HINGE = new Property_121<>("Hinge", Door.class, Door.Hinge.class, (door) -> {
+    static IProperty<Door, Door.Hinge> DOOR_HINGE = new Property_1215<>("Hinge", Door.class, Door.Hinge.class, (door) -> {
         door.setHinge(nextEnumOption(door.getHinge()));
         return door;
     }, Door::getHinge, (door, value) -> {
@@ -330,7 +330,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Shape property. (Stairs)
      */
-    static IProperty<Stairs, Stairs.Shape> STAIR_SHAPE = new Property_121<>("Shape", Stairs.class, Stairs.Shape.class, (stairs) -> {
+    static IProperty<Stairs, Stairs.Shape> STAIR_SHAPE = new Property_1215<>("Shape", Stairs.class, Stairs.Shape.class, (stairs) -> {
         stairs.setShape(nextEnumOption(stairs.getShape()));
         return stairs;
     }, Stairs::getShape, (shape, value) -> {
@@ -340,7 +340,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Part property. (Bed)
      */
-    static IProperty<Bed, Bed.Part> BED_PART = new Property_121<>("Part", Bed.class, Bed.Part.class, (bed) -> {
+    static IProperty<Bed, Bed.Part> BED_PART = new Property_1215<>("Part", Bed.class, Bed.Part.class, (bed) -> {
         bed.setPart(nextEnumOption(bed.getPart()));
         return bed;
     }, Bed::getPart, (bed, value) -> {
@@ -350,7 +350,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Type property. (Chest)
      */
-    static IProperty<Chest, Chest.Type> CHEST_TYPE = new Property_121<>("Type", Chest.class, Chest.Type.class, (chest) -> {
+    static IProperty<Chest, Chest.Type> CHEST_TYPE = new Property_1215<>("Type", Chest.class, Chest.Type.class, (chest) -> {
         chest.setType(nextEnumOption(chest.getType()));
         return chest;
     }, Chest::getType, (chest, value) -> {
@@ -360,7 +360,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Conditional property. (Command Block)
      */
-    static IProperty<CommandBlock, Boolean> COMMAND_CONDITIONAL = new Property_121<>("Conditional", CommandBlock.class, Boolean.class, (commandBlock) -> {
+    static IProperty<CommandBlock, Boolean> COMMAND_CONDITIONAL = new Property_1215<>("Conditional", CommandBlock.class, Boolean.class, (commandBlock) -> {
         commandBlock.setConditional(!commandBlock.isConditional());
         return commandBlock;
     }, CommandBlock::isConditional, (commandBlock, value) -> {
@@ -370,7 +370,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Mode property. (Comparator)
      */
-    static IProperty<Comparator, Comparator.Mode> COMPARATOR_MODE = new Property_121<>("Mode", Comparator.class, Comparator.Mode.class, (comparator) -> {
+    static IProperty<Comparator, Comparator.Mode> COMPARATOR_MODE = new Property_1215<>("Mode", Comparator.class, Comparator.Mode.class, (comparator) -> {
         comparator.setMode(nextEnumOption(comparator.getMode()));
         return comparator;
     }, Comparator::getMode, (comparator, value) -> {
@@ -380,7 +380,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Triggered property. (Dispenser)
      */
-    static IProperty<Dispenser, Boolean> DISPENSER_TRIGGERED = new Property_121<>("Triggered", Dispenser.class, Boolean.class, (dispenser) -> {
+    static IProperty<Dispenser, Boolean> DISPENSER_TRIGGERED = new Property_1215<>("Triggered", Dispenser.class, Boolean.class, (dispenser) -> {
         dispenser.setTriggered(!dispenser.isTriggered());
         return dispenser;
     }, Dispenser::isTriggered, (dispenser, value) -> {
@@ -390,7 +390,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Eye property. (End portal frame)
      */
-    static IProperty<EndPortalFrame, Boolean> END_PORTAL_EYE = new Property_121<>("Eye", EndPortalFrame.class, Boolean.class, (frame) -> {
+    static IProperty<EndPortalFrame, Boolean> END_PORTAL_EYE = new Property_1215<>("Eye", EndPortalFrame.class, Boolean.class, (frame) -> {
         frame.setEye(!frame.hasEye());
         return frame;
     }, EndPortalFrame::hasEye, (frame, value) -> {
@@ -400,7 +400,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * In_wall property. (Gate)
      */
-    static IProperty<Gate, Boolean> GATE_IN_WALL = new Property_121<>("In wall", Gate.class, Boolean.class, (gate) -> {
+    static IProperty<Gate, Boolean> GATE_IN_WALL = new Property_1215<>("In wall", Gate.class, Boolean.class, (gate) -> {
         gate.setInWall(!gate.isInWall());
         return gate;
     }, Gate::isInWall, (gate, value) -> {
@@ -410,7 +410,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Enabled property. (Hopper)
      */
-    static IProperty<Hopper, Boolean> HOPPER_ENABLED = new Property_121<>("Enabled", Hopper.class, Boolean.class, (hopper) -> {
+    static IProperty<Hopper, Boolean> HOPPER_ENABLED = new Property_1215<>("Enabled", Hopper.class, Boolean.class, (hopper) -> {
         hopper.setEnabled(!hopper.isEnabled());
         return hopper;
     }, Hopper::isEnabled, (hopper, value) -> {
@@ -420,7 +420,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Extended property. (Piston)
      */
-    static IProperty<Piston, Boolean> PISTON_EXTENDED = new Property_121<>("Extended", Piston.class, Boolean.class, (piston) -> {
+    static IProperty<Piston, Boolean> PISTON_EXTENDED = new Property_1215<>("Extended", Piston.class, Boolean.class, (piston) -> {
         piston.setExtended(!piston.isExtended());
         return piston;
     }, Piston::isExtended, (piston, value) -> {
@@ -430,7 +430,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Short property. (Piston head)
      */
-    static IProperty<PistonHead, Boolean> PISTON_HEAD_SHORT = new Property_121<>("Short", PistonHead.class, Boolean.class, (pistonHead) -> {
+    static IProperty<PistonHead, Boolean> PISTON_HEAD_SHORT = new Property_1215<>("Short", PistonHead.class, Boolean.class, (pistonHead) -> {
         pistonHead.setShort(!pistonHead.isShort());
         return pistonHead;
     }, PistonHead::isShort, (pistonHead, value) -> {
@@ -440,7 +440,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Delay property. (Repeater)
      */
-    static IProperty<Repeater, Integer> REPEATER_DELAY = new Property_121<>("Delay", Repeater.class, Integer.class, (repeater) -> {
+    static IProperty<Repeater, Integer> REPEATER_DELAY = new Property_1215<>("Delay", Repeater.class, Integer.class, (repeater) -> {
         repeater.setDelay(repeater.getMaximumDelay() == repeater.getDelay() ? repeater.getMinimumDelay() : repeater.getDelay() + 1);
         return repeater;
     }, Repeater::getDelay, (repeater, value) -> {
@@ -450,7 +450,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Locked property. (Repeater)
      */
-    static IProperty<Repeater, Boolean> REPEATER_LOCKED = new Property_121<>("Locked", Repeater.class, Boolean.class, (repeater) -> {
+    static IProperty<Repeater, Boolean> REPEATER_LOCKED = new Property_1215<>("Locked", Repeater.class, Boolean.class, (repeater) -> {
         repeater.setLocked(!repeater.isLocked());
         return repeater;
     }, Repeater::isLocked, (repeater, value) -> {
@@ -460,7 +460,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Type property. (Technical Piston)
      */
-    static IProperty<TechnicalPiston, TechnicalPiston.Type> TECHNICAL_PISTON_TYPE = new Property_121<>("Type", TechnicalPiston.class, TechnicalPiston.Type.class, (technicalPiston) -> {
+    static IProperty<TechnicalPiston, TechnicalPiston.Type> TECHNICAL_PISTON_TYPE = new Property_1215<>("Type", TechnicalPiston.class, TechnicalPiston.Type.class, (technicalPiston) -> {
         technicalPiston.setType(nextEnumOption(technicalPiston.getType()));
         return technicalPiston;
     }, TechnicalPiston::getType, (technicalPiston, value) -> {
@@ -470,7 +470,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * North property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_NORTH = new Property_121<>("North", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_NORTH = new Property_1215<>("North", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(NORTH, !multipleFacing.hasFace(NORTH));
         return multipleFacing;
     }, (face) -> face.hasFace(NORTH), (multipleFacing, value) -> {
@@ -480,7 +480,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * East property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_EAST = new Property_121<>("East", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_EAST = new Property_1215<>("East", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(EAST, !multipleFacing.hasFace(EAST));
         return multipleFacing;
     }, (face) -> face.hasFace(EAST), (multipleFacing, value) -> {
@@ -490,7 +490,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * South property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_SOUTH = new Property_121<>("South", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_SOUTH = new Property_1215<>("South", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(SOUTH, !multipleFacing.hasFace(SOUTH));
         return multipleFacing;
     }, (face) -> face.hasFace(SOUTH), (multipleFacing, value) -> {
@@ -500,7 +500,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * West property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_WEST = new Property_121<>("West", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_WEST = new Property_1215<>("West", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(WEST, !multipleFacing.hasFace(WEST));
         return multipleFacing;
     }, (face) -> face.hasFace(WEST), (multipleFacing, value) -> {
@@ -510,7 +510,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Up property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_UP = new Property_121<>("Up", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_UP = new Property_1215<>("Up", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(UP, !multipleFacing.hasFace(UP));
         return multipleFacing;
     }, (face) -> face.hasFace(UP), (multipleFacing, value) -> {
@@ -520,7 +520,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Down property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_DOWN = new Property_121<>("Down", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_DOWN = new Property_1215<>("Down", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(DOWN, !multipleFacing.hasFace(DOWN));
         return multipleFacing;
     }, (face) -> face.hasFace(DOWN), (multipleFacing, value) -> {
@@ -530,7 +530,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Northeast property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_NORTH_EAST = new Property_121<>("Northeast", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_NORTH_EAST = new Property_1215<>("Northeast", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(NORTH_EAST, !multipleFacing.hasFace(NORTH_EAST));
         return multipleFacing;
     }, (face) -> face.hasFace(NORTH_EAST), (multipleFacing, value) -> {
@@ -540,7 +540,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Northwest property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_NORTH_WEST = new Property_121<>("Northwest", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_NORTH_WEST = new Property_1215<>("Northwest", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(NORTH_WEST, !multipleFacing.hasFace(NORTH_WEST));
         return multipleFacing;
     }, (face) -> face.hasFace(NORTH_WEST), (multipleFacing, value) -> {
@@ -550,7 +550,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Southeast property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_SOUTH_EAST = new Property_121<>("Southeast", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_SOUTH_EAST = new Property_1215<>("Southeast", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(SOUTH_EAST, !multipleFacing.hasFace(SOUTH_EAST));
         return multipleFacing;
     }, (face) -> face.hasFace(SOUTH_EAST), (multipleFacing, value) -> {
@@ -560,7 +560,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Southwest property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_SOUTH_WEST = new Property_121<>("Southwest", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_SOUTH_WEST = new Property_1215<>("Southwest", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(SOUTH_WEST, !multipleFacing.hasFace(SOUTH_WEST));
         return multipleFacing;
     }, (face) -> face.hasFace(SOUTH_WEST), (multipleFacing, value) -> {
@@ -570,7 +570,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * West northwest property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_WEST_NORTH_WEST = new Property_121<>("West Northwest", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_WEST_NORTH_WEST = new Property_1215<>("West Northwest", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(WEST_NORTH_WEST, !multipleFacing.hasFace(WEST_NORTH_WEST));
         return multipleFacing;
     }, (face) -> face.hasFace(WEST_NORTH_WEST), (multipleFacing, value) -> {
@@ -580,7 +580,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * North northwest property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_NORTH_NORTH_WEST = new Property_121<>("North Northwest", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_NORTH_NORTH_WEST = new Property_1215<>("North Northwest", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(NORTH_NORTH_WEST, !multipleFacing.hasFace(NORTH_NORTH_WEST));
         return multipleFacing;
     }, (face) -> face.hasFace(NORTH_NORTH_WEST), (multipleFacing, value) -> {
@@ -590,7 +590,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * North northeast property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_NORTH_NORTH_EAST = new Property_121<>("North Northeast", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_NORTH_NORTH_EAST = new Property_1215<>("North Northeast", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(NORTH_NORTH_EAST, !multipleFacing.hasFace(NORTH_NORTH_EAST));
         return multipleFacing;
     }, (face) -> face.hasFace(NORTH_NORTH_EAST), (multipleFacing, value) -> {
@@ -600,7 +600,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * East northeast property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_EAST_NORTH_EAST = new Property_121<>("East Northeast", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_EAST_NORTH_EAST = new Property_1215<>("East Northeast", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(EAST_NORTH_EAST, !multipleFacing.hasFace(EAST_NORTH_EAST));
         return multipleFacing;
     }, (face) -> face.hasFace(EAST_NORTH_EAST), (multipleFacing, value) -> {
@@ -610,7 +610,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * East southeast property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_EAST_SOUTH_EAST = new Property_121<>("East Southeast", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_EAST_SOUTH_EAST = new Property_1215<>("East Southeast", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(EAST_SOUTH_EAST, !multipleFacing.hasFace(EAST_SOUTH_EAST));
         return multipleFacing;
     }, (face) -> face.hasFace(EAST_SOUTH_EAST), (multipleFacing, value) -> {
@@ -620,7 +620,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * South southeast property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_SOUTH_SOUTH_EAST = new Property_121<>("South Southeast", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_SOUTH_SOUTH_EAST = new Property_1215<>("South Southeast", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(SOUTH_SOUTH_EAST, !multipleFacing.hasFace(SOUTH_SOUTH_EAST));
         return multipleFacing;
     }, (face) -> face.hasFace(SOUTH_SOUTH_EAST), (multipleFacing, value) -> {
@@ -630,7 +630,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * South southwest property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_SOUTH_SOUTH_WEST = new Property_121<>("South Southwest", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_SOUTH_SOUTH_WEST = new Property_1215<>("South Southwest", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(SOUTH_SOUTH_WEST, !multipleFacing.hasFace(SOUTH_SOUTH_WEST));
         return multipleFacing;
     }, (face) -> face.hasFace(SOUTH_SOUTH_WEST), (multipleFacing, value) -> {
@@ -640,7 +640,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * West southwest property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_WEST_SOUTH_WEST = new Property_121<>("West Southwest", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_WEST_SOUTH_WEST = new Property_1215<>("West Southwest", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(WEST_SOUTH_WEST, !multipleFacing.hasFace(WEST_SOUTH_WEST));
         return multipleFacing;
     }, (face) -> face.hasFace(WEST_SOUTH_WEST), (multipleFacing, value) -> {
@@ -650,7 +650,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Self property.
      */
-    static IProperty<MultipleFacing, Boolean> MULTI_SELF = new Property_121<>("Self", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
+    static IProperty<MultipleFacing, Boolean> MULTI_SELF = new Property_1215<>("Self", MultipleFacing.class, Boolean.class, (multipleFacing) -> {
         multipleFacing.setFace(SELF, !multipleFacing.hasFace(SELF));
         return multipleFacing;
     }, (face) -> face.hasFace(SELF), (multipleFacing, value) -> {
@@ -660,7 +660,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Instrument property. (Noteblock)
      */
-    static IProperty<NoteBlock, Instrument> NOTEBLOCK_INSTRUMENT = new Property_121<>("Instrument", NoteBlock.class, Instrument.class, (noteblock) -> {
+    static IProperty<NoteBlock, Instrument> NOTEBLOCK_INSTRUMENT = new Property_1215<>("Instrument", NoteBlock.class, Instrument.class, (noteblock) -> {
         noteblock.setInstrument(nextEnumOption(noteblock.getInstrument()));
         return noteblock;
     }, NoteBlock::getInstrument, (noteblock, value) -> {
@@ -670,7 +670,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Note property. (Noteblock)
      */
-    static IProperty<NoteBlock, Note> NOTEBLOCK_NOTE = new Property_121<>("Note", NoteBlock.class, Note.class, (noteblock) -> {
+    static IProperty<NoteBlock, Note> NOTEBLOCK_NOTE = new Property_1215<>("Note", NoteBlock.class, Note.class, (noteblock) -> {
         int id = noteblock.getNote().getId();
         noteblock.setNote(new Note(id == 24 ? 0 : id + 1));
         return noteblock;
@@ -681,7 +681,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Shape property. (Rail)
      */
-    static IProperty<Rail, Rail.Shape> RAIL_SHAPE = new Property_121<>("Shape", Rail.class, Rail.Shape.class, (rail) -> {
+    static IProperty<Rail, Rail.Shape> RAIL_SHAPE = new Property_1215<>("Shape", Rail.class, Rail.Shape.class, (rail) -> {
         rail.setShape(nextEnumOption(rail.getShape(), rail.getShapes()));
         return rail;
     }, Rail::getShape, (rail, value) -> {
@@ -691,7 +691,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Pickles property. (Sea pickles)
      */
-    static IProperty<SeaPickle, Integer> SEA_PICKLE_PICKLES = new Property_121<>("Pickles", SeaPickle.class, Integer.class, (pickle) -> {
+    static IProperty<SeaPickle, Integer> SEA_PICKLE_PICKLES = new Property_1215<>("Pickles", SeaPickle.class, Integer.class, (pickle) -> {
         pickle.setPickles(pickle.getMaximumPickles() == pickle.getPickles() ? pickle.getMinimumPickles() : pickle.getPickles() + 1);
         return pickle;
     }, SeaPickle::getPickles, (pickle, value) -> {
@@ -701,7 +701,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Type property. (Slab)
      */
-    static IProperty<Slab, Slab.Type> SLAB_TYPE = new Property_121<>("Type", Slab.class, Slab.Type.class, (slab) -> {
+    static IProperty<Slab, Slab.Type> SLAB_TYPE = new Property_1215<>("Type", Slab.class, Slab.Type.class, (slab) -> {
         slab.setType(nextEnumOption(slab.getType()));
         return slab;
     }, Slab::getType, (slab, value) -> {
@@ -711,7 +711,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Bottle_0 property. (Brewing stand)
      */
-    static IProperty<BrewingStand, Boolean> BREWING_BOTTLE_1 = new Property_121<>("Bottle 0", BrewingStand.class, Boolean.class, (stand) -> {
+    static IProperty<BrewingStand, Boolean> BREWING_BOTTLE_1 = new Property_1215<>("Bottle 0", BrewingStand.class, Boolean.class, (stand) -> {
         stand.setBottle(0, !stand.hasBottle(0));
         return stand;
     }, (bottle) -> bottle.hasBottle(0), (stand, value) -> {
@@ -721,7 +721,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Bottle_1 property. (Brewing stand)
      */
-    static IProperty<BrewingStand, Boolean> BREWING_BOTTLE_2 = new Property_121<>("Bottle 1", BrewingStand.class, Boolean.class, (stand) -> {
+    static IProperty<BrewingStand, Boolean> BREWING_BOTTLE_2 = new Property_1215<>("Bottle 1", BrewingStand.class, Boolean.class, (stand) -> {
         stand.setBottle(1, !stand.hasBottle(1));
         return stand;
     }, (bottle) -> bottle.hasBottle(1), (stand, value) -> {
@@ -731,7 +731,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Bottle_2 property. (Brewing stand)
      */
-    static IProperty<BrewingStand, Boolean> BREWING_BOTTLE_3 = new Property_121<>("Bottle 2", BrewingStand.class, Boolean.class, (stand) -> {
+    static IProperty<BrewingStand, Boolean> BREWING_BOTTLE_3 = new Property_1215<>("Bottle 2", BrewingStand.class, Boolean.class, (stand) -> {
         stand.setBottle(2, !stand.hasBottle(2));
         return stand;
     }, (bottle) -> bottle.hasBottle(2), (stand, value) -> {
@@ -741,7 +741,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Drag property. (Bubble column)
      */
-    static IProperty<BubbleColumn, Boolean> BUBBLE_COLUMN_DRAG = new Property_121<>("Drag", BubbleColumn.class, Boolean.class, (column) -> {
+    static IProperty<BubbleColumn, Boolean> BUBBLE_COLUMN_DRAG = new Property_1215<>("Drag", BubbleColumn.class, Boolean.class, (column) -> {
         column.setDrag(!column.isDrag());
         return column;
     }, BubbleColumn::isDrag, (column, value) -> {
@@ -751,7 +751,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Bites property. (Cake)
      */
-    static IProperty<Cake, Integer> CAKE_BITES = new Property_121<>("Bites", Cake.class, Integer.class, (cake) -> {
+    static IProperty<Cake, Integer> CAKE_BITES = new Property_1215<>("Bites", Cake.class, Integer.class, (cake) -> {
         cake.setBites(cake.getMaximumBites() == cake.getBites() ? 0 : cake.getBites() + 1);
         return cake;
     }, Cake::getBites, (cake, value) -> {
@@ -761,7 +761,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Moisture property. (Farmland)
      */
-    static IProperty<Farmland, Integer> FARMLAND_MOISTURE = new Property_121<>("Moisture", Farmland.class, Integer.class, (farmland) -> {
+    static IProperty<Farmland, Integer> FARMLAND_MOISTURE = new Property_1215<>("Moisture", Farmland.class, Integer.class, (farmland) -> {
         farmland.setMoisture(farmland.getMaximumMoisture() == farmland.getMoisture() ? 0 : farmland.getMoisture() + 1);
         return farmland;
     }, Farmland::getMoisture, (farmland, value) -> {
@@ -771,7 +771,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Distance property. (Leaves)
      */
-    static IProperty<Leaves, Integer> LEAVES_DISTANCE = new Property_121<>("Distance", Leaves.class, Integer.class, (leaves) -> {
+    static IProperty<Leaves, Integer> LEAVES_DISTANCE = new Property_1215<>("Distance", Leaves.class, Integer.class, (leaves) -> {
         leaves.setDistance(7 == leaves.getDistance() ? 1 : leaves.getDistance() + 1);
         return leaves;
     }, Leaves::getDistance, (leaves, value) -> {
@@ -781,7 +781,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Persistent property. (Leaves)
      */
-    static IProperty<Leaves, Boolean> LEAVES_PERSISTENT = new Property_121<>("Persistent", Leaves.class, Boolean.class, (leaves) -> {
+    static IProperty<Leaves, Boolean> LEAVES_PERSISTENT = new Property_1215<>("Persistent", Leaves.class, Boolean.class, (leaves) -> {
         leaves.setPersistent(!leaves.isPersistent());
         return leaves;
     }, Leaves::isPersistent, (leaves, value) -> {
@@ -791,7 +791,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Stage property. (Sapling)
      */
-    static IProperty<Sapling, Integer> SAPLING_STAGE = new Property_121<>("Stage", Sapling.class, Integer.class, (sapling) -> {
+    static IProperty<Sapling, Integer> SAPLING_STAGE = new Property_1215<>("Stage", Sapling.class, Integer.class, (sapling) -> {
         sapling.setStage(sapling.getMaximumStage() == sapling.getStage() ? 0 : sapling.getStage() + 1);
         return sapling;
     }, Sapling::getStage, (sapling, value) -> {
@@ -801,7 +801,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Layers property. (Snow)
      */
-    static IProperty<Snow, Integer> SNOW_LAYERS = new Property_121<>("Layers", Snow.class, Integer.class, (snow) -> {
+    static IProperty<Snow, Integer> SNOW_LAYERS = new Property_1215<>("Layers", Snow.class, Integer.class, (snow) -> {
         snow.setLayers(snow.getMaximumLayers() == snow.getLayers() ? snow.getMinimumLayers() : snow.getLayers() + 1);
         return snow;
     }, Snow::getLayers, (snow, value) -> {
@@ -811,7 +811,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Mode property. (Structure block)
      */
-    static IProperty<StructureBlock, StructureBlock.Mode> STRUCTURE_BLOCK_MODE = new Property_121<>("Mode", StructureBlock.class, StructureBlock.Mode.class, (structureBlock) -> {
+    static IProperty<StructureBlock, StructureBlock.Mode> STRUCTURE_BLOCK_MODE = new Property_1215<>("Mode", StructureBlock.class, StructureBlock.Mode.class, (structureBlock) -> {
         structureBlock.setMode(nextEnumOption(structureBlock.getMode()));
         return structureBlock;
     }, StructureBlock::getMode, ((structureBlock, value) -> {
@@ -821,7 +821,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Unstable property. (TNT)
      */
-    static IProperty<TNT, Boolean> TNT_UNSTABLE = new Property_121<>("Unstable", TNT.class, Boolean.class, (tnt) -> {
+    static IProperty<TNT, Boolean> TNT_UNSTABLE = new Property_1215<>("Unstable", TNT.class, Boolean.class, (tnt) -> {
         tnt.setUnstable(!tnt.isUnstable());
         return tnt;
     }, TNT::isUnstable, (tnt, value) -> {
@@ -842,7 +842,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     /**
      * Eggs property. (Turtle eggs)
      */
-    static IProperty<TurtleEgg, Integer> TURTLE_EGG_EGGS = new Property_121<>("Eggs", TurtleEgg.class, Integer.class, (egg) -> {
+    static IProperty<TurtleEgg, Integer> TURTLE_EGG_EGGS = new Property_1215<>("Eggs", TurtleEgg.class, Integer.class, (egg) -> {
         egg.setEggs(egg.getMaximumEggs() == egg.getEggs() ? egg.getMinimumEggs() : egg.getEggs() + 1);
         return egg;
     }, TurtleEgg::getEggs, (egg, value) -> {
@@ -865,7 +865,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
 //        return lantern;
 //    });
 
-    static IProperty<Bamboo, Bamboo.Leaves> BAMBOO_LEAVES = new Property_121<>("Leaves", Bamboo.class, Bamboo.Leaves.class, (bamboo) -> {
+    static IProperty<Bamboo, Bamboo.Leaves> BAMBOO_LEAVES = new Property_1215<>("Leaves", Bamboo.class, Bamboo.Leaves.class, (bamboo) -> {
         bamboo.setLeaves(nextEnumOption(bamboo.getLeaves()));
         return bamboo;
     }, Bamboo::getLeaves, ((bamboo, leaves) -> {
@@ -873,7 +873,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return bamboo;
     }));
 
-    static IProperty<Bell, Bell.Attachment> BELL_ATTACHMENT = new Property_121<>("Attachment", Bell.class, Bell.Attachment.class, (bell) -> {
+    static IProperty<Bell, Bell.Attachment> BELL_ATTACHMENT = new Property_1215<>("Attachment", Bell.class, Bell.Attachment.class, (bell) -> {
         bell.setAttachment(nextEnumOption(bell.getAttachment()));
         return bell;
     }, Bell::getAttachment, (bell, attachment) -> {
@@ -881,7 +881,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return bell;
     });
 
-    static IProperty<Campfire, Boolean> CAMPFIRE_SIGNAL_FIRE = new Property_121<>("Signal Fire", Campfire.class, Boolean.class, (campfire) -> {
+    static IProperty<Campfire, Boolean> CAMPFIRE_SIGNAL_FIRE = new Property_1215<>("Signal Fire", Campfire.class, Boolean.class, (campfire) -> {
         campfire.setSignalFire(!campfire.isSignalFire());
         return campfire;
     }, Campfire::isSignalFire, (campfire, signalFire) -> {
@@ -889,7 +889,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return campfire;
     });
 
-    static IProperty<Scaffolding, Boolean> SCAFFOLDING_IS_BOTTOM = new Property_121<>("Bottom", Scaffolding.class, Boolean.class, (scaffolding) -> {
+    static IProperty<Scaffolding, Boolean> SCAFFOLDING_IS_BOTTOM = new Property_1215<>("Bottom", Scaffolding.class, Boolean.class, (scaffolding) -> {
         scaffolding.setBottom(!scaffolding.isBottom());
         return scaffolding;
     }, Scaffolding::isBottom, (scaffolding, bottom) -> {
@@ -897,7 +897,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return scaffolding;
     });
 
-    static IProperty<Scaffolding, Integer> SCAFFOLDING_DISTANCE = new Property_121<>("Distance", Scaffolding.class, Integer.class, (scaffolding) -> {
+    static IProperty<Scaffolding, Integer> SCAFFOLDING_DISTANCE = new Property_1215<>("Distance", Scaffolding.class, Integer.class, (scaffolding) -> {
         scaffolding.setDistance(scaffolding.getMaximumDistance() == scaffolding.getDistance() ? 0 : scaffolding.getDistance() + 1);
         return scaffolding;
     }, Scaffolding::getDistance, (scaffolding, distance) -> {
@@ -911,7 +911,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     // #   #    #
     // # # # ####
 
-    static IProperty<Beehive, Integer> HONEY_LEVEL = new Property_121<>("Honey Level", Beehive.class, Integer.class, (beehive) -> {
+    static IProperty<Beehive, Integer> HONEY_LEVEL = new Property_1215<>("Honey Level", Beehive.class, Integer.class, (beehive) -> {
         beehive.setHoneyLevel(beehive.getMaximumHoneyLevel() == beehive.getHoneyLevel() ? 0 : beehive.getHoneyLevel() + 1);
         return beehive;
     }, Beehive::getHoneyLevel, (beehive, level) -> {
@@ -919,7 +919,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return beehive;
     });
 
-    static IProperty<FaceAttachable, FaceAttachable.AttachedFace> FACE_ATTACHABLE = new Property_121<>("Face", FaceAttachable.class, FaceAttachable.AttachedFace.class, (attachable) -> {
+    static IProperty<FaceAttachable, FaceAttachable.AttachedFace> FACE_ATTACHABLE = new Property_1215<>("Face", FaceAttachable.class, FaceAttachable.AttachedFace.class, (attachable) -> {
         attachable.setAttachedFace(nextEnumOption(attachable.getAttachedFace()));
         return attachable;
     }, FaceAttachable::getAttachedFace, (attachable, face) -> {
@@ -934,7 +934,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     // # # # ####
 
     //Data type changed to Orientation in 1.21.5
-    static IProperty<Jigsaw, Orientation> JIGSAW = new Property_121<>("Orientation", Jigsaw.class, Orientation.class, (jigsaw) -> {
+    static IProperty<Jigsaw, Orientation> JIGSAW = new Property_1215<>("Orientation", Jigsaw.class, Orientation.class, (jigsaw) -> {
         jigsaw.setOrientation(nextEnumOption(jigsaw.getOrientation()));
         return jigsaw;
     }, Jigsaw::getOrientation, (jigsaw, orientation) -> {
@@ -942,7 +942,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return jigsaw;
     });
 
-    static IProperty<RespawnAnchor, Integer> RESPAWN_ANCHOR = new Property_121<>("Charges", RespawnAnchor.class, Integer.class, (anchor) -> {
+    static IProperty<RespawnAnchor, Integer> RESPAWN_ANCHOR = new Property_1215<>("Charges", RespawnAnchor.class, Integer.class, (anchor) -> {
         anchor.setCharges(anchor.getMaximumCharges() == anchor.getCharges() ? 0 : anchor.getCharges() + 1);
         return anchor;
     }, RespawnAnchor::getCharges, (anchor, charges) -> {
@@ -950,7 +950,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return anchor;
     });
 
-    static IProperty<Wall, Wall.Height> WALL_HEIGHT_NORTH = new Property_121<>("North", Wall.class, Wall.Height.class, (wall) -> {
+    static IProperty<Wall, Wall.Height> WALL_HEIGHT_NORTH = new Property_1215<>("North", Wall.class, Wall.Height.class, (wall) -> {
         wall.setHeight(NORTH, nextEnumOption(wall.getHeight(NORTH)));
         return wall;
     }, (wall) -> wall.getHeight(NORTH), (wall, height) -> {
@@ -958,7 +958,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return wall;
     });
 
-    static IProperty<Wall, Wall.Height> WALL_HEIGHT_SOUTH = new Property_121<>("South", Wall.class, Wall.Height.class, (wall) -> {
+    static IProperty<Wall, Wall.Height> WALL_HEIGHT_SOUTH = new Property_1215<>("South", Wall.class, Wall.Height.class, (wall) -> {
         wall.setHeight(SOUTH, nextEnumOption(wall.getHeight(SOUTH)));
         return wall;
     }, (wall) -> wall.getHeight(SOUTH), (wall, height) -> {
@@ -966,7 +966,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return wall;
     });
 
-    static IProperty<Wall, Wall.Height> WALL_HEIGHT_EAST = new Property_121<>("East", Wall.class, Wall.Height.class, (wall) -> {
+    static IProperty<Wall, Wall.Height> WALL_HEIGHT_EAST = new Property_1215<>("East", Wall.class, Wall.Height.class, (wall) -> {
         wall.setHeight(EAST, nextEnumOption(wall.getHeight(EAST)));
         return wall;
     }, (wall) -> wall.getHeight(EAST), (wall, height) -> {
@@ -974,7 +974,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return wall;
     });
 
-    static IProperty<Wall, Wall.Height> WALL_HEIGHT_WEST = new Property_121<>("West", Wall.class, Wall.Height.class, (wall) -> {
+    static IProperty<Wall, Wall.Height> WALL_HEIGHT_WEST = new Property_1215<>("West", Wall.class, Wall.Height.class, (wall) -> {
         wall.setHeight(WEST, nextEnumOption(wall.getHeight(WEST)));
         return wall;
     }, (wall) -> wall.getHeight(WEST), (wall, height) -> {
@@ -982,7 +982,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return wall;
     });
 
-    static IProperty<Wall, Boolean> WALL_UP = new Property_121<>("Up", Wall.class, Boolean.class, (wall) -> {
+    static IProperty<Wall, Boolean> WALL_UP = new Property_1215<>("Up", Wall.class, Boolean.class, (wall) -> {
         wall.setUp(!wall.isUp());
         return wall;
     }, Wall::isUp, (wall, up) -> {
@@ -996,7 +996,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     // #   #   #
     // # # #   #
 
-    static IProperty<BigDripleaf, BigDripleaf.Tilt> DRIPLEAF_TILT = new Property_121<>("Tilt", BigDripleaf.class, BigDripleaf.Tilt.class, (leaf) -> {
+    static IProperty<BigDripleaf, BigDripleaf.Tilt> DRIPLEAF_TILT = new Property_1215<>("Tilt", BigDripleaf.class, BigDripleaf.Tilt.class, (leaf) -> {
         leaf.setTilt(nextEnumOption(leaf.getTilt()));
         return leaf;
     }, BigDripleaf::getTilt, (leaf, tilt) -> {
@@ -1004,7 +1004,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return leaf;
     });
 
-    static IProperty<Candle, Integer> CANDLE_CANDLES = new Property_121<>("Candles", Candle.class, Integer.class, (candle) -> {
+    static IProperty<Candle, Integer> CANDLE_CANDLES = new Property_1215<>("Candles", Candle.class, Integer.class, (candle) -> {
         candle.setCandles(candle.getMaximumCandles() == candle.getCandles() ? 1 : candle.getCandles() + 1);
         return candle;
     }, Candle::getCandles, (candle, candles) -> {
@@ -1012,7 +1012,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return candle;
     });
 
-    static IProperty<CaveVinesPlant, Boolean> CAVE_VINE_BERRIES = new Property_121<>("Has Berries", CaveVinesPlant.class, Boolean.class, (vines) -> {
+    static IProperty<CaveVinesPlant, Boolean> CAVE_VINE_BERRIES = new Property_1215<>("Has Berries", CaveVinesPlant.class, Boolean.class, (vines) -> {
         vines.setBerries(!vines.isBerries());
         return vines;
     }, CaveVinesPlant::isBerries, (vines, berries) -> {
@@ -1020,7 +1020,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return vines;
     });
 
-    static IProperty<PointedDripstone, BlockFace> DRIPSTONE_VERTICAL_DIRECTION = new Property_121<>("Vertical Direction", PointedDripstone.class, BlockFace.class, (dripstone) -> {
+    static IProperty<PointedDripstone, BlockFace> DRIPSTONE_VERTICAL_DIRECTION = new Property_1215<>("Vertical Direction", PointedDripstone.class, BlockFace.class, (dripstone) -> {
         dripstone.setVerticalDirection(nextEnumOption(dripstone.getVerticalDirection(), dripstone.getVerticalDirections()));
         return dripstone;
     }, PointedDripstone::getVerticalDirection, (dripstone, direction) -> {
@@ -1028,7 +1028,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return dripstone;
     });
 
-    static IProperty<PointedDripstone, PointedDripstone.Thickness> DRIPSTONE_THICKNESS = new Property_121<>("Thickness", PointedDripstone.class, PointedDripstone.Thickness.class, (dripstone) -> {
+    static IProperty<PointedDripstone, PointedDripstone.Thickness> DRIPSTONE_THICKNESS = new Property_1215<>("Thickness", PointedDripstone.class, PointedDripstone.Thickness.class, (dripstone) -> {
         dripstone.setThickness(nextEnumOption(dripstone.getThickness()));
         return dripstone;
     }, PointedDripstone::getThickness, (dripstone, thickness) -> {
@@ -1036,7 +1036,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return dripstone;
     });
 
-    static IProperty<SculkSensor, SculkSensor.Phase> SCULK_PHASE = new Property_121<>("Phase", SculkSensor.class, SculkSensor.Phase.class, (sensor) -> {
+    static IProperty<SculkSensor, SculkSensor.Phase> SCULK_PHASE = new Property_1215<>("Phase", SculkSensor.class, SculkSensor.Phase.class, (sensor) -> {
         sensor.setPhase(nextEnumOption(sensor.getPhase()));
         return sensor;
     }, SculkSensor::getPhase, (sensor, phase) -> {
@@ -1050,7 +1050,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     // #   #    #
     // # # # ####
 
-    static IProperty<Hangable, Boolean> HUNG = new Property_121<>("Hanging", Hangable.class, Boolean.class, (hung) -> {
+    static IProperty<Hangable, Boolean> HUNG = new Property_1215<>("Hanging", Hangable.class, Boolean.class, (hung) -> {
         hung.setHanging(!hung.isHanging());
         return hung;
     }, Hangable::isHanging, (block, newState) -> {
@@ -1058,7 +1058,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return block;
     });
 
-    static IProperty<SculkCatalyst, Boolean> SCULK_CATALYST = new Property_121<>("Bloom", SculkCatalyst.class, Boolean.class, (sculk) -> {
+    static IProperty<SculkCatalyst, Boolean> SCULK_CATALYST = new Property_1215<>("Bloom", SculkCatalyst.class, Boolean.class, (sculk) -> {
         sculk.setBloom(!sculk.isBloom());
         return sculk;
     }, SculkCatalyst::isBloom, (sculk, bloom) -> {
@@ -1066,7 +1066,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return sculk;
     });
 
-    static IProperty<SculkShrieker, Boolean> SCULK_CAN_SUMMON = new Property_121<>("Can Summon", SculkShrieker.class, Boolean.class, (sculk) -> {
+    static IProperty<SculkShrieker, Boolean> SCULK_CAN_SUMMON = new Property_1215<>("Can Summon", SculkShrieker.class, Boolean.class, (sculk) -> {
         sculk.setCanSummon(!sculk.isCanSummon());
         return sculk;
     }, SculkShrieker::isCanSummon, (sculk, canSummon) -> {
@@ -1074,7 +1074,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return sculk;
     });
 
-    static IProperty<SculkShrieker, Boolean> SCULK_SKEIEKING = new Property_121<>("Shrieking", SculkShrieker.class, Boolean.class, (sculk) -> {
+    static IProperty<SculkShrieker, Boolean> SCULK_SKEIEKING = new Property_1215<>("Shrieking", SculkShrieker.class, Boolean.class, (sculk) -> {
         sculk.setShrieking(!sculk.isShrieking());
         return sculk;
     }, SculkShrieker::isShrieking, (sculk, shrieking) -> {
@@ -1088,7 +1088,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     // #   #    #  #
     // # # #### ####
 
-    static IProperty<ChiseledBookshelf, Boolean> CHISELED_BOOKSHELF_SLOT_0_OCCUPIED = new Property_121<>("Slot 0 Occupied", ChiseledBookshelf.class, Boolean.class, (shelf) -> {
+    static IProperty<ChiseledBookshelf, Boolean> CHISELED_BOOKSHELF_SLOT_0_OCCUPIED = new Property_1215<>("Slot 0 Occupied", ChiseledBookshelf.class, Boolean.class, (shelf) -> {
         shelf.setSlotOccupied(0, !shelf.isSlotOccupied(0));
         return shelf;
     }, (shelf) -> shelf.isSlotOccupied(0), (shelf, occupied) -> {
@@ -1096,7 +1096,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return shelf;
     });
 
-    static IProperty<ChiseledBookshelf, Boolean> CHISELED_BOOKSHELF_SLOT_1_OCCUPIED = new Property_121<>("Slot 1 Occupied", ChiseledBookshelf.class, Boolean.class, (shelf) -> {
+    static IProperty<ChiseledBookshelf, Boolean> CHISELED_BOOKSHELF_SLOT_1_OCCUPIED = new Property_1215<>("Slot 1 Occupied", ChiseledBookshelf.class, Boolean.class, (shelf) -> {
         shelf.setSlotOccupied(1, !shelf.isSlotOccupied(1));
         return shelf;
     }, (shelf) -> shelf.isSlotOccupied(1), (shelf, occupied) -> {
@@ -1104,7 +1104,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return shelf;
     });
 
-    static IProperty<ChiseledBookshelf, Boolean> CHISELED_BOOKSHELF_SLOT_2_OCCUPIED = new Property_121<>("Slot 2 Occupied", ChiseledBookshelf.class, Boolean.class, (shelf) -> {
+    static IProperty<ChiseledBookshelf, Boolean> CHISELED_BOOKSHELF_SLOT_2_OCCUPIED = new Property_1215<>("Slot 2 Occupied", ChiseledBookshelf.class, Boolean.class, (shelf) -> {
         shelf.setSlotOccupied(2, !shelf.isSlotOccupied(2));
         return shelf;
     }, (shelf) -> shelf.isSlotOccupied(2), (shelf, occupied) -> {
@@ -1112,7 +1112,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return shelf;
     });
 
-    static IProperty<ChiseledBookshelf, Boolean> CHISELED_BOOKSHELF_SLOT_3_OCCUPIED = new Property_121<>("Slot 3 Occupied", ChiseledBookshelf.class, Boolean.class, (shelf) -> {
+    static IProperty<ChiseledBookshelf, Boolean> CHISELED_BOOKSHELF_SLOT_3_OCCUPIED = new Property_1215<>("Slot 3 Occupied", ChiseledBookshelf.class, Boolean.class, (shelf) -> {
         shelf.setSlotOccupied(3, !shelf.isSlotOccupied(3));
         return shelf;
     }, (shelf) -> shelf.isSlotOccupied(3), (shelf, occupied) -> {
@@ -1120,7 +1120,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return shelf;
     });
 
-    static IProperty<ChiseledBookshelf, Boolean> CHISELED_BOOKSHELF_SLOT_4_OCCUPIED = new Property_121<>("Slot 4 Occupied", ChiseledBookshelf.class, Boolean.class, (shelf) -> {
+    static IProperty<ChiseledBookshelf, Boolean> CHISELED_BOOKSHELF_SLOT_4_OCCUPIED = new Property_1215<>("Slot 4 Occupied", ChiseledBookshelf.class, Boolean.class, (shelf) -> {
         shelf.setSlotOccupied(4, !shelf.isSlotOccupied(4));
         return shelf;
     }, (shelf) -> shelf.isSlotOccupied(4), (shelf, occupied) -> {
@@ -1128,7 +1128,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return shelf;
     });
 
-    static IProperty<ChiseledBookshelf, Boolean> CHISELED_BOOKSHELF_SLOT_5_OCCUPIED = new Property_121<>("Slot 5 Occupied", ChiseledBookshelf.class, Boolean.class, (shelf) -> {
+    static IProperty<ChiseledBookshelf, Boolean> CHISELED_BOOKSHELF_SLOT_5_OCCUPIED = new Property_1215<>("Slot 5 Occupied", ChiseledBookshelf.class, Boolean.class, (shelf) -> {
         shelf.setSlotOccupied(5, !shelf.isSlotOccupied(5));
         return shelf;
     }, (shelf) -> shelf.isSlotOccupied(5), (shelf, occupied) -> {
@@ -1137,7 +1137,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
     });
 
     //from pink petals to FlowerBed as of 1.21.5
-    static IProperty<FlowerBed, Integer> FLOWER_AMOUNT = new Property_121<>("Flower Amount", FlowerBed.class, Integer.class, (petals) -> {
+    static IProperty<FlowerBed, Integer> FLOWER_AMOUNT = new Property_1215<>("Flower Amount", FlowerBed.class, Integer.class, (petals) -> {
         petals.setFlowerAmount(petals.getMaximumFlowerAmount() == petals.getFlowerAmount() ? 0 : petals.getFlowerAmount() + 1);
         return petals;
     }, FlowerBed::getFlowerAmount, (petals, amount) -> {
@@ -1145,7 +1145,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return petals;
     });
 
-    static IProperty<Brushable, Integer> BRUSHABLE_DUSTED = new Property_121<>("Dusted", Brushable.class, Integer.class, (brushable) -> {
+    static IProperty<Brushable, Integer> BRUSHABLE_DUSTED = new Property_1215<>("Dusted", Brushable.class, Integer.class, (brushable) -> {
         brushable.setDusted(brushable.getDusted() == brushable.getMaximumDusted() ? 0 : brushable.getDusted() + 1);
         return brushable;
     }, Brushable::getDusted, (brushable, dusted) -> {
@@ -1153,7 +1153,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return brushable;
     });
 
-    static IProperty<Hatchable, Integer> HATCHABLE_HATCH = new Property_121<>("Hatch", Hatchable.class, Integer.class, (hatchable) -> {
+    static IProperty<Hatchable, Integer> HATCHABLE_HATCH = new Property_1215<>("Hatch", Hatchable.class, Integer.class, (hatchable) -> {
         hatchable.setHatch(hatchable.getHatch() == hatchable.getMaximumHatch() ? 0 : hatchable.getHatch() + 1);
         return hatchable;
     }, Hatchable::getHatch, (hatchable, hatch) -> {
@@ -1161,13 +1161,13 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return hatchable;
     });
 
-    // #   #### #
-    // #      # #
-    // #   #### #
-    // #   #    #
-    // # # #### #
+    // #   #### #   ####
+    // #      # #   #
+    // #   #### #   ####
+    // #   #    #      #
+    // # # #### # # ####
 
-    static IProperty<Crafter, Boolean> CRAFTER_CRAFTING = new Property_121<>("Crafting", Crafter.class, Boolean.class, (crafter) -> {
+    static IProperty<Crafter, Boolean> CRAFTER_CRAFTING = new Property_1215<>("Crafting", Crafter.class, Boolean.class, (crafter) -> {
         crafter.setCrafting(!crafter.isCrafting());
         return crafter;
     }, Crafter::isCrafting, (crafter, crafting) -> {
@@ -1175,7 +1175,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return crafter;
     });
 
-    static IProperty<Crafter, Boolean> CRAFTER_TRIGGERED = new Property_121<>("Triggered", Crafter.class, Boolean.class, (crafter) -> {
+    static IProperty<Crafter, Boolean> CRAFTER_TRIGGERED = new Property_1215<>("Triggered", Crafter.class, Boolean.class, (crafter) -> {
         crafter.setTriggered(!crafter.isTriggered());
         return crafter;
     }, Crafter::isTriggered, (crafter, triggered) -> {
@@ -1183,7 +1183,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return crafter;
     });
 
-    static IProperty<Crafter, Orientation> CRAFTER_ORIENTATION = new Property_121<>("Orientation", Crafter.class, Orientation.class, (crafter) -> {
+    static IProperty<Crafter, Orientation> CRAFTER_ORIENTATION = new Property_1215<>("Orientation", Crafter.class, Orientation.class, (crafter) -> {
         crafter.setOrientation(nextEnumOption(crafter.getOrientation()));
         return crafter;
     }, Crafter::getOrientation, (crafter, orientation) -> {
@@ -1191,7 +1191,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return crafter;
     });
 
-    static IProperty<CreakingHeart, Boolean> CREAKING_NATURAL = new Property_121<>("Natural", CreakingHeart.class, Boolean.class, (creaking) -> {
+    static IProperty<CreakingHeart, Boolean> CREAKING_NATURAL = new Property_1215<>("Natural", CreakingHeart.class, Boolean.class, (creaking) -> {
         creaking.setNatural(!creaking.isNatural());
         return creaking;
     }, CreakingHeart::isNatural, (creaking, natural) -> {
@@ -1199,7 +1199,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return creaking;
     });
 
-    static IProperty<CreakingHeart, CreakingHeart.State> CREAKING_STATE = new Property_121<>("Creaking Heart State", CreakingHeart.class, CreakingHeart.State.class, (creaking) -> {
+    static IProperty<CreakingHeart, CreakingHeart.State> CREAKING_STATE = new Property_1215<>("Creaking Heart State", CreakingHeart.class, CreakingHeart.State.class, (creaking) -> {
         creaking.setCreakingHeartState(nextEnumOption(creaking.getCreakingHeartState()));
         return creaking;
     }, CreakingHeart::getCreakingHeartState, (creaking, state) -> {
@@ -1207,7 +1207,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return creaking;
     });
 
-    static IProperty<HangingMoss, Boolean> MOSS_IS_TIP = new Property_121<>("Tip", HangingMoss.class, Boolean.class, (moss) -> {
+    static IProperty<HangingMoss, Boolean> MOSS_IS_TIP = new Property_1215<>("Tip", HangingMoss.class, Boolean.class, (moss) -> {
         moss.setTip(!moss.isTip());
         return moss;
     }, HangingMoss::isTip, (moss, tip) -> {
@@ -1215,7 +1215,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return moss;
     });
 
-    static IProperty<LeafLitter, Integer> LEAF_SEGMENT_AMOUNT = new Property_121<>("Segments", LeafLitter.class, Integer.class, (litter) -> {
+    static IProperty<LeafLitter, Integer> LEAF_SEGMENT_AMOUNT = new Property_1215<>("Segments", LeafLitter.class, Integer.class, (litter) -> {
         litter.setSegmentAmount(litter.getMaximumSegmentAmount() == litter.getSegmentAmount() ? 0 : litter.getSegmentAmount() + 1);
         return litter;
     }, LeafLitter::getSegmentAmount, (litter, amount) -> {
@@ -1223,7 +1223,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return litter;
     });
 
-    static IProperty<MossyCarpet, Boolean> MOSSY_CARPET_IS_BOTTOM = new Property_121<>("Bottom", MossyCarpet.class, Boolean.class, (carpet) -> {
+    static IProperty<MossyCarpet, Boolean> MOSSY_CARPET_IS_BOTTOM = new Property_1215<>("Bottom", MossyCarpet.class, Boolean.class, (carpet) -> {
         carpet.setBottom(!carpet.isBottom());
         return carpet;
     }, MossyCarpet::isBottom, (carpet, bottom) -> {
@@ -1231,7 +1231,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return carpet;
     });
 
-    static IProperty<MossyCarpet, Wall.Height> MOSSY_CARPET_NORTH = new Property_121<>("North", MossyCarpet.class, Wall.Height.class, (carpet) -> {
+    static IProperty<MossyCarpet, Wall.Height> MOSSY_CARPET_NORTH = new Property_1215<>("North", MossyCarpet.class, Wall.Height.class, (carpet) -> {
         carpet.setHeight(NORTH, nextEnumOption(carpet.getHeight(NORTH)));
         return carpet;
     }, (carpet) -> carpet.getHeight(NORTH), (carpet, height) -> {
@@ -1239,7 +1239,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return carpet;
     });
 
-    static IProperty<MossyCarpet, Wall.Height> MOSSY_CARPET_SOUTH = new Property_121<>("South", MossyCarpet.class, Wall.Height.class, (carpet) -> {
+    static IProperty<MossyCarpet, Wall.Height> MOSSY_CARPET_SOUTH = new Property_1215<>("South", MossyCarpet.class, Wall.Height.class, (carpet) -> {
         carpet.setHeight(SOUTH, nextEnumOption(carpet.getHeight(SOUTH)));
         return carpet;
     }, (carpet) -> carpet.getHeight(SOUTH), (carpet, height) -> {
@@ -1247,7 +1247,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return carpet;
     });
 
-    static IProperty<MossyCarpet, Wall.Height> MOSSY_CARPET_EAST = new Property_121<>("East", MossyCarpet.class, Wall.Height.class, (carpet) -> {
+    static IProperty<MossyCarpet, Wall.Height> MOSSY_CARPET_EAST = new Property_1215<>("East", MossyCarpet.class, Wall.Height.class, (carpet) -> {
         carpet.setHeight(EAST, nextEnumOption(carpet.getHeight(EAST)));
         return carpet;
     }, (carpet) -> carpet.getHeight(EAST), (carpet, height) -> {
@@ -1255,7 +1255,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return carpet;
     });
 
-    static IProperty<MossyCarpet, Wall.Height> MOSSY_CARPET_WEST = new Property_121<>("West", MossyCarpet.class, Wall.Height.class, (carpet) -> {
+    static IProperty<MossyCarpet, Wall.Height> MOSSY_CARPET_WEST = new Property_1215<>("West", MossyCarpet.class, Wall.Height.class, (carpet) -> {
         carpet.setHeight(WEST, nextEnumOption(carpet.getHeight(WEST)));
         return carpet;
     }, (carpet) -> carpet.getHeight(WEST), (carpet, height) -> {
@@ -1263,7 +1263,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         return carpet;
     });
 
-    static IProperty<TestBlock, TestBlock.Mode> TEST_BLOCK_MODE = new Property_121<>("Mode", TestBlock.class, TestBlock.Mode.class, (testBlock) -> {
+    static IProperty<TestBlock, TestBlock.Mode> TEST_BLOCK_MODE = new Property_1215<>("Mode", TestBlock.class, TestBlock.Mode.class, (testBlock) -> {
         testBlock.setMode(nextEnumOption(testBlock.getMode()));
         return testBlock;
     }, TestBlock::getMode, (testBlock, mode) -> {
@@ -1275,7 +1275,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         if (registered)
             throw new RuntimeException("Cannot re-register properties after they've been registered.");
         registered = true;
-        for (Field field : Property_121.class.getDeclaredFields()) {
+        for (Field field : Property_1215.class.getDeclaredFields()) {
             if (field.getType() == IProperty.class) {
                 try {
                     PROPERTY_FIELD_MAP.put(field.getName(), (IProperty<?, ?>)field.get(null));
@@ -1326,7 +1326,7 @@ public class Property_121<D extends BlockData, V> extends AbstractProperty<D, V>
         }
     }
 
-    private Property_121(String niceName, Class<D> dataType, Class<V> valueType, Function<D, D> next, Function<D, V> current, BiFunction<D, V, D> set) {
+    private Property_1215(String niceName, Class<D> dataType, Class<V> valueType, Function<D, D> next, Function<D, V> current, BiFunction<D, V, D> set) {
         super(niceName, dataType, valueType, next, current, set);
     }
 }

@@ -11,7 +11,6 @@ import com.njdaeger.enhanceddebugstick.modes.copy.CopyDebugMode;
 import com.njdaeger.enhanceddebugstick.modes.freeze.FreezeDebugMode;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.session.DefaultPreferences;
-import com.njdaeger.enhanceddebugstick.util.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -58,11 +57,6 @@ public final class EnhancedDebugStick extends JavaPlugin implements EnhancedDebu
             new DebugStickCommand(this);
             new DebugListener(this);
         }
-
-        if (KEYS.BSTATS_INTEGRATION) {//Need to wait for custom bar charts
-            new Metrics(this);
-            getLogger().info("BStats Metrics enabled.");
-        } else getLogger().info("BStats Metrics disabled.");
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             addDebugSession(player.getUniqueId());
