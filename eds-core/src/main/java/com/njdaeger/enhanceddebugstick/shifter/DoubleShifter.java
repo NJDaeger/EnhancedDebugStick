@@ -7,7 +7,8 @@ import com.njdaeger.enhanceddebugstick.i18n.Translation;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.session.DefaultPreferences;
 import com.njdaeger.enhanceddebugstick.util.BossBarTimer;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Sound;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -22,7 +23,12 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
         if (session.getSelectingStart() == 0) {
             session.setSelectingStart(System.currentTimeMillis());
             if (ConfigKey.get().ALLOW_BOSSBAR_TIMERS) BossBarTimer.create(event.getPlayer(), false, timeout, 2,
-                    (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + Translation.SHIFT_DOUBLE_TIME_REMAINING.get().apply((((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.)), (p) -> session.isSelectingMode(), () -> {
+                    (timer) -> Component.text("[", NamedTextColor.DARK_GRAY)
+                            .append(Component.text("EDS", NamedTextColor.BLUE))
+                            .append(Component.text("] ", NamedTextColor.DARK_GRAY))
+                            .append(Translation.SHIFT_DOUBLE_TIME_REMAINING.get().apply((((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.))), 
+                    (p) -> session.isSelectingMode(), 
+                    () -> {
                         if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     }).start();
         }
@@ -52,7 +58,12 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
         if (session.getSelectingStart() == 0) {
             session.setSelectingStart(System.currentTimeMillis());
             if (ConfigKey.get().ALLOW_BOSSBAR_TIMERS) BossBarTimer.create(event.getPlayer(), false, timeout, 2,
-                    (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + Translation.SHIFT_DOUBLE_TIME_REMAINING.get().apply(((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.), (p) -> !session.isSelectingMode(), () -> {
+                    (timer) -> Component.text("[", NamedTextColor.DARK_GRAY)
+                            .append(Component.text("EDS", NamedTextColor.BLUE))
+                            .append(Component.text("] ", NamedTextColor.DARK_GRAY))
+                            .append(Translation.SHIFT_DOUBLE_TIME_REMAINING.get().apply(((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.)), 
+                    (p) -> !session.isSelectingMode(), 
+                    () -> {
                         if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                     }).start();
         }
@@ -66,7 +77,10 @@ public class DoubleShifter implements Shifter<PlayerInteractEvent, PlayerToggleS
                 session.setSelectingMode(false);
                 session.resume();
                 if (ConfigKey.get().ALLOW_BOSSBAR_TIMERS) BossBarTimer.create(event.getPlayer(), false, session.getPreference(DefaultPreferences.CHANGE_COOLDOWN), 2,
-                        (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + Translation.SHIFT_DOUBLE_COOLDOWN.get().apply(((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.)).start();
+                        (timer) -> Component.text("[", NamedTextColor.DARK_GRAY)
+                                .append(Component.text("EDS", NamedTextColor.BLUE))
+                                .append(Component.text("] ", NamedTextColor.DARK_GRAY))
+                                .append(Translation.SHIFT_DOUBLE_COOLDOWN.get().apply(((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.))).start();
             }
         }
     }

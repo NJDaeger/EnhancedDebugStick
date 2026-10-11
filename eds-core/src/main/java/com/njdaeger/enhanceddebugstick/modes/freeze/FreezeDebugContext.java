@@ -63,7 +63,7 @@ public final class FreezeDebugContext implements IFreezeDebugContext {
             if (ConfigKey.get().FDM_OUTLINE) {
                 highlighter.lightBlock(block, player);
             }
-            block.setType(Material.RED_WOOL, false);
+            block.setType(Material.BARRIER, false);
         }
     }
     
@@ -111,7 +111,7 @@ public final class FreezeDebugContext implements IFreezeDebugContext {
             if (ConfigKey.get().FDM_OUTLINE) {
                 highlighter.lightBlock(location.getBlock(), player);
             }
-            location.getBlock().setType(Material.RED_WOOL, false);
+            location.getBlock().setType(Material.BARRIER, false);
         });
     }
     

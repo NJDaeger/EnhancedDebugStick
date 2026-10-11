@@ -8,12 +8,9 @@ import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
 import com.njdaeger.enhanceddebugstick.api.event.FreezeBlockEvent;
 import com.njdaeger.enhanceddebugstick.api.event.UnfreezeBlockEvent;
 import com.njdaeger.enhanceddebugstick.i18n.Translation;
-import com.njdaeger.enhanceddebugstick.mcversion.Version;
 import com.njdaeger.enhanceddebugstick.util.highlighter.IBlockHighlighter;
 import com.njdaeger.enhanceddebugstick.util.highlighter.impl.GenericBlockHighlighter;
-import com.njdaeger.enhanceddebugstick.util.highlighter.impl.LegacyBlockHighlighter;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
@@ -30,13 +27,7 @@ public class FreezeDebugMode extends DebugModeType<FreezeDebugMode, FreezeDebugC
     private static final IBlockHighlighter highlighter;
     
     static {
-        int lastGenericImpl = Version.v1_19_3.getOrdinal();
-        if (Version.getCurrentVersion().getOrdinal() > lastGenericImpl) {
-            highlighter = new GenericBlockHighlighter();
-        }
-        else {
-            highlighter = new LegacyBlockHighlighter();
-        }
+        highlighter = new GenericBlockHighlighter();
     }
     
     public FreezeDebugMode(EnhancedDebugStickApi plugin) {

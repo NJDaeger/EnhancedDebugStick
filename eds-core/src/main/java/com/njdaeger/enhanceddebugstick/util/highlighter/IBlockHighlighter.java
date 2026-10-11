@@ -1,9 +1,7 @@
 package com.njdaeger.enhanceddebugstick.util.highlighter;
 
-import com.njdaeger.enhanceddebugstick.mcversion.Version;
-import com.njdaeger.enhanceddebugstick.util.highlighter.impl.GenericHighlightSession;
-import com.njdaeger.enhanceddebugstick.util.highlighter.impl.v1194HighlightSession;
-import org.bukkit.Bukkit;
+import com.njdaeger.enhanceddebugstick.EnhancedDebugStick;
+import com.njdaeger.enhanceddebugstick.util.highlighter.impl.DisplayBlockHighlightSession;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -36,13 +34,7 @@ public interface IBlockHighlighter {
     void lightBlock(Block block, Player player);
     
     default IHighlightSession createSession(Player player) {
-        //when using this implementation, we will never be on any version less than 1.19.4
-        if (Version.getCurrentVersion() == Version.v1_19_4) {
-            return new v1194HighlightSession(player);
-        } else {
-            Bukkit.getLogger().warning("Block highlighting for the freeze mode may not work as intended. The entities will likely be visible to other players.");
-            return new GenericHighlightSession();
-        }
+        return new DisplayBlockHighlightSession(EnhancedDebugStick.getPlugin(EnhancedDebugStick.class), player);
     }
     
     

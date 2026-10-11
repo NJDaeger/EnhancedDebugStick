@@ -1,6 +1,10 @@
 package com.njdaeger.enhanceddebugstick.i18n;
 
+import net.kyori.adventure.text.TextComponent;
+
 import java.util.function.Function;
+
+import static com.njdaeger.enhanceddebugstick.util.Util.LEGACY_COMPONENT_SERIALIZER;
 
 public class Var1<A> extends AbstractVariable {
     
@@ -9,8 +13,8 @@ public class Var1<A> extends AbstractVariable {
         mapFunctions(function);
     }
     
-    public String apply(A a) {
-        return translate(a);
+    public TextComponent apply(A a) {
+        return LEGACY_COMPONENT_SERIALIZER.deserialize(translate(a));
     }
     
 }

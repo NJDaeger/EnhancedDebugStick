@@ -3,6 +3,7 @@ package com.njdaeger.enhanceddebugstick;
 import com.njdaeger.enhanceddebugstick.api.EnhancedDebugStickApi;
 import com.njdaeger.enhanceddebugstick.api.config.ConfigKey;
 import com.njdaeger.enhanceddebugstick.api.session.IDebugSession;
+import com.njdaeger.enhanceddebugstick.command.DebugStickCommand;
 import com.njdaeger.enhanceddebugstick.i18n.TranslationProvider;
 import com.njdaeger.enhanceddebugstick.mcversion.PropertyLoader;
 import com.njdaeger.enhanceddebugstick.modes.classic.ClassicDebugMode;
@@ -10,7 +11,6 @@ import com.njdaeger.enhanceddebugstick.modes.copy.CopyDebugMode;
 import com.njdaeger.enhanceddebugstick.modes.freeze.FreezeDebugMode;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.session.DefaultPreferences;
-import com.njdaeger.enhanceddebugstick.util.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -51,24 +51,12 @@ public final class EnhancedDebugStick extends JavaPlugin implements EnhancedDebu
         if (!reload) {
             PropertyLoader.loadVersion(this);
             DefaultPreferences.registerPreferences();
-            new DebugStickCommand(this);
-            new DebugListener(this);
-    
             new ClassicDebugMode(this);
             new FreezeDebugMode(this);
             new CopyDebugMode(this);
+            new DebugStickCommand(this);
+            new DebugListener(this);
         }
-
-        if (KEYS.BSTATS_INTEGRATION) {//Need to wait for custom bar charts
-            /*Metrics metrics = */new Metrics(this);
-            /*metrics.addCustomChart(new Metrics.SimpleBarChart("used_addons", () -> {
-                Map<String, Integer> values = new HashMap<>();
-                values.put("CoreProtect", Bukkit.getPluginManager().getPlugin("EnhancedDebugStick-CoreProtect") != null ? 1 : 0);
-                values.put("PlotSquared", Bukkit.getPluginManager().getPlugin("EnhancedDebugStick-PlotSquared") != null ? 1 : 0);
-                return values;
-            }));*/
-            getLogger().info("BStats Metrics enabled.");
-        } else getLogger().info("BStats Metrics disabled.");
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             addDebugSession(player.getUniqueId());

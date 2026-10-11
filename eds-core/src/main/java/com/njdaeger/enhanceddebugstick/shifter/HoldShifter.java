@@ -7,6 +7,8 @@ import com.njdaeger.enhanceddebugstick.i18n.Translation;
 import com.njdaeger.enhanceddebugstick.session.DebugSession;
 import com.njdaeger.enhanceddebugstick.session.DefaultPreferences;
 import com.njdaeger.enhanceddebugstick.util.BossBarTimer;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.event.Event;
@@ -26,10 +28,16 @@ public class HoldShifter implements Shifter<PlayerInteractEvent, PlayerToggleSne
             session.setSelectingStart(System.currentTimeMillis());
             long max = session.getPreference(DefaultPreferences.SNEAK_MAXIMUM);
             if (ConfigKey.get().ALLOW_BOSSBAR_TIMERS) BossBarTimer.create(event.getPlayer(), false, session.getPreference(DefaultPreferences.SNEAK_MINIMUM), 2,
-                    (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + Translation.SHIFT_HOLD_HOLD_TIME.get().apply(((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.),
+                    (timer) -> Component.text("[", NamedTextColor.DARK_GRAY)
+                            .append(Component.text("EDS", NamedTextColor.BLUE))
+                            .append(Component.text("] ", NamedTextColor.DARK_GRAY))
+                            .append(Translation.SHIFT_HOLD_HOLD_TIME.get().apply(((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.)),
                     (p) -> !p.isSneaking(), max <= 0 ? null :
                     () -> BossBarTimer.create(event.getPlayer(), true, max, 2,
-                            (timer) -> ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "EDS" + ChatColor.DARK_GRAY + "] " + Translation.SHIFT_HOLD_TIME_REMAINING.get().apply(((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.),
+                            (timer) -> Component.text("[", NamedTextColor.DARK_GRAY)
+                                    .append(Component.text("EDS", NamedTextColor.BLUE))
+                                    .append(Component.text("] ", NamedTextColor.DARK_GRAY))
+                                    .append(Translation.SHIFT_HOLD_TIME_REMAINING.get().apply(((timer.getStartTime()+timer.getTotalTime()) - System.currentTimeMillis())/1000.)),
                             (p) -> !p.isSneaking(), () -> {
                                 if (ConfigKey.get().SOUND_ON_ERROR) session.sendSound(Sound.UI_TOAST_IN);
                             }).start()).start();
