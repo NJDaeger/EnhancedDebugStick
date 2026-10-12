@@ -14,6 +14,7 @@
         <module>eds-jar</module>
         <module>eds-v1216impl</module>
         <module>eds-v1215impl</module>
+        <module>eds-v1219impl</module>
     </modules>
 
     <build>

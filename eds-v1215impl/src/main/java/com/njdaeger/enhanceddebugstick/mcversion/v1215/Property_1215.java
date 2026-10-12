@@ -28,59 +28,7 @@ import org.bukkit.block.data.Rail;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.data.Snowable;
 import org.bukkit.block.data.Waterlogged;
-import org.bukkit.block.data.type.Bamboo;
-import org.bukkit.block.data.type.Bed;
-import org.bukkit.block.data.type.Beehive;
-import org.bukkit.block.data.type.Bell;
-import org.bukkit.block.data.type.BigDripleaf;
-import org.bukkit.block.data.type.BrewingStand;
-import org.bukkit.block.data.type.BubbleColumn;
-import org.bukkit.block.data.type.Cake;
-import org.bukkit.block.data.type.Campfire;
-import org.bukkit.block.data.type.Candle;
-import org.bukkit.block.data.type.CaveVinesPlant;
-import org.bukkit.block.data.type.Chest;
-import org.bukkit.block.data.type.ChiseledBookshelf;
-import org.bukkit.block.data.type.CommandBlock;
-import org.bukkit.block.data.type.Comparator;
-import org.bukkit.block.data.type.Crafter;
-import org.bukkit.block.data.type.CreakingHeart;
-import org.bukkit.block.data.type.DaylightDetector;
-import org.bukkit.block.data.type.Dispenser;
-import org.bukkit.block.data.type.Door;
-import org.bukkit.block.data.type.EndPortalFrame;
-import org.bukkit.block.data.type.Farmland;
-import org.bukkit.block.data.type.FlowerBed;
-import org.bukkit.block.data.type.Gate;
-import org.bukkit.block.data.type.HangingMoss;
-import org.bukkit.block.data.type.Hopper;
-import org.bukkit.block.data.type.Jigsaw;
-import org.bukkit.block.data.type.LeafLitter;
-import org.bukkit.block.data.type.Leaves;
-import org.bukkit.block.data.type.MossyCarpet;
-import org.bukkit.block.data.type.NoteBlock;
-import org.bukkit.block.data.type.Piston;
-import org.bukkit.block.data.type.PistonHead;
-import org.bukkit.block.data.type.PointedDripstone;
-import org.bukkit.block.data.type.RedstoneWire;
-import org.bukkit.block.data.type.Repeater;
-import org.bukkit.block.data.type.RespawnAnchor;
-import org.bukkit.block.data.type.Sapling;
-import org.bukkit.block.data.type.Scaffolding;
-import org.bukkit.block.data.type.SculkCatalyst;
-import org.bukkit.block.data.type.SculkSensor;
-import org.bukkit.block.data.type.SculkShrieker;
-import org.bukkit.block.data.type.SeaPickle;
-import org.bukkit.block.data.type.Slab;
-import org.bukkit.block.data.type.Snow;
-import org.bukkit.block.data.type.Stairs;
-import org.bukkit.block.data.type.StructureBlock;
-import org.bukkit.block.data.type.TNT;
-import org.bukkit.block.data.type.TechnicalPiston;
-import org.bukkit.block.data.type.TestBlock;
-import org.bukkit.block.data.type.Tripwire;
-import org.bukkit.block.data.type.TurtleEgg;
-import org.bukkit.block.data.type.Wall;
+import org.bukkit.block.data.type.*;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -1269,6 +1217,30 @@ public class Property_1215<D extends BlockData, V> extends AbstractProperty<D, V
     }, TestBlock::getMode, (testBlock, mode) -> {
         testBlock.setMode(mode);
         return testBlock;
+    });
+
+    static IProperty<Lectern, Boolean> LECTERN_HAS_BOOK = new Property_1215<>("Has Book", Lectern.class, Boolean.class, (lectern) -> {
+        lectern.setHasBook(!lectern.hasBook());
+        return lectern;
+    }, Lectern::hasBook, (lectern, hasBook) -> {
+        lectern.setHasBook(hasBook);
+        return lectern;
+    });
+
+    static IProperty<Jukebox, Boolean> JUKEBOX_HAS_RECORD = new Property_1215<>("Has Record", Jukebox.class, Boolean.class, (jukebox) -> {
+        jukebox.setHasRecord(!jukebox.hasRecord());
+        return jukebox;
+    }, Jukebox::hasRecord, (jukebox, hasRecord) -> {
+        jukebox.setHasRecord(hasRecord);
+        return jukebox;
+    });
+
+    static IProperty<DecoratedPot, Boolean> DECORATED_POT_IS_CRACKED = new Property_1215<>("Is Cracked", DecoratedPot.class, Boolean.class, (pot) -> {
+        pot.setCracked(!pot.isCracked());
+        return pot;
+    }, DecoratedPot::isCracked, (pot, isCracked) -> {
+        pot.setCracked(isCracked);
+        return pot;
     });
 
     public static void registerProperties() {

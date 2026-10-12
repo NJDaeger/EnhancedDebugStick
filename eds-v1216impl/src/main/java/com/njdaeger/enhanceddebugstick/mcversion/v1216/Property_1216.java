@@ -1219,6 +1219,31 @@ public class Property_1216<D extends BlockData, V> extends AbstractProperty<D, V
         return testBlock;
     });
 
+    static IProperty<Lectern, Boolean> LECTERN_HAS_BOOK = new Property_1216<>("Has Book", Lectern.class, Boolean.class, (lectern) -> {
+        lectern.setHasBook(!lectern.hasBook());
+        return lectern;
+    }, Lectern::hasBook, (lectern, hasBook) -> {
+        lectern.setHasBook(hasBook);
+        return lectern;
+    });
+
+    static IProperty<Jukebox, Boolean> JUKEBOX_HAS_RECORD = new Property_1216<>("Has Record", Jukebox.class, Boolean.class, (jukebox) -> {
+        jukebox.setHasRecord(!jukebox.hasRecord());
+        return jukebox;
+    }, Jukebox::hasRecord, (jukebox, hasRecord) -> {
+        jukebox.setHasRecord(hasRecord);
+        return jukebox;
+    });
+
+    static IProperty<DecoratedPot, Boolean> DECORATED_POT_IS_CRACKED = new Property_1216<>("Is Cracked", DecoratedPot.class, Boolean.class, (pot) -> {
+        pot.setCracked(!pot.isCracked());
+        return pot;
+    }, DecoratedPot::isCracked, (pot, isCracked) -> {
+        pot.setCracked(isCracked);
+        return pot;
+    });
+
+
     // #   #### #   ####
     // #      # #   #
     // #   #### #   ####
