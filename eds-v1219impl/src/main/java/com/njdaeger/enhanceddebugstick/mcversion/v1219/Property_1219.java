@@ -98,7 +98,7 @@ public class Property_1219<D extends BlockData, V> extends AbstractProperty<D, V
      * Level property
      */
     static IProperty<Levelled, Integer> LEVEL = new Property_1219<>("Level", Levelled.class, Integer.class, (level) -> {
-        level.setLevel(level.getMaximumLevel() == level.getLevel() ? 1 : level.getLevel() + 1);
+        level.setLevel(level.getMaximumLevel() == level.getLevel() ? level.getMinimumLevel() : level.getLevel() + 1);
         return level;
     }, Levelled::getLevel, (level, value) -> {
         level.setLevel(value);
@@ -722,7 +722,7 @@ public class Property_1219<D extends BlockData, V> extends AbstractProperty<D, V
      * Distance property. (Leaves)
      */
     static IProperty<Leaves, Integer> LEAVES_DISTANCE = new Property_1219<>("Distance", Leaves.class, Integer.class, (leaves) -> {
-        leaves.setDistance(7 == leaves.getDistance() ? 1 : leaves.getDistance() + 1);
+        leaves.setDistance(7 == leaves.getDistance() ? leaves.getMinimumDistance() : leaves.getDistance() + 1);
         return leaves;
     }, Leaves::getDistance, (leaves, value) -> {
         leaves.setDistance(value);
@@ -778,17 +778,7 @@ public class Property_1219<D extends BlockData, V> extends AbstractProperty<D, V
         tnt.setUnstable(value);
         return tnt;
     });
-    // removed in 1.20
-//    /**
-//     * Hatch property. (Turtle eggs)
-//     */
-//    static IProperty<TurtleEgg, Integer> TURTLE_EGG_HATCH = new Property_121<>("Hatch", TurtleEgg.class, Integer.class, (egg) -> {
-//        egg.setHatch(egg.getMaximumHatch() == egg.getHatch() ? 0 : egg.getHatch() + 1);
-//        return egg;
-//    }, TurtleEgg::getHatch, (egg, value) -> {
-//        egg.setHatch(value);
-//        return egg;
-//    });
+
     /**
      * Eggs property. (Turtle eggs)
      */
@@ -805,15 +795,6 @@ public class Property_1219<D extends BlockData, V> extends AbstractProperty<D, V
     // #   # ####
     // #   #    #
     // # # #    #
-
-    //removed this in 1.19 due to the 'Hanging' datatype
-//    static IProperty<Lantern, Boolean> LANTERN_HANGING = new Property_119<>("Hanging", Lantern.class, Boolean.class, (lantern) -> {
-//        lantern.setHanging(!lantern.isHanging());
-//        return lantern;
-//    }, Lantern::isHanging, (lantern, hanging) -> {
-//        lantern.setHanging(hanging);
-//        return lantern;
-//    });
 
     static IProperty<Bamboo, Bamboo.Leaves> BAMBOO_LEAVES = new Property_1219<>("Leaves", Bamboo.class, Bamboo.Leaves.class, (bamboo) -> {
         bamboo.setLeaves(nextEnumOption(bamboo.getLeaves()));
@@ -955,7 +936,7 @@ public class Property_1219<D extends BlockData, V> extends AbstractProperty<D, V
     });
 
     static IProperty<Candle, Integer> CANDLE_CANDLES = new Property_1219<>("Candles", Candle.class, Integer.class, (candle) -> {
-        candle.setCandles(candle.getMaximumCandles() == candle.getCandles() ? 1 : candle.getCandles() + 1);
+        candle.setCandles(candle.getMaximumCandles() == candle.getCandles() ? candle.getMinimumCandles() : candle.getCandles() + 1);
         return candle;
     }, Candle::getCandles, (candle, candles) -> {
         candle.setCandles(candles);
@@ -1088,7 +1069,7 @@ public class Property_1219<D extends BlockData, V> extends AbstractProperty<D, V
 
     //from pink petals to FlowerBed as of 1.21.5
     static IProperty<FlowerBed, Integer> FLOWER_AMOUNT = new Property_1219<>("Flower Amount", FlowerBed.class, Integer.class, (petals) -> {
-        petals.setFlowerAmount(petals.getMaximumFlowerAmount() == petals.getFlowerAmount() ? 0 : petals.getFlowerAmount() + 1);
+        petals.setFlowerAmount(petals.getMaximumFlowerAmount() == petals.getFlowerAmount() ? petals.getMinimumFlowerAmount() : petals.getFlowerAmount() + 1);
         return petals;
     }, FlowerBed::getFlowerAmount, (petals, amount) -> {
         petals.setFlowerAmount(amount);
@@ -1165,14 +1146,6 @@ public class Property_1219<D extends BlockData, V> extends AbstractProperty<D, V
         return moss;
     });
 
-    static IProperty<LeafLitter, Integer> LEAF_SEGMENT_AMOUNT = new Property_1219<>("Segments", LeafLitter.class, Integer.class, (litter) -> {
-        litter.setSegmentAmount(litter.getMaximumSegmentAmount() == litter.getSegmentAmount() ? 0 : litter.getSegmentAmount() + 1);
-        return litter;
-    }, LeafLitter::getSegmentAmount, (litter, amount) -> {
-        litter.setSegmentAmount(amount);
-        return litter;
-    });
-
     static IProperty<MossyCarpet, Boolean> MOSSY_CARPET_IS_BOTTOM = new Property_1219<>("Bottom", MossyCarpet.class, Boolean.class, (carpet) -> {
         carpet.setBottom(!carpet.isBottom());
         return carpet;
@@ -1245,6 +1218,14 @@ public class Property_1219<D extends BlockData, V> extends AbstractProperty<D, V
         return pot;
     });
 
+    static IProperty<Segmentable, Integer> SEGMENT_AMOUNT = new Property_1219<>("Segment Amount", Segmentable.class, Integer.class, (segmentable) -> {
+        segmentable.setSegmentAmount(segmentable.getMaximumSegmentAmount() == segmentable.getSegmentAmount() ? segmentable.getMinimumSegmentAmount() : segmentable.getSegmentAmount() + 1);
+        return segmentable;
+    }, Segmentable::getSegmentAmount, (segmentable, amount) -> {
+        segmentable.setSegmentAmount(amount);
+        return segmentable;
+    });
+
     // #   #### #   ####
     // #      # #   #
     // #   #### #   ####
@@ -1265,20 +1246,12 @@ public class Property_1219<D extends BlockData, V> extends AbstractProperty<D, V
     // #   #    #      #
     // # # #### # # ####
 
-    static IProperty<SideChaining, SideChaining.ChainPart> SIDE_CHAINING_PART = new Property_1219<>("Chain Part", SideChaining.class, SideChaining.ChainPart.class, (chain) -> {
+    static IProperty<SideChaining, SideChaining.ChainPart> SIDE_CHAINING_PART = new Property_1219<>("Side Chain", SideChaining.class, SideChaining.ChainPart.class, (chain) -> {
         chain.setSideChain(nextEnumOption(chain.getSideChain()));
         return chain;
     }, SideChaining::getSideChain, (chain, part) -> {
         chain.setSideChain(part);
         return chain;
-    });
-
-    static IProperty<Segmentable, Integer> SEGMENT_AMOUNT = new Property_1219<>("Segments", Segmentable.class, Integer.class, (segmentable) -> {
-        segmentable.setSegmentAmount(segmentable.getMaximumSegmentAmount() == segmentable.getSegmentAmount() ? segmentable.getMinimumSegmentAmount() : segmentable.getSegmentAmount() + 1);
-        return segmentable;
-    }, Segmentable::getSegmentAmount, (segmentable, amount) -> {
-        segmentable.setSegmentAmount(amount);
-        return segmentable;
     });
 
     static IProperty<Vault, Vault.State> VAULT_STATE = new Property_1219<>("State", Vault.class, Vault.State.class, (vault) -> {

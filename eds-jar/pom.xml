@@ -51,6 +51,12 @@
             <version>2.1.1</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.njdaeger</groupId>
+            <artifactId>eds-v1219impl</artifactId>
+            <version>2.1.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

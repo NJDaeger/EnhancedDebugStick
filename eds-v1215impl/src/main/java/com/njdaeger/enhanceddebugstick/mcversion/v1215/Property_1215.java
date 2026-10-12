@@ -26,6 +26,7 @@ import org.bukkit.block.data.Orientable;
 import org.bukkit.block.data.Powerable;
 import org.bukkit.block.data.Rail;
 import org.bukkit.block.data.Rotatable;
+import org.bukkit.block.data.Segmentable;
 import org.bukkit.block.data.Snowable;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.*;
@@ -1163,14 +1164,6 @@ public class Property_1215<D extends BlockData, V> extends AbstractProperty<D, V
         return moss;
     });
 
-    static IProperty<LeafLitter, Integer> LEAF_SEGMENT_AMOUNT = new Property_1215<>("Segments", LeafLitter.class, Integer.class, (litter) -> {
-        litter.setSegmentAmount(litter.getMaximumSegmentAmount() == litter.getSegmentAmount() ? 0 : litter.getSegmentAmount() + 1);
-        return litter;
-    }, LeafLitter::getSegmentAmount, (litter, amount) -> {
-        litter.setSegmentAmount(amount);
-        return litter;
-    });
-
     static IProperty<MossyCarpet, Boolean> MOSSY_CARPET_IS_BOTTOM = new Property_1215<>("Bottom", MossyCarpet.class, Boolean.class, (carpet) -> {
         carpet.setBottom(!carpet.isBottom());
         return carpet;
@@ -1241,6 +1234,14 @@ public class Property_1215<D extends BlockData, V> extends AbstractProperty<D, V
     }, DecoratedPot::isCracked, (pot, isCracked) -> {
         pot.setCracked(isCracked);
         return pot;
+    });
+
+    static IProperty<Segmentable, Integer> SEGMENT_AMOUNT = new Property_1215<>("Segment Amount", Segmentable.class, Integer.class, (segmentable) -> {
+        segmentable.setSegmentAmount(segmentable.getMaximumSegmentAmount() == segmentable.getSegmentAmount() ? segmentable.getMinimumSegmentAmount() : segmentable.getSegmentAmount() + 1);
+        return segmentable;
+    }, Segmentable::getSegmentAmount, (segmentable, amount) -> {
+        segmentable.setSegmentAmount(amount);
+        return segmentable;
     });
 
     public static void registerProperties() {
